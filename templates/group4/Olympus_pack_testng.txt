@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="Minimal Acceptance Testing" parallel="tests" thread-count="12">
+
+    <parameter name="test.repository.folderPath" value="./com/amdocs/core/oc/group4/repository/,/com/amdocs/ordercapture/repository/"/>
+    <parameter name="custom.report.visibility.onlyGroupsToIncludeOnDashboard" value="Olympus" />
+    <parameter name="retryConfig.enabled" value="true"/>
+    <parameter name="retryConfig.totalRetryCount" value="100"/>
+    <parameter name="retryConfig.retryCondition.0.enabled" value="true"/>
+    <parameter name="retryConfig.retryCondition.0.responseCode" value="502"/>
+    <parameter name="retryConfig.retryCondition.0.sleepTime" value="2000"/>
+    <parameter name="retryConfig.retryCondition.0.maxRetryCount" value="1"/>
+    <parameter name="rinstance
+    etryConfig.retryCondition.0.maxRetryCount" value="1"/>
+
+    <parameter name="defaultApplication" value="oc"/>
+    <parameter name="oc.authentication.keycloak.class" value="com.amdocs.authorizationutilities.keycloak.actions.AuthorizationKeycloak"/>
+    <parameter name="oc.authentication.a3s.class" value="com.amdocs.authorizationutilities.a3s.actions.AuthorizationA3S"/>
+    <parameter name="a3s.token" value="Basic YTNzRGVwbG95ZXI6QTNzRGVwbG95ZXIh"/>
+    <parameter name="oc.authentication" value="keycloak" /><!-- inorder to move to non apigw <parameter name="oc.authentication" value="a3s" />-->
+    <parameter name="care.isSimulator" value="true"/>
+
+    <parameter name="openshift.oc.baseUri" value="OPENSHIFT_OC_BASEURI"/>
+    <parameter name="openshift.oc.project.name" value="OPENSHIFT_OC_PROJECT_NAME"/>
+    <parameter name="openshift.oc.project.token" value="OPENSHIFT_OC_PROJECT_TOKEN"/>
+
+    <parameter name="custom.report.visibility.indexedclasses" value="true" />
+
+    <!-- Rerun configuration -->
+    <parameter name="custom.report.rerun.generateFile" value="true" />
+    <parameter name="custom.report.rerun.threadCount" value="4" />
+    <!-- Wiremock configurations -->
+    <parameter name="oc.service.oc-wiremock-service.baseUri" value="{{oc.service.oc-wiremock-service.baseUri}}" />
+    <parameter name="appointment.service.appointment-bridge-service.baseUri" value="{{oc.service.appointment-bridge-service.baseUri}}" />
+    <parameter name="care.service.geographicaddressaccessor-service.baseUri" value="{{oc.service.geographicaddressaccessor-service.baseUri}}" />
+    <parameter name="srm.service.resource-management-service.baseUri" value="{{oc.service.resource-management-service.baseUri}}" />
+    <parameter name="servicequalificationhooks.service.servicequalification-servicequalificationhooks-service.baseUri" value="{{oc.service.servicequalification-servicequalificationhooks-service.baseUri}}" />
+    <parameter name="productstockbridge.service.stock-productstockbridge-service.baseUri" value="{{oc.service.stock-productstockbridge-service.baseUri}}" />
+    <parameter name="care.service.customeraccessor-domainrouter-service.baseUri" value="{{oc.service.customeraccessor-domainrouter-service.baseUri}}" />
+    <parameter name="care.service.account-billingaccount-service.baseUri" value="{{oc.service.account-billingaccount-service.baseUri}}" />
+    <parameter name="care.service.place-place-service.baseUri" value="{{oc.service.place-place-service.baseUri}}" />
+    <parameter name="care.service.customer-management-domainrouter-service.baseUri" value="{{oc.service.customer-management-domainrouter-service.baseUri}}" />
+    <parameter name="care.service.account-relatedaccount-service.baseUri" value="{{oc.service.account-relatedaccount-service.baseUri}}" />
+    <parameter name="care.service.party-relatedparty-service.baseUri" value="{{oc.service.party-relatedparty-service.baseUri}}" />
+    <parameter name="care.service.geographicaddress-geographicaddress-service.baseUri" value="{{oc.service.oc-wiremock-service.baseUri}}" /><!-- geographicaddress-geographicaddress-service -->
+    <parameter name="rtb.service.paymentmanagement-payment-service.baseUri" value="{{oc.service.paymentmanagement-payment-service.baseUri}}" />
+    <parameter name="care.service.party-organization-service.baseUri" value="{{oc.service.party-organization-service.baseUri}}" />
+    <parameter name="prm.service.prepaybalance-management-service.baseUri" value="{{oc.service.prepaybalance-management-service.baseUri}}" />
+    <parameter name="redbrick.isEnabled" value="true"/>
+    <parameter name="custom.report.visibility.failure" value="true"/>
+    <parameter name="custom.report.visibility.success" value="true"/>
+    <parameter name="custom.report.visibility.skipped" value="true"/>
+    <!-- start APIGW -->
+    <parameter name="oc.service.baseUri" value="{{oc.service.amd-apigw-stack-service.baseUri}}" /><!-- comment out for non apigw -->
+    <parameter name="oc.service.oc-wiremock-service.baseUri" value="{{oc.service.oc-wiremock-service.baseUri}}" />
+    <parameter name="oh.service.orderworkflow-domainrouter-service.baseUri" value="{{oc.service.oc-wiremock-service.baseUri}}" />
+    <parameter name="oc.service.asm-services-cloud-service.baseUri" value="{{oc.service.asm-services-cloud-service.baseUri}}" />
+    <parameter name="oc.service.keycloak.baseUri" value="{{oc.service.keycloak.baseUri}}" />
+    <parameter name="oc.service.product-offering-service.baseUri" value="{{oc.service.product-offering-service.baseUri}}" />
+    <parameter name="oc.service.productorder-productorder-service.POST/productOrdering/v2.1/productOrder/{productOrderId}/orderItem/{orderItemId}/updateState.baseUri" value="{{oc.service.productorder-domainrouter-service.baseUri}}" />
+    <parameter name="oc.service.productorder-productorder-service.POST/productOrdering/v2.1/productOrder/{productOrderId}/orderItem/updateState.baseUri" value="{{oc.service.productorder-domainrouter-service.baseUri}}" />
+    <parameter name="oc.service.productorder-productorder-service.POST/productOrdering/v2.1/productOrder/{productOrderId}/updateState.baseUri" value="{{oc.service.productorder-domainrouter-service.baseUri}}" />
+    <parameter name="oc.service.pi-factory-service.POST/productInventoryManagement/v2/product/applyProductFromOrder.baseUri" value="{{oc.service.pi-domainrouter-service.baseUri}}" />
+    <parameter name="oc.service.productorder-productorder-service.GET/productOrdering/v2.1/productOrder/inflightProductModification.baseUri" value="{{oc.service.productorder-domainrouter-service.baseUri}}" />
+    <parameter name="oc.service.orderitemaccessor-service.GET/applicationContext/v0/entityAccessor/submittedOrderItem.baseUri" value="{{oc.service.orderitemaccessor-domainrouter-service.baseUri}}" />
+    <parameter name="oc.service.logicaldate-service.baseUri" value="{{oc.service.logicaldate-service.baseUri}}" />
+    <parameter name="oc.service.scheduler-task-service.baseUri" value="{{oc.service.scheduler-task-service.baseUri}}" />
+    <parameter name="oc.service.productorder-productorder-service.PATCH/productOrdering/v2.1/productOrder/{productOrderId}.baseUri" value="{{oc.service.productorder-domainrouter-service.baseUri}}" />
+    <parameter name="oc.service.rt-generic-element.baseUri" value="{{oc.service.rt-generic-element.baseUri}}" />
+    <!--group4 internal APIs-->
+    <parameter name="oc.service.productconfigurator-qualification-service.POST/productConfigurator/v1.0/evaluateQualificationRules.baseUri" value="{{oc.service.productconfigurator-qualification-service.baseUri}}" />
+    <parameter name="oc.service.productconfigurator-commitmentterm-service.POST/productConfigurator/v1.0/calculateTerm.baseUri" value="{{oc.service.productconfigurator-commitmentterm-service.baseUri}}" />
+    <parameter name="oc.service.productconfigurator-service.POST/productConfigurator/v1.0/productConfiguration/mergeConfiguration.baseUri" value="{{oc.service.productconfigurator-service.baseUri}}" />
+    <parameter name="oc.service.productconfigurator-service.POST/productConfigurator/v1.0/productConfiguration/defaultEnablingProduct.baseUri" value="{{oc.service.productconfigurator-service.baseUri}}" />
+    <parameter name="oc.service.productconfiguration-mergeentities-service.POST/productConfigurator/v1.0/productConfiguration/applySyncProductVersion.baseUri" value="{{oc.service.productconfiguration-mergeentities-service.baseUri}}" />
+    <parameter name="oc.service.productconfigurator-action-service.POST/productConfigurator/v1.0/validateProductOfferingConfigurationAction/validate.baseUri" value="{{oc.service.productconfigurator-action-service.baseUri}}" />
+    <parameter name="oc.service.productconfigurator-action-service.POST/productConfigurator/v1.0/productOfferingConfigurationStatus/retrieve.baseUri" value="{{oc.service.productconfigurator-action-service.baseUri}}" />
+    <parameter name="oc.service.productconfigurator-utilities-service.POST/productConfigurator/v1.0/productConfiguration/mergeProductConfigurationChange.baseUri" value="{{oc.service.productconfigurator-utilities-service.baseUri}}" />
+
+    <!-- TMF v4 start -->
+    <parameter name="oc.service.pi-search-service.POST/productInventoryManagement/v4/productSearch/query.baseUri" value="{{oc.service.pi-domainrouter-service.baseUri}}" />
+    <parameter name="oc.service.pi-factory-service.POST/productInventoryManagement/v4/product/applyProductFromOrder.baseUri" value="{{oc.service.pi-domainrouter-service.baseUri}}" />
+    <parameter name="oc.service.productorder-productorder-service.PATCH/productOrderingManagement/v4/productOrder/{productOrderId}.baseUri" value="{{oc.service.productorder-domainrouter-service.baseUri}}" />
+    <parameter name="oc.service.productorder-productorder-service.POST/productOrderingManagement/v4/productOrder/{productOrderId}/manageState.baseUri" value="{{oc.service.productorder-domainrouter-service.baseUri}}" />
+    <parameter name="oc.service.productorder-productorder-service.POST/productOrderingManagement/v4/productOrder/queryInflightModification.baseUri" value="{{oc.service.productorder-domainrouter-service.baseUri}}" />
+    <parameter name="oc.service.productorder-productorder-service.POST/productOrderingManagement/v4/productOrder/{productOrderId}/orderItem/{orderItemId}/updateState.baseUri" value="{{oc.service.productorder-domainrouter-service.baseUri}}" />
+    <parameter name="oc.service.productorder-productorder-service.POST/productOrderingManagement/v4/productOrder/{productOrderId}/orderItem/updateState.baseUri" value="{{oc.service.productorder-domainrouter-service.baseUri}}" />
+    <parameter name="oc.service.productorder-productorder-service.POST/productOrderingManagement/v4/productOrder/{productOrderId}/updateState.baseUri" value="{{oc.service.productorder-domainrouter-service.baseUri}}" />
+    <parameter name="oc.service.productorder-productorder-service.POST/productOrderingManagement/v4/productOrder/{productOrderId}/manageLock.baseUri" value="{{oc.service.productorder-domainrouter-service.baseUri}}" />
+    <parameter name="oc.service.productorder-productorder-service.GET/productOrderingManagement/v4/productOrder/inflightProductModification.baseUri" value="{{oc.service.productorder-domainrouter-service.baseUri}}" />
+    <parameter name="oc.service.productorder-productorder-service.PATCH/productOrderingManagement/v4/productOrder/{productOrderId}.baseUri" value="{{oc.service.productorder-domainrouter-service.baseUri}}" />
+    <parameter name="oc.service.productorder-deliverproductorder-service.POST/productOrderingManagement/v4/productOrder/validate/installationMethod.baseUri" value="{{oc.service.productorder-deliverproductorder-service.baseUri}}" />
+    <parameter name="oc.service.productorder-deliverproductorder-service.POST/productOrderingManagement/v4/productOrder/validate/deliveryMethod.baseUri" value="{{oc.service.productorder-deliverproductorder-service.baseUri}}" />
+    <parameter name="oc.service.productorder-manage-service.POST/productOrderingManagement/v4/productOrder/{productOrderId}/productOrderItem/manageProductOrderItemRelationship.baseUri" value="{{oc.service.productorder-manage-service.baseUri}}" />
+    <parameter name="oc.service.productorder-productorder-service.POST/productOrderingManagement/v4/productOrder/queryInflightModification.baseUri" value="{{oc.service.productorder-domainrouter-service.baseUri}}" />
+    <parameter name="oc.service.productorder-manage-service.POST/productOrderingManagement/v4/productOrder/{productOrderId}/manageAgreement.baseUri" value="{{oc.service.productorder-manage-service.baseUri}}" />
+    <parameter name="oc.service.productorder-productorder-service.POST/productOrderingManagement/v4/productOrder/{productOrderId}/syncProductVersion.baseUri" value="{{oc.service.productorder-domainrouter-service.baseUri}}"/>
+    <parameter name="oc.service.productorder-modifyorder-service.POST/productOrderingManagement/v4/productOrder/{productOrderId}/syncBackdatedProductVersion.baseUri" value="{{oc.service.productorder-domainrouter-service.baseUri}}" />
+    <parameter name="oc.service.logicaldate-service.baseUri" value="{{oc.service.logicaldate-service.baseUri}}" />
+    <parameter name="oc.service.scheduler-task-service.baseUri" value="{{oc.service.scheduler-task-service.baseUri}}" />
+    <parameter name="oc.service.productorder-productorder-service.POST/productOrderingManagement/v4/productOrder/aggregate.baseUri" value="{{oc.service.productorder-domainrouter-service.baseUri}}" />
+    <parameter name="oc.service.pi-product-service.POST/productInventoryManagement/v4/product/updateStatus.baseUri" value="{{oc.service.pi-domainrouter-service.baseUri}}"/>
+    <parameter name="oc.service.proposal-agreement-service.POST/proposalAndAgreementManagement/v4/proposal/{proposalId}/manageStatus.baseUri" value="{{oc.service.pa-proposalandagreement-service.baseUri}}"/>
+    <parameter name="oc.service.proposal-agreement-service.POST/proposalAndAgreementManagement/v4/agreement/{agreementId}/manageStatus.baseUri" value="{{oc.service.pa-proposalandagreement-service.baseUri}}"/>
+    <parameter name="oc.service.apidata-management-service.baseUri" value="{{oc.service.apidata-management-service.baseUri}}" /> <!--RestTool API-->
+    <parameter name="oc.service.productorder-modifyorder-service.POST/productOrderingManagement/v4/productOrder/draft.baseUri" value="{{oc.service.productorder-domainrouter-service.baseUri}}" />
+    <parameter name="oc.service.productorder-manage-service.POST/productOrderingManagement/v4/productOrder/{productOrderId}/manageAgreement.baseUri" value="{{oc.service.productorder-manage-service.baseUri}}" />
+    <parameter name="oc.service.productorder-productorder-service.POST/productOrderingManagement/v4/productOrder/{productOrderId}/manageLock.baseUri" value="{{oc.service.productorder-domainrouter-service.baseUri}}" />
+    <parameter name="oc.service.productorder-modifyorder-service.POST/productOrderingManagement/v4/productOrder/{productOrderId}/syncBackdatedProductVersion.baseUri" value="{{oc.service.productorder-domainrouter-service.baseUri}}" />
+    <parameter name="oc.service.logicaldate-service.baseUri" value="{{oc.service.logicaldate-service.baseUri}}" />
+    <parameter name="oc.service.scheduler-task-service.baseUri" value="{{oc.service.scheduler-task-service.baseUri}}" />
+    <parameter name="oc.service.productorder-productorder-service.POST/productOrderingManagement/v4/productOrder/aggregate.baseUri" value="{{oc.service.productorder-domainrouter-service.baseUri}}" />
+    <parameter name="oc.service.pi-product-service.POST/productInventoryManagement/v4/product/updateStatus.baseUri" value="{{oc.service.pi-domainrouter-service.baseUri}}"/>
+    <parameter name="oc.service.proposal-agreement-service.POST/proposalAndAgreementManagement/v4/proposal/{proposalId}/manageStatus.baseUri" value="{{oc.service.pa-proposalandagreement-service.baseUri}}"/>
+    <parameter name="oc.service.proposal-agreement-service.POST/proposalAndAgreementManagement/v4/agreement/{agreementId}/manageStatus.baseUri" value="{{oc.service.pa-proposalandagreement-service.baseUri}}"/>
+    <parameter name="oc.service.apidata-management-service.baseUri" value="{{oc.service.apidata-management-service.baseUri}}" /> <!--RestTool API-->
+    <parameter name="oc.service.productorder-modifyorder-service.POST/productOrderingManagement/v4/productOrder/draft.baseUri" value="{{oc.service.productorder-domainrouter-service.baseUri}}" />
+    <parameter name="care.service.geographicsiteaccessor-service.baseUri" value="{{oc.service.oc-wiremock-service.baseUri}}" />
+    <parameter name="care.service.geographicsite-geographicsite-service.baseUri" value="{{oc.service.oc-wiremock-service.baseUri}}" />
+    <parameter name="hvo.service.highvolumeorder-highvolumeorder-service.baseUri" value="{{oc.service.oc-wiremock-service.baseUri}}" />
+
+    <!-- TMF v4 end -->
+
+    <parameter name="getOpenShiftServices.enabled" value="true"/>
+    <parameter name="oc.service.kafka-service.baseUri" value="{{oc.service.kafka-service.externalHost.baseUri}}"/>
+    <parameter name="oc.kafka.service.ssl.enabled" value="true"/>
+    <parameter name="jdk.tls.client.protocols" value="TLSv1.2" />
+
+
+    <parameter name="coreapi.rest.utils.RestDriver.RestRequest.header.X-API-LOGGER-FIELDS.isEnabled" value="true" />
+
+
+    <listeners>
+        <listener class-name="com.amdocs.corereport.listener.testng.custom.v5.TestNGCustomReporterListener" />
+    </listeners>
+
+    <test name="Automation Setup">
+        <classes>
+            <class name="com.amdocs.core.oc.group4.test.automationSetup.OrderCaptureG4AutomationSetup"/>
+        </classes>
+    </test>
+
+    [TESTS HERE]
+
+</suite>

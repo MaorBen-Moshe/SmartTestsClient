@@ -1,0 +1,5 @@
+    <test name="[TEST NAME]">
+        <classes>
+            <class name="[TEST PATH]" />
+        </classes>
+    </test>
