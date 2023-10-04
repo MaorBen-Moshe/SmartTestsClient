@@ -1,1 +1,1 @@
-This is template for creation of new micro services' of order capture
+this is a project to analyze flows to run according to ci changes.
