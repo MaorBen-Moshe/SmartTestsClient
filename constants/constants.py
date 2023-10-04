@@ -30,7 +30,8 @@ FILTERED_MS_LIST = [
     "productvalidator"
 ]
 MS_POSTFIX = "-ms"
-SUPPORTED_GROUPS = ["all", "group4"]
+# SUPPORTED_GROUPS = ["all", "group4"]
+SUPPORTED_GROUPS = ["oc-cd-group4-coc-include-ed"]
 GROUP4_XML = [
     "group4_integration_tests_testng",
     "mat_APIGW_testng",
