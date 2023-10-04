@@ -28,7 +28,7 @@ def load_build_report():
             messagebox.showinfo("Success", "Build Report Loaded Successfully")
             button_load_tests.config(state="normal")
             progress_bar['value'] = 0
-            progress_label.config(text=f"Tests: {progress_bar['value']}/{progress_bar['maximum']}")
+            progress_label.config(text=f"Flows: {progress_bar['value']}/{progress_bar['maximum']}")
             button_create_testng.config(state="disabled")
 
 
@@ -44,13 +44,13 @@ def pick_group(group):
         progress_bar['value'] = 0
         progress_bar['maximum'] = res['total_count']
         total_label.config(text=f"Total Flows: {res['total_count']}")
-        progress_label.config(text=f"Tests: 0/{res['total_count']} (0%)")
+        progress_label.config(text=f"Flows: 0/{res['total_count']} (0%)")
         button_create_testng.config(state="disabled")
     except Exception as ex:
         messagebox.showerror("Error", f"Failed with error: {ex}")
         value_inside_picker.set("Select Group")
         total_label.config(text="Total Flows: 0")
-        progress_label.config(text=f"Tests: 0/0")
+        progress_label.config(text=f"Flows: 0/0")
         progress_bar['value'] = 0
         progress_bar['maximum'] = 0
         button_load_tests.config(state="disabled")
@@ -69,7 +69,7 @@ def analyze_tests_by_group():
         button_create_testng.config(state="normal")
         progress_bar['value'] = data_manager.get_tests_total_count()
         percentage = '{:.2%}'.format(float(progress_bar['value'])/float(progress_bar['maximum']))
-        progress_label.config(text=f"Tests: {progress_bar['value']}/{progress_bar['maximum']} ({percentage})")
+        progress_label.config(text=f"Flows: {progress_bar['value']}/{progress_bar['maximum']} ({percentage})")
         messagebox.showinfo("Success", "Analyzed Data Successfully")
 
 
@@ -111,7 +111,7 @@ pick_picker.pack(side=tk.LEFT)
 total_label = tk.Label(row, text="Total Flows: 0")
 total_label.pack(side=tk.LEFT)
 
-button_load_tests = tk.Button(window, text="Analyze Tests To Run", command=analyze_tests_by_group, width=30)
+button_load_tests = tk.Button(window, text="Analyze Flows To Run", command=analyze_tests_by_group, width=30)
 button_load_tests.config(state="disabled")
 button_load_tests.pack(padx=10, pady=10)
 
@@ -126,7 +126,7 @@ progress_bar = ttk.Progressbar(window,
 progress_bar['maximum'] = 0
 progress_bar.pack(padx=10, pady=10)
 
-progress_label = tk.Label(window, text="Tests: 0/0")
+progress_label = tk.Label(window, text="Flows: 0/0")
 progress_label.pack(padx=10, pady=10)
 
 button_create_testng = tk.Button(window, text="Create TestNG", command=create_testng_xml, width=30)
