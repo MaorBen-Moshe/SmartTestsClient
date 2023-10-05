@@ -1,7 +1,10 @@
 import requests
 from bs4 import BeautifulSoup
+from requests.auth import HTTPBasicAuth
+
 from constants.constants import *
 from exceptions.excpetions import EmptyInputError, NotFoundError
+from models.config_manager import ConfigManager
 from models.service_data import ServiceData, ServiceDataBuilder
 
 
@@ -11,7 +14,11 @@ class HtmlParser:
         if html_url is None:
             raise EmptyInputError("not provided file_name to load_html")
 
-        with requests.get(url=html_url) as res:
+        config = ConfigManager()
+        user, password = config.get_jenkins_cred()
+        with (requests.get(url=html_url,
+                           auth=HTTPBasicAuth(user, password))
+              as res):
             res.raise_for_status()
             html = res.text
 

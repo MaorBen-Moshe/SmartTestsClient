@@ -1,9 +1,12 @@
 from distutils.version import LooseVersion
 
+from requests.auth import HTTPBasicAuth
+
 from constants.constants import *
 import yaml
 import requests
 
+from models.config_manager import ConfigManager
 from models.service_data import ServiceData, ServiceDataBuilder
 
 
@@ -12,8 +15,10 @@ class YamlParser:
         self.services_map: dict[str, ServiceData] = {}
 
     def request_yaml_external(self, url: str) -> dict[str, ServiceData]:
+        config = ConfigManager()
+        user, password = config.get_nexus_cred()
         with requests.get(url,
-                          auth=(NEXUS_USER, NEXUS_PASS),
+                          auth=HTTPBasicAuth(user, password),
                           stream=True) as response:
             response.raise_for_status()
             data = yaml.safe_load(response.content)

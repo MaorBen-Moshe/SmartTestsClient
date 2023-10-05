@@ -6,13 +6,6 @@ ENTRIES_KEY = "entries"
 TR = "tr"
 TD = "td"
 B = "b"
-NEXUS_URL = "http://illin5589:28080"
-HELM_INDEX_REPOSITORY = "ms-helm-release"
-HELM_INDEX_URL = f"{NEXUS_URL}/repository/{HELM_INDEX_REPOSITORY}/index.yaml"
-GREEN_INDEX_REPOSITORY = "ms-helm-release"
-GREEN_INDEX_URL = f"{NEXUS_URL}/repository/{GREEN_INDEX_REPOSITORY}/index.yaml"
-NEXUS_USER = "psmdocker"
-NEXUS_PASS = "unix11"
 FILTERED_MS_LIST = [
     "productconfigurator",
     "productconfigurator-action",

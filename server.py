@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify, make_response
 
 from appServices.analyze_app_service import AnalyzeAppService
 from constants.constants import SUPPORTED_GROUPS
+from models.config_manager import ConfigManager
 from steps.check_analyze_input import check_input
 
 app = Flask(__name__)
@@ -28,4 +29,4 @@ def analyze():
 
 
 if __name__ == '__main__':
-    app.run(host="0.0.0.0", port=5001)  # todo change port to 5000 when running on virtual machine.
+    app.run(host="0.0.0.0", port=5001)

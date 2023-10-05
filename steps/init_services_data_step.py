@@ -1,6 +1,6 @@
 from threading import Thread
 
-from constants.constants import HELM_INDEX_URL
+from models.config_manager import ConfigManager
 from models.service_data import ServiceData
 from parsers.yaml_parser import YamlParser
 
@@ -9,9 +9,9 @@ def init_services_map() -> dict[str, ServiceData]:
     yaml_parser = YamlParser()
     services_map = {}
 
+    config = ConfigManager()
     paths = [
-        HELM_INDEX_URL,
-        # GREEN_INDEX_URL
+        config.get_helm_index_url(),
     ]
 
     services_map_threads = []
