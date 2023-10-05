@@ -1,18 +1,23 @@
+import requests
 from bs4 import BeautifulSoup
 from constants.constants import *
-from exceptions.emptyInputError import EmptyInputError
-from exceptions.notFoundError import NotFoundError
+from exceptions.excpetions import EmptyInputError, NotFoundError
+from models.service_data import ServiceData, ServiceDataBuilder
 
 
 class HtmlParser:
-    def __init__(self, html):
+    def __init__(self, html_url):
         self.table = None
-        if html is None:
+        if html_url is None:
             raise EmptyInputError("not provided file_name to load_html")
+
+        with requests.get(url=html_url) as res:
+            res.raise_for_status()
+            html = res.content
 
         self.soup = BeautifulSoup(html, "html.parser")
 
-    def load_html(self, services_map):
+    def load_html(self, services_map: dict[str, ServiceData]):
         self.table = self.__find_table()
         if self.table is not None:
             name_index, version_index = self.__find_indexes()
@@ -40,7 +45,7 @@ class HtmlParser:
                 version_index = i
         return name_index, version_index
 
-    def __update_map(self, services_map, name_index, version_index):
+    def __update_map(self, services_map: dict[str, ServiceData], name_index, version_index):
         rows = self.table.find_all(TR)[2:]  # Skip the first and second rows
         for row in rows:
             cells = row.find_all(TD)
@@ -49,6 +54,6 @@ class HtmlParser:
                 version = cells[version_index].text.strip()
                 if len(name) > 0 and len(version) > 0 and name in FILTERED_MS_LIST:
                     if name in services_map:
-                        services_map[name][OLD_VERSION_KEY] = version
+                        services_map[name].old_version = version
                     else:
-                        services_map[name] = {OLD_VERSION_KEY: version, NEW_VERSION_KEY: version}
+                        services_map[name] = ServiceDataBuilder().old_version(version).new_version(version).build()

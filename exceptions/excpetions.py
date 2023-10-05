@@ -7,3 +7,13 @@ class BaseException(Exception):
 class BadRequest(BaseException):
     def __init__(self, message: str):
         super().__init__(message, 400)
+
+
+class NotFoundError(BaseException):
+    def __init__(self, message: str):
+        super().__init__(message, 500)
+
+
+class EmptyInputError(BaseException):
+    def __init__(self, message: str):
+        super().__init__(message, 500)

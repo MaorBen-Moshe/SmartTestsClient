@@ -1,4 +1,3 @@
-DATA_DIR = "../data"
 TEST_NAMES_KEY = "test_names"
 SERVICES_KEY = "services"
 OLD_VERSION_KEY = "old_version"
@@ -14,9 +13,6 @@ GREEN_INDEX_REPOSITORY = "ms-helm-release"
 GREEN_INDEX_URL = f"{NEXUS_URL}/repository/{GREEN_INDEX_REPOSITORY}/index.yaml"
 NEXUS_USER = "psmdocker"
 NEXUS_PASS = "unix11"
-TEST_NAME_PLACE_HOLDER = "[TEST NAME]"
-TEST_PATH_PLACE_HOLDER = "[TEST PATH]"
-TEST_BLOCK_PLACE_HOLDER = "[TESTS HERE]"
 FILTERED_MS_LIST = [
     "productconfigurator",
     "productconfigurator-action",
@@ -30,7 +26,6 @@ FILTERED_MS_LIST = [
     "productvalidator"
 ]
 MS_POSTFIX = "-ms"
-# SUPPORTED_GROUPS = ["all", "group4"]
 SUPPORTED_GROUPS = ["oc-cd-group4-coc-include-ed"]
 GROUP4_XML = [
     "group4_integration_tests_testng",

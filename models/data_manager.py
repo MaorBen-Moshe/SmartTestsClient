@@ -1,8 +1,6 @@
-import os
-from threading import Thread
-
 from constants.constants import *
-from parsers.yaml_parser import YamlParser
+from models.group_data import GroupData
+from models.service_data import ServiceData
 
 
 class DataManager:
@@ -10,14 +8,11 @@ class DataManager:
     def __init__(self):
         self.curr_group = None
         self.test_names_by_group = {}
-        self.services_map = {}
+        self.services_map: dict[str, ServiceData] = {}
         self.filter_by_group = {
-            "all": "",
-            "group4": GROUP4_XML,
+            "oc-cd-group4-coc-include-ed": GROUP4_XML,
         }
-
-        if not os.path.exists(DATA_DIR):
-            os.makedirs(DATA_DIR)
+        self.groups_data: dict[str, GroupData] = {}
 
     def set_curr_group(self, group_name):
         self.curr_group = group_name
