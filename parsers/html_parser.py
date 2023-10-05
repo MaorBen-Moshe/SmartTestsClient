@@ -13,7 +13,7 @@ class HtmlParser:
 
         with requests.get(url=html_url) as res:
             res.raise_for_status()
-            html = res.content
+            html = res.text
 
         self.soup = BeautifulSoup(html, "html.parser")
 
