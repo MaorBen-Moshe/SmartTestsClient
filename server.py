@@ -2,7 +2,6 @@ from flask import Flask, request, jsonify, make_response
 
 from appServices.analyze_app_service import AnalyzeAppService
 from constants.constants import SUPPORTED_GROUPS
-from exceptions.excpetions import BadRequest
 from steps.check_analyze_input import check_input
 
 app = Flask(__name__)
@@ -18,8 +17,8 @@ def analyze():
     try:
         req_data = request.get_json()
         check_input(req_data)
-    except BadRequest as br:
-        return make_response(br, 400)
+    except Exception as ex:
+        return make_response(f"Error: {ex}", 400)
 
     service = AnalyzeAppService(req_data.get("buildURL"), req_data.get("groupName"))
 
