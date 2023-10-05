@@ -1,8 +1,10 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, make_response
+from flask_api import status
 
 from appServices.analyze_app_service import AnalyzeAppService
 from constants.constants import SUPPORTED_GROUPS
 from exceptions.excpetions import BadRequest
+from steps.check_analyze_input import check_input
 
 app = Flask(__name__)
 
@@ -14,20 +16,17 @@ def supported_groups():
 
 @app.route("/smart-tests-analyze", methods=["POST"])
 def analyze():
-    req_data = request.get_json()
-    if req_data is None:
-        raise BadRequest("No payload provided.")
+    try:
+        req_data = request.get_json()
+        check_input(req_data)
+    except BadRequest as br:
+        return make_response(br, status.HTTP_400_BAD_REQUEST)
 
-    build_url = req_data.get("buildURL")
-    if build_url is None or build_url == "":
-        raise BadRequest("No build url provided.")
-    group_name = req_data.get("groupName")
-    if group_name not in SUPPORTED_GROUPS:
-        raise BadRequest(f"Group Name: {group_name} is not supported. supported groups: {SUPPORTED_GROUPS}")
+    service = AnalyzeAppService(req_data.get("buildURL"), req_data.get("groupName"))
 
-    service = AnalyzeAppService(build_url, group_name)
+    res = service.analyze()
 
-    return jsonify(service.analyze())
+    return jsonify(res)
 
 
 if __name__ == '__main__':
