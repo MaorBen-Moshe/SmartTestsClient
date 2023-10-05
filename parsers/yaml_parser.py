@@ -30,7 +30,7 @@ class YamlParser:
                         sorted_list = sorted(version_list, key=LooseVersion, reverse=True)
                         if len(sorted_list) > 0:
                             if self.services_map.get(entry) is None:
-                                self.services_map[entry] = (ServiceDataBuilder.new_version(sorted_list[0])
+                                self.services_map[entry] = (ServiceDataBuilder().new_version(sorted_list[0])
                                                             .old_version(sorted_list[0])
                                                             .build())
                             else:
