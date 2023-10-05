@@ -1,5 +1,4 @@
 from flask import Flask, request, jsonify, make_response
-from flask_api import status
 
 from appServices.analyze_app_service import AnalyzeAppService
 from constants.constants import SUPPORTED_GROUPS
@@ -20,7 +19,7 @@ def analyze():
         req_data = request.get_json()
         check_input(req_data)
     except BadRequest as br:
-        return make_response(br, status.HTTP_400_BAD_REQUEST)
+        return make_response(br, 400)
 
     service = AnalyzeAppService(req_data.get("buildURL"), req_data.get("groupName"))
 
