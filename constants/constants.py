@@ -1,8 +1,3 @@
-TEST_NAMES_KEY = "test_names"
-SERVICES_KEY = "services"
-OLD_VERSION_KEY = "old_version"
-NEW_VERSION_KEY = "new_version"
-ENTRIES_KEY = "entries"
 TR = "tr"
 TD = "td"
 B = "b"

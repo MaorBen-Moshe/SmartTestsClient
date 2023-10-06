@@ -23,7 +23,7 @@ class YamlParser:
             response.raise_for_status()
             data = yaml.safe_load(response.content)
 
-        self.load_yaml(data[ENTRIES_KEY])
+        self.load_yaml(data["entries"])
         return self.services_map
 
     def load_yaml(self, entries):
