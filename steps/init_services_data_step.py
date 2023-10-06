@@ -2,7 +2,7 @@ from threading import Thread
 
 from models.config_manager import ConfigManager
 from models.service_data import ServiceData
-from parsers.yaml_parser import YamlParser
+from services.yaml_parser import YamlParser
 
 
 def init_services_map() -> dict[str, ServiceData]:

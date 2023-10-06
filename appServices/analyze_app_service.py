@@ -1,6 +1,6 @@
 from models.data_manager import DataManager
 from models.group_data import GroupData
-from parsers.html_parser import HtmlParser
+from services.html_parser import HtmlParser
 from steps.handle_groups_data_step import HandleGroupsDataStep
 from steps.init_services_data_step import init_services_map
 

@@ -1,8 +1,5 @@
-import base64
 from configparser import ConfigParser
-
 from cryptography.fernet import Fernet
-
 from decorators.singleton_decorator import singleton
 
 

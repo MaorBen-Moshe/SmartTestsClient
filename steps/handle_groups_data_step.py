@@ -1,4 +1,4 @@
-from client.smart_test_client import SmartTestsClient
+from services.smart_test_client import SmartTestsClient
 from models.group_data import GroupData
 from models.service_data import ServiceData
 
