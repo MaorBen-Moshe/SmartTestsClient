@@ -25,8 +25,8 @@ class SmartTestsClient:
                         ],
                         "project": "DIGOC",
                         "repo": f"{service_key}{MS_POSTFIX}",
-                        "to": services_map[service_key].old_version,
-                        "from": services_map[service_key].new_version,
+                        "to": services_map.get(service_key).old_version,
+                        "from": services_map.get(service_key).new_version,
                         "includeFileGroupNamePattern": self.__create_filter_by_list(filter_group)
                     }
                 ]
@@ -40,12 +40,12 @@ class SmartTestsClient:
                     res.raise_for_status()
                     res_json = res.json()
 
-                if int(res_json["flowsCount"]) > 0:
-                    groups = res_json["flowsByGroupName"]
+                if int(res_json.get("flowsCount")) > 0:
+                    groups = res_json.get("flowsByGroupName")
                     for group in groups:
-                        group_name = group["name"].split("/")[-1]
+                        group_name = group.get("name").split("/")[-1]
                         if group_name in groups_data:
-                            groups_data[group_name].add_flows(group["flows"])
+                            groups_data.get(group_name).add_flows(group["flows"])
         else:
             raise EmptyInputError("failed to fetch flows to analyze. no services found.")
 
@@ -65,11 +65,16 @@ class SmartTestsClient:
             res.raise_for_status()
             data = res.json()
 
-        for curr_xml in data["smartTestsAllItem"]:
-            split_name = curr_xml["name"].rsplit('/', 1)
-            path = split_name[0]
-            name = split_name[1]
-            total_count = curr_xml["flowsCount"]
+        for curr_xml in data.get("smartTestsAllItem"):
+            split_name = curr_xml.get("name").rsplit('/', 1)
+            if len(split_name) == 1:
+                path = ""
+                name = split_name[0]
+            else:
+                path = split_name[0]
+                name = split_name[1]
+
+            total_count = curr_xml.get("flowsCount")
 
             if name.replace(".xml", "") in include_filter_list:
                 groups_data[name] = (GroupDataBuilder()
