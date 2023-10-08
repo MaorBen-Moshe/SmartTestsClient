@@ -3,8 +3,8 @@ from __future__ import annotations
 
 class ServiceData:
     def __init__(self):
-        self.old_version = ""
-        self.new_version = ""
+        self.old_version: str = ""
+        self.new_version: str = ""
 
 
 class ServiceDataBuilder:

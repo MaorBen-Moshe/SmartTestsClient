@@ -10,7 +10,7 @@ from models.config_manager import ConfigManager
 from models.service_data import ServiceData, ServiceDataBuilder
 
 
-class YamlParser:
+class YamlParserService:
     def __init__(self):
         self.services_map: dict[str, ServiceData] = {}
 

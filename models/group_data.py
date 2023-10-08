@@ -5,9 +5,9 @@ class GroupData:
     def __init__(self):
         self.group_name = None
         self.group_path = None
-        self.total_flows_count = 0
-        self.curr_flows_count = 0
-        self.flows = []
+        self.total_flows_count: int = 0
+        self.curr_flows_count: int = 0
+        self.flows: list[str] = []
 
     def add_flows(self, curr_flows: list[str]):
         filtered_flows = [curr_flow for curr_flow in curr_flows if curr_flow not in self.flows]

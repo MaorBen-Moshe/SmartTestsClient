@@ -80,7 +80,7 @@ class SmartTestsClient:
 
         return groups_data
 
-    def __create_filter_by_list(self, values: list):
+    def __create_filter_by_list(self, values: list) -> str:
         if values is None or len(values) == 0:
             return ""
 

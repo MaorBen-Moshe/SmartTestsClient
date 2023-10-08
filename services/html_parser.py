@@ -8,8 +8,8 @@ from models.config_manager import ConfigManager
 from models.service_data import ServiceData, ServiceDataBuilder
 
 
-class HtmlParser:
-    def __init__(self, html_url):
+class HtmlParserService:
+    def __init__(self, html_url: str):
         self.table = None
         if html_url is None:
             raise EmptyInputError("not provided file_name to load_html")
@@ -40,7 +40,7 @@ class HtmlParser:
                 return table
         return None
 
-    def __find_indexes(self):
+    def __find_indexes(self) -> (int, int):
         first_row = self.table.findAll(TR)[1]
         cells = first_row.find_all(TD)
         name_index = None
@@ -52,7 +52,7 @@ class HtmlParser:
                 version_index = i
         return name_index, version_index
 
-    def __update_map(self, services_map: dict[str, ServiceData], name_index, version_index):
+    def __update_map(self, services_map: dict[str, ServiceData], name_index: int, version_index: int):
         rows = self.table.find_all(TR)[2:]  # Skip the first and second rows
         for row in rows:
             cells = row.find_all(TD)
