@@ -27,4 +27,4 @@ class AnalyzeAppService:
                                                             self.data_manager.groups_data)
 
         # prepare response
-        return self.data_manager.groups_data
+        return {key: val.serialize() for key, val in self.data_manager.groups_data}
