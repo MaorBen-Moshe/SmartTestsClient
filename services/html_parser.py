@@ -1,3 +1,8 @@
+import io
+import os.path
+import shutil
+import zipfile
+
 import requests
 from bs4 import BeautifulSoup
 from requests.auth import HTTPBasicAuth
@@ -9,20 +14,13 @@ from models.service_data import ServiceData, ServiceDataBuilder
 
 
 class HtmlParserService:
-    def __init__(self, html_url: str):
+    def __init__(self, html_zip_url: str):
         self.table = None
-        if html_url is None:
+        if html_zip_url is None:
             raise EmptyInputError("not provided file_name to load_html")
 
-        config = ConfigManager()
-        user, password = config.get_jenkins_cred()
-        with (requests.get(url=html_url,
-                           auth=HTTPBasicAuth(user, password))
-              as res):
-            res.raise_for_status()
-            html = res.text
-
-        self.soup = BeautifulSoup(html, "html.parser")
+        self.__get_html_from_external(html_zip_url)
+        self.soup = BeautifulSoup(self.html, "html.parser")
 
     def load_html(self, services_map: dict[str, ServiceData]):
         self.table = self.__find_table()
@@ -64,3 +62,25 @@ class HtmlParserService:
                         services_map[name].old_version = version
                     else:
                         services_map[name] = ServiceDataBuilder().old_version(version).new_version(version).build()
+
+    def __get_html_from_external(self, html_zip_url: str):
+        config = ConfigManager()
+        user, password = config.get_jenkins_cred()
+
+        with (requests.get(url=html_zip_url,
+                           auth=HTTPBasicAuth(user, password))
+              as res):
+            res.raise_for_status()
+            z = zipfile.ZipFile(io.BytesIO(res.content))
+
+            z.extractall("./")
+        try:
+            with open("./BuildReport/build_report.html", mode="r") as f:
+                self.html = f.read()
+
+        except Exception as ex:
+            print(f"Error getting html from {html_zip_url}, with error: {ex}")
+            self.html = None
+
+        finally:
+            shutil.rmtree("./BuildReport", ignore_errors=True)
