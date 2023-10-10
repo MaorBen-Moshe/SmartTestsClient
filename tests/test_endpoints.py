@@ -11,7 +11,7 @@ def test_supported_groups_endpoint_success(client):
 @pytest.mark.skip(reason="need to implement mocks and asserts")
 def test_smart_tests_analyze_endpoint_success(client):
     data = {
-        "buildURL": "",
+        "buildURL": "http://testurl.com",
         "groupName": "oc-cd-group4-coc-include-ed",
     }
 

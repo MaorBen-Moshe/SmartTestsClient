@@ -22,8 +22,11 @@ pycparser==2.21
 pyinstaller==6.0.0
 pyinstaller-hooks-contrib==2023.9
 pytest==7.4.2
+pytest-mock==3.11.1
 PyYAML==6.0.1
 requests==2.31.0
+responses==0.23.3
 soupsieve==2.5
+types-PyYAML==6.0.12.12
 urllib3==2.0.5
 Werkzeug==3.0.0

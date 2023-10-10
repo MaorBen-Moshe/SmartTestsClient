@@ -1,5 +1,4 @@
 import io
-import os.path
 import shutil
 import zipfile
 
@@ -19,7 +18,7 @@ class HtmlParserService:
         if html_zip_url is None:
             raise EmptyInputError("not provided file_name to load_html")
 
-        self.__get_html_from_external(html_zip_url)
+        self.html = self.__get_html_from_external(html_zip_url)
         self.soup = BeautifulSoup(self.html, "html.parser")
 
     def load_html(self, services_map: dict[str, ServiceData]):
@@ -63,10 +62,11 @@ class HtmlParserService:
                     else:
                         services_map[name] = ServiceDataBuilder().old_version(version).new_version(version).build()
 
-    def __get_html_from_external(self, html_zip_url: str):
+    @staticmethod
+    def __get_html_from_external(html_zip_url: str):
         config = ConfigManager()
         user, password = config.get_jenkins_cred()
-
+        html = None
         with (requests.get(url=html_zip_url,
                            auth=HTTPBasicAuth(user, password))
               as res):
@@ -76,11 +76,13 @@ class HtmlParserService:
             z.extractall("./")
         try:
             with open("./BuildReport/build_report.html", mode="r") as f:
-                self.html = f.read()
+                html = f.read()
 
         except Exception as ex:
             print(f"Error getting html from {html_zip_url}, with error: {ex}")
-            self.html = None
+            html = None
+            raise ex
 
         finally:
             shutil.rmtree("./BuildReport", ignore_errors=True)
+            return html

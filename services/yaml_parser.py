@@ -23,7 +23,9 @@ class YamlParserService:
             response.raise_for_status()
             data = yaml.safe_load(response.content)
 
-        self.load_yaml(data.get("entries"))
+        if data is not None:
+            self.load_yaml(data.get("entries"))
+
         return self.services_map
 
     def load_yaml(self, entries):

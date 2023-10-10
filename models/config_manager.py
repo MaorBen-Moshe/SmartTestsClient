@@ -1,17 +1,18 @@
 from configparser import ConfigParser
 from cryptography.fernet import Fernet
-from decorators.singleton_decorator import singleton
+from models.singleton_meta import SingletonMeta
 
 
-@singleton
-class ConfigManager:
+class ConfigManager(metaclass=SingletonMeta):
     def __init__(self):
+        self.__fernet = None
         self.config = ConfigParser()
-        self.config.read("config.ini")
+
+    def init_configs(self, config_path: str):
+        self.config.read(config_path)
         self.__fernet = Fernet(self.config["DEFAULT"]["key"])
 
     def get_nexus_cred(self) -> (str, str):
-
         return (self.config["NEXUS"]["nexus_user"],
                 self.__fernet.decrypt(self.config["NEXUS"]["nexus_password"]).decode("utf-8"))
 
