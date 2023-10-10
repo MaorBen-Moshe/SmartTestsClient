@@ -1,5 +1,4 @@
 import responses
-import yaml
 
 from models.service_data import ServiceData
 from services.yaml_parser import YamlParserService
