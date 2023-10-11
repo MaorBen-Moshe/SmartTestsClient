@@ -1,3 +1,6 @@
+from __future__ import annotations
+
+from models.config_manager import ConfigManager
 from models.data_manager import DataManager
 from models.group_data import GroupData
 from services.html_parser import HtmlParserService
@@ -6,15 +9,16 @@ from steps.init_services_data_step import InitServiceMapStep
 
 
 class AnalyzeAppService:
-    def __init__(self, build_url: str, group_name: str):
+    def __init__(self, build_url: str | None, group_name: str | None):
         self.data_manager = DataManager()
         self.data_manager.set_curr_group(group_name)
         self.handle_group_data_step = HandleGroupsDataStep(self.data_manager.get_filter_for_curr_group())
         self.html_parser = HtmlParserService(build_url)
+        self.config_manager = ConfigManager()
 
     def analyze(self) -> dict[str, GroupData]:
         # load index yaml
-        self.data_manager.services_map = InitServiceMapStep.init_services_map()
+        self.data_manager.services_map = InitServiceMapStep.init_services_map(self.config_manager.get_index_data_urls())
 
         # load build report data
         self.html_parser.load_html(self.data_manager.services_map)

@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import requests
 
 from constants.constants import MS_POSTFIX
@@ -15,9 +17,9 @@ class SmartTestsClient:
         self.smart_tests_statistics_url = config.get_smart_tests_statistics_url()
 
     def analyze_flows(self,
-                      services_map: dict[str, ServiceData],
-                      filter_group: list[str],
-                      groups_data: dict[str, GroupData]):
+                      services_map: dict[str, ServiceData] | None,
+                      filter_group: list[str] | None,
+                      groups_data: dict[str, GroupData] | None):
         if services_map is not None:
             for service_key in services_map:
                 if services_map[service_key].old_version == services_map[service_key].new_version:
@@ -54,7 +56,7 @@ class SmartTestsClient:
         else:
             raise EmptyInputError("failed to fetch flows to analyze. no services found.")
 
-    def get_all_flows_by_filter(self, include_filter_list: list) -> dict[str, GroupData]:
+    def get_all_flows_by_filter(self, include_filter_list: list[str] | None) -> dict[str, GroupData]:
         groups_data = {}
         body = []
         include_filter = self.__create_filter_by_list(include_filter_list)
@@ -90,7 +92,7 @@ class SmartTestsClient:
         return groups_data
 
     @staticmethod
-    def __create_filter_by_list(values: list) -> str:
+    def __create_filter_by_list(values: list[str] | None) -> str:
         if values is None or len(values) == 0:
             return ""
 

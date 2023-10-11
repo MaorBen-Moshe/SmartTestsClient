@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import io
 import shutil
 import zipfile
@@ -13,7 +15,7 @@ from models.service_data import ServiceData, ServiceDataBuilder
 
 
 class HtmlParserService:
-    def __init__(self, html_zip_url: str):
+    def __init__(self, html_zip_url: str | None):
         self.table = None
         if html_zip_url is None:
             raise EmptyInputError("not provided file_name to load_html")
@@ -21,7 +23,7 @@ class HtmlParserService:
         self.html = self.__get_html_from_external(html_zip_url)
         self.soup = BeautifulSoup(self.html, "html.parser")
 
-    def load_html(self, services_map: dict[str, ServiceData]):
+    def load_html(self, services_map: dict[str, ServiceData] | None):
         self.table = self.__find_table()
         if self.table is not None:
             name_index, version_index = self.__find_indexes()
@@ -49,7 +51,7 @@ class HtmlParserService:
                 version_index = i
         return name_index, version_index
 
-    def __update_map(self, services_map: dict[str, ServiceData], name_index: int, version_index: int):
+    def __update_map(self, services_map: dict[str, ServiceData] | None, name_index: int, version_index: int):
         rows = self.table.find_all(TR)[2:]  # Skip the first and second rows
         for row in rows:
             cells = row.find_all(TD)
@@ -63,7 +65,7 @@ class HtmlParserService:
                         services_map[name] = ServiceDataBuilder().old_version(version).new_version(version).build()
 
     @staticmethod
-    def __get_html_from_external(html_zip_url: str):
+    def __get_html_from_external(html_zip_url: str | None):
         config = ConfigManager()
         user, password = config.get_jenkins_cred()
         html = None

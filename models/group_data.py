@@ -3,13 +3,16 @@ from __future__ import annotations
 
 class GroupData:
     def __init__(self):
-        self.group_name = None
-        self.group_path = None
+        self.group_name: str | None = None
+        self.group_path: str | None = None
         self.total_flows_count: int = 0
         self.curr_flows_count: int = 0
-        self.flows: list[str] = []
+        self.flows: list[str] | None = []
 
-    def add_flows(self, curr_flows: list[str]):
+    def add_flows(self, curr_flows: list[str] | None):
+        if curr_flows is None:
+            return
+
         filtered_flows = [curr_flow for curr_flow in curr_flows if curr_flow not in self.flows]
         self.flows.extend(filtered_flows)
         self.curr_flows_count += len(filtered_flows)
@@ -31,11 +34,11 @@ class GroupDataBuilder:
     def build(self) -> GroupData:
         return self.group_data
 
-    def group_name(self, group_name: str) -> GroupDataBuilder:
+    def group_name(self, group_name: str | None) -> GroupDataBuilder:
         self.group_data.group_name = group_name
         return self
 
-    def group_path(self, group_path: str) -> GroupDataBuilder:
+    def group_path(self, group_path: str | None) -> GroupDataBuilder:
         self.group_data.group_path = group_path
         return self
 
@@ -43,7 +46,7 @@ class GroupDataBuilder:
         self.group_data.total_flows_count = total_flows_count
         return self
 
-    def flows(self, flows: list[str]) -> GroupDataBuilder:
+    def flows(self, flows: list[str] | None) -> GroupDataBuilder:
         self.group_data.flows = flows
-        self.group_data.curr_flows_count = len(flows)
+        self.group_data.curr_flows_count = len(flows) if flows is not None else 0
         return self

@@ -1,14 +1,21 @@
+from __future__ import annotations
+
 from configparser import ConfigParser
 from cryptography.fernet import Fernet
+
+from exceptions.excpetions import ConfigurationError
 from models.singleton_meta import SingletonMeta
 
 
 class ConfigManager(metaclass=SingletonMeta):
     def __init__(self):
-        self.__fernet = None
+        self.__fernet: Fernet | None = None
         self.config = ConfigParser()
 
-    def init_configs(self, config_path: str):
+    def init_configs(self, config_path: str | None):
+        if config_path is None:
+            raise ConfigurationError("Failed to create configs file. path is None.")
+
         self.config.read(config_path)
         self.__fernet = Fernet(self.config["DEFAULT"]["key"])
 

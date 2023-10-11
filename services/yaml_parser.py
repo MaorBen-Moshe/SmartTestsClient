@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from distutils.version import LooseVersion
 
 import requests
@@ -13,7 +15,7 @@ class YamlParserService:
     def __init__(self):
         self.services_map: dict[str, ServiceData] = {}
 
-    def request_yaml_external(self, urls: list[str]) -> dict[str, ServiceData]:
+    def request_yaml_external(self, urls: list[str] | None) -> dict[str, ServiceData]:
         config = ConfigManager()
         user, password = config.get_nexus_cred()
 
@@ -25,11 +27,11 @@ class YamlParserService:
                 data = yaml.safe_load(response.content)
 
                 if data is not None:
-                    self.load_yaml(data.get("entries"))
+                    self.__load_yaml(data.get("entries"))
 
         return self.services_map
 
-    def load_yaml(self, entries):
+    def __load_yaml(self, entries):
         if entries is not None:
             for entry in entries:
                 try:
