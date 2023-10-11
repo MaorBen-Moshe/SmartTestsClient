@@ -29,11 +29,7 @@ class ConfigManager(metaclass=SingletonMeta):
 
     def get_index_data_urls(self) -> list[str]:
         data = self.config["NEXUS"]["index_data_urls"]
-        urls = []
-        if data is None:
-            return urls
-        else:
-            urls.extend([val.strip() for val in data.split(",")])
+        return [val.strip() for val in data.split(",")] if data is not None else []
 
     def get_smart_tests_all_url(self) -> str:
         return self.config["SMART_CLIENT"]["smart_tests_all"]
