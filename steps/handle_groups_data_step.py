@@ -6,7 +6,7 @@ from models.service_data import ServiceData
 
 
 class HandleGroupsDataStep:
-    def __init__(self, group_filter: list[str]):
+    def __init__(self, group_filter: list[str] | None):
         self.client = SmartTestsClient()
         self.group_filter = group_filter
 

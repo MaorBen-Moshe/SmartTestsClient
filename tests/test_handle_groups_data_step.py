@@ -3,23 +3,23 @@ import json
 import responses
 
 from constants.constants import GROUP4_XML
-from services.smart_test_client import SmartTestsClient
+from steps.handle_groups_data_step import HandleGroupsDataStep
 from tests.test_base import TestBase
 
 
 class TestHandleGroupsDataStep(TestBase):
     def setUp(self):
         super().setUp()
-        self.client = SmartTestsClient()
-        self.group_filter = GROUP4_XML
+        self.handle_groups_data_step = HandleGroupsDataStep(None)
 
     @responses.activate
     def test_init_groups_data_success(self):
-        path = self.client.smart_tests_all_url
+        path = self.handle_groups_data_step.client.smart_tests_all_url
         with open("resources/all_flows_res.json", mode="r") as f:
             responses.add(responses.POST, path, json=json.load(f), status=200)
 
-        groups_data = self.client.get_all_flows_by_filter(self.group_filter)
+        self.handle_groups_data_step.group_filter = GROUP4_XML
+        groups_data = self.handle_groups_data_step.init_groups_data()
 
         assert len(groups_data) == 2
 
@@ -41,11 +41,13 @@ class TestHandleGroupsDataStep(TestBase):
 
     @responses.activate
     def test_init_groups_data_emtpy_group_filter(self):
-        path = self.client.smart_tests_all_url
+        path = self.handle_groups_data_step.client.smart_tests_all_url
         with open("resources/all_flows_res.json", mode="r") as f:
             responses.add(responses.POST, path, json=json.load(f), status=200)
 
-        groups_data = self.client.get_all_flows_by_filter([])
+        self.handle_groups_data_step.group_filter = []
+
+        groups_data = self.handle_groups_data_step.init_groups_data()
 
         assert len(groups_data) == 3
 
