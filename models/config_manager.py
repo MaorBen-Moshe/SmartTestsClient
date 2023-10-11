@@ -20,5 +20,10 @@ class ConfigManager(metaclass=SingletonMeta):
         return (self.config["JENKINS"]["jenkins_user"],
                 self.__fernet.decrypt(self.config["JENKINS"]["jenkins_password"]).decode("utf-8"))
 
-    def get_helm_index_url(self) -> str:
-        return self.config["NEXUS"]["helm_index_url"]
+    def get_index_data_urls(self) -> list[str]:
+        data = self.config["NEXUS"]["index_data_urls"]
+        urls = []
+        if data is None:
+            return urls
+        else:
+            urls.extend([val.strip() for val in data.split(",")])

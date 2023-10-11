@@ -3,7 +3,7 @@ from flask import Flask, request, jsonify, make_response
 from appServices.analyze_app_service import AnalyzeAppService
 from constants.constants import SUPPORTED_GROUPS
 from models.config_manager import ConfigManager
-from steps.check_analyze_input import CheckAnalyzeClientInput
+from steps.check_analyze_input import CheckAnalyzeClientInputStep
 
 app = Flask(__name__)
 
@@ -17,7 +17,7 @@ def supported_groups():
 def analyze():
     try:
         req_data = request.get_json()
-        CheckAnalyzeClientInput.check_input(req_data)
+        CheckAnalyzeClientInputStep.check_input(req_data)
     except Exception as ex:
         return make_response(f"Error: {ex}", 400)
 

@@ -2,7 +2,7 @@ from constants.constants import SUPPORTED_GROUPS
 from exceptions.excpetions import BadRequest
 
 
-class CheckAnalyzeClientInput:
+class CheckAnalyzeClientInputStep:
 
     @staticmethod
     def check_input(req_data):

@@ -1,0 +1,25 @@
+apiVersion: v1
+entries:
+  productconfigurator:
+  - name: productconfigurator
+    description: Helm chart for productconfiguratory-ms
+    version: 0.66.115
+    created: 2023-07-27T11:13:45.805Z
+    digest: 3d766652edd938ce516bd9f3f87a7f8368bfccec8bfb4507f3eb5cb5e97f52a5
+    urls:
+    - productconfigurator-0.66.115.tgz
+  - name: productconfigurator
+    description: Helm chart for productconfiguratory-ms
+    version: 0.66.118
+    created: 2023-07-27T11:14:00.827Z
+    digest: 39362f81f5fceab8bed8bef4b9d3ddc38c995afe1065ea1cf1a617ee4d541112
+    urls:
+    - productconfigurator-0.66.118.tgz
+  - name: productconfigurator
+    description: Helm chart for productconfiguratory-ms
+    version: 0.66.111
+    created: 2023-07-27T11:14:09.062Z
+    digest: ba7033a6d1ad8a8c9d387cd334a31c8f2bf276164aa1c46e46ee603e3aa33ea8
+    urls:
+    - productconfigurator-0.66.111.tgz
+generated: 2023-10-10T05:37:23.340Z
