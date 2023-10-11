@@ -2,11 +2,17 @@ import requests
 
 from constants.constants import MS_POSTFIX
 from exceptions.excpetions import EmptyInputError
+from models.config_manager import ConfigManager
 from models.group_data import GroupData, GroupDataBuilder
 from models.service_data import ServiceData
 
 
 class SmartTestsClient:
+
+    def __init__(self):
+        config = ConfigManager()
+        self.smart_tests_all_url = config.get_smart_tests_all_url()
+        self.smart_tests_statistics_url = config.get_smart_tests_statistics_url()
 
     def analyze_flows(self,
                       services_map: dict[str, ServiceData],
@@ -32,8 +38,7 @@ class SmartTestsClient:
                 ]
 
                 with requests.post(
-                        url="https://amd-apigw-stack-service-oc-cd-ml-devops-light-tracer.apps.ilocpde529.ocpd.corp"
-                            ".amdocs.com/lightTracer/v1/smart-tests-statistics",
+                        url=self.smart_tests_statistics_url,
                         params={"queryType": "repo"},
                         json=body,
                         verify=False) as res:
@@ -58,31 +63,34 @@ class SmartTestsClient:
                 "includeFileGroupNamePattern": include_filter
             })
 
-        with requests.post(url="https://amd-apigw-stack-service-oc-cd-ml-devops-light-tracer.apps.ilocpde529.ocpd.corp"
-                               ".amdocs.com/lightTracer/v1/smart-tests-all",
+        with requests.post(url=self.smart_tests_all_url,
                            json=body,
                            verify=False) as res:
             res.raise_for_status()
             data = res.json()
 
         for curr_xml in data.get("smartTestsAllItem"):
-            split_name = curr_xml.get("name").rsplit('/', 1)
+            split_name = curr_xml.get("name", "").rsplit('/', 1)
             if len(split_name) == 2:
                 path = split_name[0]
                 name = split_name[1]
+            else:
+                name = split_name[0]
+                path = ""
 
-                total_count = curr_xml.get("flowsCount")
+            total_count = curr_xml.get("flowsCount")
 
-                if name.replace(".xml", "") in include_filter_list:
-                    groups_data[name] = (GroupDataBuilder()
-                                         .group_name(name)
-                                         .group_path(path)
-                                         .total_flows_count(total_count)
-                                         .build())
+            if len(include_filter_list) == 0 or name.replace(".xml", "") in include_filter_list:
+                groups_data[name] = (GroupDataBuilder()
+                                     .group_name(name)
+                                     .group_path(path)
+                                     .total_flows_count(total_count)
+                                     .build())
 
         return groups_data
 
-    def __create_filter_by_list(self, values: list) -> str:
+    @staticmethod
+    def __create_filter_by_list(values: list) -> str:
         if values is None or len(values) == 0:
             return ""
 

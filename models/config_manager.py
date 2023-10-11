@@ -27,3 +27,9 @@ class ConfigManager(metaclass=SingletonMeta):
             return urls
         else:
             urls.extend([val.strip() for val in data.split(",")])
+
+    def get_smart_tests_all_url(self) -> str:
+        return self.config["SMART_CLIENT"]["smart_tests_all"]
+
+    def get_smart_tests_statistics_url(self) -> str:
+        return self.config["SMART_CLIENT"]["smart_tests_statistics"]
