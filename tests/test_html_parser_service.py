@@ -1,5 +1,4 @@
 import mock
-import pytest
 
 from exceptions.excpetions import NotFoundError
 from models.service_data import ServiceData, ServiceDataBuilder
@@ -44,14 +43,9 @@ class TestHtmlParserService(TestBase):
         service = HtmlParserService("http://example.com/file.zip")
         services_map = {}
 
-        try:
-            service.load_html(services_map)
-        except NotFoundError as ex:
-            self.assertEqual(f"{ex}", 'error with build report structure. not found main deployment table')
-        except Exception as ex:
-            pytest.fail(f"Expected 'NotFoundError', but got: {ex}.")
-        else:
-            pytest.fail("Test passed even though the html does not contain 'main deployment table'.")
+        self.assert_exception(lambda: service.load_html(services_map),
+                              NotFoundError,
+                              'error with build report structure. not found main deployment table')
 
         self.assertEqual(len(services_map), 0)
 

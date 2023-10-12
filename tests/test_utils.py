@@ -17,7 +17,7 @@ class TestUtils(TestBase):
         def test(values, expected):
             result = Utils.create_filter_by_list(values)
 
-            assert result == expected
+            self.assertEqual(result, expected)
 
     def test_is_valid_url(self):
         @pytest.mark.parametrize("url, expected", [
@@ -34,4 +34,4 @@ class TestUtils(TestBase):
         def test(url, expected):
             result = Utils.is_valid_url(url)
 
-            assert result == expected
+            self.assertEqual(result, expected)

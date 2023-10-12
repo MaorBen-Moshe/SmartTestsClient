@@ -22,5 +22,5 @@ class TestSmartTestsClient(TestBase):
 
         groups_data = self.client.get_all_flows_stats(Utils.create_filter_by_list(GROUP4_XML))
 
-        assert len(groups_data) == 2
+        self.assertEqual(len(groups_data), 2)
         

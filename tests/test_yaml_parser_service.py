@@ -1,5 +1,4 @@
 import mock
-import pytest
 import yaml
 
 from exceptions.excpetions import EmptyInputError
@@ -17,13 +16,14 @@ class TestYamlParserService(TestBase):
 
     def tearDown(self):
         self.patcher.stop()
+        self.yaml_parser_service.services_map = {}
 
     def test_request_yaml_external_success(self):
         path = "http://test.com/index.yaml"
 
         services_map = self.yaml_parser_service.request_yaml_external([path])
 
-        assert len(services_map) == 10
+        self.assertEqual(len(services_map), 10)
         self.assert_services_map_entry(services_map.get("productconfigurator-qualification"),
                                        '0.67.9',
                                        '0.67.9')
@@ -56,28 +56,26 @@ class TestYamlParserService(TestBase):
                                        '0.67.14',
                                        '0.67.14')
 
-        self.yaml_parser_service.services_map = {}
-
     def test_request_yaml_external_input_without_filtered_entries(self):
         path = "http://test2.com/index.yaml"
 
         services_map = self.yaml_parser_service.request_yaml_external([path])
 
-        assert len(services_map) == 0
+        self.assertEqual(len(services_map), 0)
 
     def test_request_yaml_external_yaml_without_entries(self):
         path = "http://test4.com/index.yaml"
 
         services_map = self.yaml_parser_service.request_yaml_external([path])
 
-        assert len(services_map) == 0
+        self.assertEqual(len(services_map), 0)
 
     def test_request_yaml_external_empty_body(self):
         path = "http://test5.com/index.yaml"
 
         services_map = self.yaml_parser_service.request_yaml_external([path])
 
-        assert len(services_map) == 0
+        self.assertEqual(len(services_map), 0)
 
     def test_init_services_map_success_2_paths(self):
         path = "http://test.com/index.yaml"
@@ -85,7 +83,7 @@ class TestYamlParserService(TestBase):
 
         services_map = self.yaml_parser_service.request_yaml_external([path, path2])
 
-        assert len(services_map) == 10
+        self.assertEqual(len(services_map), 10)
         self.assert_services_map_entry(services_map.get("productconfigurator-qualification"),
                                        '0.67.9',
                                        '0.67.9')
@@ -124,7 +122,7 @@ class TestYamlParserService(TestBase):
 
         services_map = self.yaml_parser_service.request_yaml_external([path, path2])
 
-        assert len(services_map) == 10
+        self.assertEqual(len(services_map), 10)
         self.assert_services_map_entry(services_map.get("productconfigurator-qualification"),
                                        '0.67.9',
                                        '0.67.9')
@@ -160,18 +158,12 @@ class TestYamlParserService(TestBase):
     def test_request_yaml_external_empty_input(self):
         services_map = self.yaml_parser_service.request_yaml_external([])
 
-        assert len(services_map) == 0
+        self.assertEqual(len(services_map), 0)
 
     def test_request_yaml_external_none_input(self):
-        try:
-            services_map = self.yaml_parser_service.request_yaml_external(None)
-        except EmptyInputError:
-            assert True
-        except Exception as ex:
-            pytest.fail(f"Error: {ex}")
-        else:
-            pytest.fail(f"Error: request_yaml_external finished with value: {services_map},"
-                        f" even though the input was None")
+        self.assert_exception(lambda: self.yaml_parser_service.request_yaml_external(None),
+                              EmptyInputError,
+                              "Provided to 'request_yaml_external' None urls list")
 
     @staticmethod
     def __mock_ret_values(*args, **kwargs):

@@ -21,23 +21,23 @@ class TestHandleGroupsDataStep(TestBase):
 
         groups_data = self.smart_test_analyze_service.get_all_flows_by_filter(GROUP4_XML)
 
-        assert len(groups_data) == 2
+        self.assertEqual(len(groups_data), 2)
 
-        assert "mat_APIGW_testng.xml" in groups_data
+        self.assertIn("mat_APIGW_testng.xml", groups_data)
         mat_groups_data = groups_data.get("mat_APIGW_testng.xml")
         self.assert_group_data(mat_groups_data,
                                'mat_APIGW_testng.xml',
                                'com/amdocs/core/oc/testng',
                                12)
 
-        assert "extended_mat_7b_APIGW_testng.xml" in groups_data
+        self.assertIn("extended_mat_7b_APIGW_testng.xml", groups_data)
         b2b_groups_data = groups_data.get("extended_mat_7b_APIGW_testng.xml")
         self.assert_group_data(b2b_groups_data,
                                'extended_mat_7b_APIGW_testng.xml',
                                'com/amdocs/core/oc/testng',
                                45)
 
-        assert 'unknown-group' not in groups_data
+        self.assertNotIn('unknown-group', groups_data)
 
     @responses.activate
     def test_get_all_flows_by_filter_emtpy_group_filter(self):
@@ -47,23 +47,23 @@ class TestHandleGroupsDataStep(TestBase):
 
         groups_data = self.smart_test_analyze_service.get_all_flows_by_filter([])
 
-        assert len(groups_data) == 3
+        self.assertEqual(len(groups_data), 3)
 
-        assert "mat_APIGW_testng.xml" in groups_data
+        self.assertIn("mat_APIGW_testng.xml", groups_data)
         mat_groups_data = groups_data.get("mat_APIGW_testng.xml")
         self.assert_group_data(mat_groups_data,
                                'mat_APIGW_testng.xml',
                                'com/amdocs/core/oc/testng',
                                12)
 
-        assert "extended_mat_7b_APIGW_testng.xml" in groups_data
+        self.assertIn("extended_mat_7b_APIGW_testng.xml", groups_data)
         b2b_groups_data = groups_data.get("extended_mat_7b_APIGW_testng.xml")
         self.assert_group_data(b2b_groups_data,
                                'extended_mat_7b_APIGW_testng.xml',
                                'com/amdocs/core/oc/testng',
                                45)
 
-        assert 'unknown-group' in groups_data
+        self.assertIn('unknown-group', groups_data)
         unknown_groups_data = groups_data.get("unknown-group")
         self.assert_group_data(unknown_groups_data,
                                'unknown-group',

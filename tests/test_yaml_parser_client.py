@@ -1,4 +1,3 @@
-import pytest
 import responses
 
 from clients.yaml_parser_client import YamlParserClient
@@ -19,24 +18,18 @@ class TestYamlParserClient(TestBase):
 
         data = self.client.get_yaml(path)
 
-        assert type(data) is dict
-        assert len(data) == 3
-        assert "entries" in data
+        self.assertIsInstance(data, dict)
+        self.assertEqual(len(data), 3)
+        self.assertTrue("entries" in data)
 
     def test_get_yaml_wrong_url(self):
         path = "not_valid_url"
 
-        try:
-            data = self.client.get_yaml(path)
-        except URLError as ex:
-            assert f"{ex}" == "Yaml url: 'not_valid_url' is not valid."
-        else:
-            pytest.fail("client.get_yaml passed with not valid url.")
+        self.assert_exception(lambda: self.client.get_yaml(path),
+                              URLError,
+                              "Yaml url: 'not_valid_url' is not valid.")
 
     def test_get_yaml_none_url(self):
-        try:
-            data = self.client.get_yaml(None)
-        except URLError as ex:
-            assert f"{ex}" == "Yaml url: 'None' is not valid."
-        else:
-            pytest.fail("client.get_yaml passed with None url.")
+        self.assert_exception(lambda: self.client.get_yaml(None),
+                              URLError,
+                              "Yaml url: 'None' is not valid.")
