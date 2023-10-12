@@ -1,5 +1,6 @@
+import mock
 import pytest
-import responses
+import yaml
 
 from exceptions.excpetions import EmptyInputError
 from services.yaml_parser_service import YamlParserService
@@ -10,12 +11,15 @@ class TestYamlParserService(TestBase):
     def setUp(self):
         super().setUp()
         self.yaml_parser_service = YamlParserService()
+        self.patcher = mock.patch("clients.yaml_parser_client.YamlParserClient.get_yaml")
+        self.mock_get_yaml = self.patcher.start()
+        self.mock_get_yaml.side_effect = self.__mock_ret_values
 
-    @responses.activate
+    def tearDown(self):
+        self.patcher.stop()
+
     def test_request_yaml_external_success(self):
         path = "http://test.com/index.yaml"
-        with open("resources/index.yaml", mode="r") as f:
-            responses.add(responses.GET, path, body=f.read(), status=200)
 
         services_map = self.yaml_parser_service.request_yaml_external([path])
 
@@ -54,44 +58,30 @@ class TestYamlParserService(TestBase):
 
         self.yaml_parser_service.services_map = {}
 
-    @responses.activate
     def test_request_yaml_external_input_without_filtered_entries(self):
-        path = "http://test.com/index.yaml"
-        with open("resources/index_without_filtered.yaml", mode="r") as f:
-            responses.add(responses.GET, path, body=f.read(), status=200)
+        path = "http://test2.com/index.yaml"
 
         services_map = self.yaml_parser_service.request_yaml_external([path])
 
         assert len(services_map) == 0
 
-    @responses.activate
     def test_request_yaml_external_yaml_without_entries(self):
-        path = "http://test.com/index.yaml"
-        with open("resources/index_without_entries.yaml", mode="r") as f:
-            responses.add(responses.GET, path, body=f.read(), status=200)
+        path = "http://test4.com/index.yaml"
 
         services_map = self.yaml_parser_service.request_yaml_external([path])
 
         assert len(services_map) == 0
 
-    @responses.activate
     def test_request_yaml_external_empty_body(self):
-        path = "http://test.com/index.yaml"
-        responses.add(responses.GET, path, body="", status=200)
+        path = "http://test5.com/index.yaml"
 
         services_map = self.yaml_parser_service.request_yaml_external([path])
 
         assert len(services_map) == 0
 
-    @responses.activate
     def test_init_services_map_success_2_paths(self):
         path = "http://test.com/index.yaml"
-        with open("resources/index.yaml", mode="r") as f:
-            responses.add(responses.GET, path, body=f.read(), status=200)
-
         path2 = "http://test2.com/index.yaml"
-        with open("resources/index_without_filtered.yaml", mode="r") as f:
-            responses.add(responses.GET, path2, body=f.read(), status=200)
 
         services_map = self.yaml_parser_service.request_yaml_external([path, path2])
 
@@ -128,15 +118,9 @@ class TestYamlParserService(TestBase):
                                        '0.67.14',
                                        '0.67.14')
 
-    @responses.activate
     def test_init_services_map_success_2_paths_have_common_entries(self):
         path = "http://test.com/index.yaml"
-        with open("resources/index.yaml", mode="r") as f:
-            responses.add(responses.GET, path, body=f.read(), status=200)
-
-        path2 = "http://test2.com/index.yaml"
-        with open("resources/index_with_configurator_only.yaml", mode="r") as f:
-            responses.add(responses.GET, path2, body=f.read(), status=200)
+        path2 = "http://test3.com/index.yaml"
 
         services_map = self.yaml_parser_service.request_yaml_external([path, path2])
 
@@ -178,7 +162,6 @@ class TestYamlParserService(TestBase):
 
         assert len(services_map) == 0
 
-    @responses.activate
     def test_request_yaml_external_none_input(self):
         try:
             services_map = self.yaml_parser_service.request_yaml_external(None)
@@ -189,3 +172,20 @@ class TestYamlParserService(TestBase):
         else:
             pytest.fail(f"Error: request_yaml_external finished with value: {services_map},"
                         f" even though the input was None")
+
+    @staticmethod
+    def __mock_ret_values(*args, **kwargs):
+        if args[0] == "http://test.com/index.yaml":
+            with open("resources/index.yaml", mode="r") as f:
+                return yaml.safe_load(f.read())
+        elif args[0] == "http://test2.com/index.yaml":
+            with open("resources/index_without_filtered.yaml", mode="r") as f:
+                return yaml.safe_load(f.read())
+        elif args[0] == "http://test3.com/index.yaml":
+            with open("resources/index_with_configurator_only.yaml", mode="r") as f:
+                return yaml.safe_load(f.read())
+        elif args[0] == "http://test4.com/index.yaml":
+            with open("resources/index_without_entries.yaml", mode="r") as f:
+                return yaml.safe_load(f.read())
+        else:
+            return None
