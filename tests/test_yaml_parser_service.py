@@ -66,7 +66,7 @@ class TestYamlParserService(TestBase):
 
     @responses.activate
     def test_request_yaml_external_yaml_without_entries(self):
-        path = "http://test.com/yaml"
+        path = "http://test.com/index.yaml"
         with open("resources/index_without_entries.yaml", mode="r") as f:
             responses.add(responses.GET, path, body=f.read(), status=200)
 
@@ -76,7 +76,7 @@ class TestYamlParserService(TestBase):
 
     @responses.activate
     def test_request_yaml_external_empty_body(self):
-        path = "http://test.com/yaml"
+        path = "http://test.com/index.yaml"
         responses.add(responses.GET, path, body="", status=200)
 
         services_map = self.yaml_parser_service.request_yaml_external([path])
@@ -85,7 +85,7 @@ class TestYamlParserService(TestBase):
 
     @responses.activate
     def test_init_services_map_success_2_paths(self):
-        path = "http://test.com/yaml"
+        path = "http://test.com/index.yaml"
         with open("resources/index.yaml", mode="r") as f:
             responses.add(responses.GET, path, body=f.read(), status=200)
 
@@ -130,7 +130,7 @@ class TestYamlParserService(TestBase):
 
     @responses.activate
     def test_init_services_map_success_2_paths_have_common_entries(self):
-        path = "http://test.com/yaml"
+        path = "http://test.com/index.yaml"
         with open("resources/index.yaml", mode="r") as f:
             responses.add(responses.GET, path, body=f.read(), status=200)
 

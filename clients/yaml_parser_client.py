@@ -1,12 +1,12 @@
 from __future__ import annotations
 
 import requests
-import validators
 import yaml
 from requests.auth import HTTPBasicAuth
 
 from exceptions.excpetions import URLError
 from models.config_manager import ConfigManager
+from utils.utils import Utils
 
 
 class YamlParserClient:
@@ -17,7 +17,7 @@ class YamlParserClient:
         self.password_cred = password
 
     def get_yaml(self, yaml_url: str | None):
-        if not validators.url(yaml_url):
+        if not Utils.is_valid_url(yaml_url):
             raise URLError(f"Yaml url: '{yaml_url}' is not valid.")
 
         with requests.get(yaml_url,

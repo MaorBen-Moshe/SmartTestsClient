@@ -5,17 +5,17 @@ import shutil
 import zipfile
 
 import requests
-import validators
 from requests.auth import HTTPBasicAuth
 
 from exceptions.excpetions import URLError
 from models.config_manager import ConfigManager
+from utils.utils import Utils
 
 
 class HtmlParserClient:
     @staticmethod
     def get_html(build_url: str | None):
-        if not validators.url(build_url):
+        if not Utils.is_valid_url(build_url):
             raise URLError(f"Build report url: '{build_url}' is not valid.")
 
         config = ConfigManager()
