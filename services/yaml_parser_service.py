@@ -6,7 +6,9 @@ import requests
 import yaml
 from requests.auth import HTTPBasicAuth
 
+from clients.yaml_parser_client import YamlParserClient
 from constants.constants import *
+from exceptions.excpetions import EmptyInputError
 from models.config_manager import ConfigManager
 from models.service_data import ServiceData, ServiceDataBuilder
 
@@ -14,20 +16,17 @@ from models.service_data import ServiceData, ServiceDataBuilder
 class YamlParserService:
     def __init__(self):
         self.services_map: dict[str, ServiceData] = {}
+        self.yaml_parser_client = YamlParserClient()
 
     def request_yaml_external(self, urls: list[str] | None) -> dict[str, ServiceData]:
-        config = ConfigManager()
-        user, password = config.get_nexus_cred()
+        if urls is None:
+            raise EmptyInputError("Provided to 'request_yaml_external' None urls list")
 
         for url in urls:
-            with requests.get(url,
-                              auth=HTTPBasicAuth(user, password),
-                              stream=True) as response:
-                response.raise_for_status()
-                data = yaml.safe_load(response.content)
+            data = self.yaml_parser_client.get_yaml(url)
 
-                if data is not None:
-                    self.__load_yaml(data.get("entries"))
+            if data is not None:
+                self.__load_yaml(data.get("entries"))
 
         return self.services_map
 

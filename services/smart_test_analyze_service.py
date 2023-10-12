@@ -1,51 +1,31 @@
 from __future__ import annotations
 
-import requests
-
-from constants.constants import MS_POSTFIX
+from clients.smart_tests_client import SmartTestsClient
 from exceptions.excpetions import EmptyInputError
-from models.config_manager import ConfigManager
 from models.group_data import GroupData, GroupDataBuilder
 from models.service_data import ServiceData
+from utils.utils import Utils
 
 
-class SmartTestsClient:
+class SmartTestsAnalyzeService:
 
     def __init__(self):
-        config = ConfigManager()
-        self.smart_tests_all_url = config.get_smart_tests_all_url()
-        self.smart_tests_statistics_url = config.get_smart_tests_statistics_url()
+        self.client = SmartTestsClient()
 
     def analyze_flows(self,
                       services_map: dict[str, ServiceData] | None,
                       filter_group: list[str] | None,
                       groups_data: dict[str, GroupData] | None):
         if services_map is not None:
+            include_groups_filter = Utils.create_filter_by_list(filter_group)
             for service_key in services_map:
                 if services_map[service_key].old_version == services_map[service_key].new_version:
                     continue
 
-                body = [
-                    {
-                        "infoLevel": "info",
-                        "restrictions": [
-                            "repo_exclude_config"
-                        ],
-                        "project": "DIGOC",
-                        "repo": f"{service_key}{MS_POSTFIX}",
-                        "to": services_map.get(service_key).old_version,
-                        "from": services_map.get(service_key).new_version,
-                        "includeFileGroupNamePattern": self.__create_filter_by_list(filter_group)
-                    }
-                ]
-
-                with requests.post(
-                        url=self.smart_tests_statistics_url,
-                        params={"queryType": "repo"},
-                        json=body,
-                        verify=False) as res:
-                    res.raise_for_status()
-                    res_json = res.json()
+                res_json = self.client.analyze_flows(service_key,
+                                                     services_map.get(service_key).old_version,
+                                                     services_map.get(service_key).new_version,
+                                                     include_groups_filter)
 
                 if int(res_json.get("flowsCount")) > 0:
                     groups = res_json.get("flowsByGroupName")
@@ -58,18 +38,9 @@ class SmartTestsClient:
 
     def get_all_flows_by_filter(self, include_filter_list: list[str] | None) -> dict[str, GroupData]:
         groups_data = {}
-        body = []
-        include_filter = self.__create_filter_by_list(include_filter_list)
-        if include_filter:
-            body.append({
-                "includeFileGroupNamePattern": include_filter
-            })
+        include_groups_filter = Utils.create_filter_by_list(include_filter_list)
 
-        with requests.post(url=self.smart_tests_all_url,
-                           json=body,
-                           verify=False) as res:
-            res.raise_for_status()
-            data = res.json()
+        data = self.client.get_all_flows_stats(include_groups_filter)
 
         for curr_xml in data.get("smartTestsAllItem"):
             split_name = curr_xml.get("name", "").rsplit('/', 1)
@@ -90,11 +61,3 @@ class SmartTestsClient:
                                      .build())
 
         return groups_data
-
-    @staticmethod
-    def __create_filter_by_list(values: list[str] | None) -> str:
-        if values is None or len(values) == 0:
-            return ""
-
-        values = [f".*{value}.*" for value in values]
-        return "|".join(values)

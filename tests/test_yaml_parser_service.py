@@ -1,18 +1,23 @@
+import pytest
 import responses
 
+from exceptions.excpetions import EmptyInputError
+from services.yaml_parser_service import YamlParserService
 from tests.test_base import TestBase
-from steps.init_services_data_step import InitServiceMapStep
 
 
-class TestInitServicesMapStep(TestBase):
+class TestYamlParserService(TestBase):
+    def setUp(self):
+        super().setUp()
+        self.yaml_parser_service = YamlParserService()
 
     @responses.activate
-    def test_init_services_map_success(self):
+    def test_request_yaml_external_success(self):
         path = "http://test.com/yaml"
         with open("resources/index.yaml", mode="r") as f:
             responses.add(responses.GET, path, body=f.read(), status=200)
 
-        services_map = InitServiceMapStep.init_services_map([path])
+        services_map = self.yaml_parser_service.request_yaml_external([path])
 
         assert len(services_map) == 10
         self.assert_services_map_entry(services_map.get("productconfigurator-qualification"),
@@ -47,6 +52,37 @@ class TestInitServicesMapStep(TestBase):
                                        '0.67.14',
                                        '0.67.14')
 
+        self.yaml_parser_service.services_map = {}
+
+    @responses.activate
+    def test_request_yaml_external_input_without_filtered_entries(self):
+        path = "http://test.com/yaml"
+        with open("resources/index_without_filtered.yaml", mode="r") as f:
+            responses.add(responses.GET, path, body=f.read(), status=200)
+
+        services_map = self.yaml_parser_service.request_yaml_external([path])
+
+        assert len(services_map) == 0
+
+    @responses.activate
+    def test_request_yaml_external_yaml_without_entries(self):
+        path = "http://test.com/yaml"
+        with open("resources/index_without_entries.yaml", mode="r") as f:
+            responses.add(responses.GET, path, body=f.read(), status=200)
+
+        services_map = self.yaml_parser_service.request_yaml_external([path])
+
+        assert len(services_map) == 0
+
+    @responses.activate
+    def test_request_yaml_external_empty_body(self):
+        path = "http://test.com/yaml"
+        responses.add(responses.GET, path, body="", status=200)
+
+        services_map = self.yaml_parser_service.request_yaml_external([path])
+
+        assert len(services_map) == 0
+
     @responses.activate
     def test_init_services_map_success_2_paths(self):
         path = "http://test.com/yaml"
@@ -57,7 +93,7 @@ class TestInitServicesMapStep(TestBase):
         with open("resources/index_without_filtered.yaml", mode="r") as f:
             responses.add(responses.GET, path2, body=f.read(), status=200)
 
-        services_map = InitServiceMapStep.init_services_map([path, path2])
+        services_map = self.yaml_parser_service.request_yaml_external([path, path2])
 
         assert len(services_map) == 10
         self.assert_services_map_entry(services_map.get("productconfigurator-qualification"),
@@ -102,7 +138,7 @@ class TestInitServicesMapStep(TestBase):
         with open("resources/index_with_configurator_only.yaml", mode="r") as f:
             responses.add(responses.GET, path2, body=f.read(), status=200)
 
-        services_map = InitServiceMapStep.init_services_map([path, path2])
+        services_map = self.yaml_parser_service.request_yaml_external([path, path2])
 
         assert len(services_map) == 10
         self.assert_services_map_entry(services_map.get("productconfigurator-qualification"),
@@ -137,7 +173,19 @@ class TestInitServicesMapStep(TestBase):
                                        '0.66.118',
                                        '0.66.118')
 
-    def test_init_services_map_success_empty_paths_list(self):
-        services_map = InitServiceMapStep.init_services_map([])
+    def test_request_yaml_external_empty_input(self):
+        services_map = self.yaml_parser_service.request_yaml_external([])
 
         assert len(services_map) == 0
+
+    @responses.activate
+    def test_request_yaml_external_none_input(self):
+        try:
+            services_map = self.yaml_parser_service.request_yaml_external(None)
+        except EmptyInputError:
+            assert True
+        except Exception as ex:
+            pytest.fail(f"Error: {ex}")
+        else:
+            pytest.fail(f"Error: request_yaml_external finished with value: {services_map},"
+                        f" even though the input was None")

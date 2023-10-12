@@ -25,3 +25,8 @@ class EmptyInputError(SmartClientBaseException):
 class ConfigurationError(SmartClientBaseException):
     def __init__(self, message: str | None):
         super().__init__(message, 500)
+
+
+class URLError(SmartClientBaseException):
+    def __init__(self, message: str | None):
+        super().__init__(message, 500)

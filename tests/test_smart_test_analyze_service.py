@@ -1,25 +1,25 @@
 import json
 
+import pytest
 import responses
 
 from constants.constants import GROUP4_XML
-from steps.handle_groups_data_step import HandleGroupsDataStep
+from services.smart_test_analyze_service import SmartTestsAnalyzeService
 from tests.test_base import TestBase
 
 
 class TestHandleGroupsDataStep(TestBase):
     def setUp(self):
         super().setUp()
-        self.handle_groups_data_step = HandleGroupsDataStep(None)
+        self.smart_test_analyze_service = SmartTestsAnalyzeService()
 
     @responses.activate
-    def test_init_groups_data_success(self):
-        path = self.handle_groups_data_step.client.smart_tests_all_url
+    def test_get_all_flows_by_filter_success(self):
+        path = self.smart_test_analyze_service.client.smart_tests_all_url
         with open("resources/all_flows_res.json", mode="r") as f:
             responses.add(responses.POST, path, json=json.load(f), status=200)
 
-        self.handle_groups_data_step.group_filter = GROUP4_XML
-        groups_data = self.handle_groups_data_step.init_groups_data()
+        groups_data = self.smart_test_analyze_service.get_all_flows_by_filter(GROUP4_XML)
 
         assert len(groups_data) == 2
 
@@ -40,14 +40,12 @@ class TestHandleGroupsDataStep(TestBase):
         assert 'unknown-group' not in groups_data
 
     @responses.activate
-    def test_init_groups_data_emtpy_group_filter(self):
-        path = self.handle_groups_data_step.client.smart_tests_all_url
+    def test_get_all_flows_by_filter_emtpy_group_filter(self):
+        path = self.smart_test_analyze_service.client.smart_tests_all_url
         with open("resources/all_flows_res.json", mode="r") as f:
             responses.add(responses.POST, path, json=json.load(f), status=200)
 
-        self.handle_groups_data_step.group_filter = []
-
-        groups_data = self.handle_groups_data_step.init_groups_data()
+        groups_data = self.smart_test_analyze_service.get_all_flows_by_filter([])
 
         assert len(groups_data) == 3
 
@@ -71,3 +69,19 @@ class TestHandleGroupsDataStep(TestBase):
                                'unknown-group',
                                '',
                                655)
+
+    @pytest.mark.skip(reason="need to implement")
+    def test_analyze_flows_success(self):
+        pass
+
+    @pytest.mark.skip(reason="need to implement")
+    def test_analyze_flows_no_services_map(self):
+        pass
+
+    @pytest.mark.skip(reason="need to implement")
+    def test_analyze_flows_no_groups_data(self):
+        pass
+
+    @pytest.mark.skip(reason="need to implement")
+    def test_analyze_flows_empty_input(self):
+        pass

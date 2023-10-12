@@ -1,26 +1,17 @@
 from __future__ import annotations
 
-import io
-import shutil
-import zipfile
-
-import requests
 from bs4 import BeautifulSoup
-from requests.auth import HTTPBasicAuth
 
+from clients.html_parser_client import HtmlParserClient
 from constants.constants import *
-from exceptions.excpetions import EmptyInputError, NotFoundError
-from models.config_manager import ConfigManager
+from exceptions.excpetions import NotFoundError
 from models.service_data import ServiceData, ServiceDataBuilder
 
 
 class HtmlParserService:
     def __init__(self, html_zip_url: str | None):
         self.table = None
-        if html_zip_url is None:
-            raise EmptyInputError("not provided file_name to load_html")
-
-        self.html = self.__get_html_from_external(html_zip_url)
+        self.html = HtmlParserClient.get_html(html_zip_url)
         self.soup = BeautifulSoup(self.html, "html.parser")
 
     def load_html(self, services_map: dict[str, ServiceData] | None):
@@ -63,28 +54,3 @@ class HtmlParserService:
                         services_map[name].old_version = version
                     else:
                         services_map[name] = ServiceDataBuilder().old_version(version).new_version(version).build()
-
-    @staticmethod
-    def __get_html_from_external(html_zip_url: str | None):
-        config = ConfigManager()
-        user, password = config.get_jenkins_cred()
-        html = None
-        with (requests.get(url=html_zip_url,
-                           auth=HTTPBasicAuth(user, password))
-              as res):
-            res.raise_for_status()
-            z = zipfile.ZipFile(io.BytesIO(res.content))
-
-            z.extractall("./")
-        try:
-            with open("./BuildReport/build_report.html", mode="r") as f:
-                html = f.read()
-
-        except Exception as ex:
-            print(f"Error getting html from {html_zip_url}, with error: {ex}")
-            html = None
-            raise ex
-
-        finally:
-            shutil.rmtree("./BuildReport", ignore_errors=True)
-            return html

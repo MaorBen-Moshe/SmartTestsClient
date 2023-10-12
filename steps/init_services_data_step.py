@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from models.service_data import ServiceData
-from services.yaml_parser import YamlParserService
+from services.yaml_parser_service import YamlParserService
 
 
 class InitServiceMapStep:
