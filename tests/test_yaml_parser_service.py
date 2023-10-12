@@ -13,7 +13,7 @@ class TestYamlParserService(TestBase):
 
     @responses.activate
     def test_request_yaml_external_success(self):
-        path = "http://test.com/yaml"
+        path = "http://test.com/index.yaml"
         with open("resources/index.yaml", mode="r") as f:
             responses.add(responses.GET, path, body=f.read(), status=200)
 
@@ -56,7 +56,7 @@ class TestYamlParserService(TestBase):
 
     @responses.activate
     def test_request_yaml_external_input_without_filtered_entries(self):
-        path = "http://test.com/yaml"
+        path = "http://test.com/index.yaml"
         with open("resources/index_without_filtered.yaml", mode="r") as f:
             responses.add(responses.GET, path, body=f.read(), status=200)
 
@@ -89,7 +89,7 @@ class TestYamlParserService(TestBase):
         with open("resources/index.yaml", mode="r") as f:
             responses.add(responses.GET, path, body=f.read(), status=200)
 
-        path2 = "http://test2.com/yaml"
+        path2 = "http://test2.com/index.yaml"
         with open("resources/index_without_filtered.yaml", mode="r") as f:
             responses.add(responses.GET, path2, body=f.read(), status=200)
 
@@ -134,7 +134,7 @@ class TestYamlParserService(TestBase):
         with open("resources/index.yaml", mode="r") as f:
             responses.add(responses.GET, path, body=f.read(), status=200)
 
-        path2 = "http://test2.com/yaml"
+        path2 = "http://test2.com/index.yaml"
         with open("resources/index_with_configurator_only.yaml", mode="r") as f:
             responses.add(responses.GET, path2, body=f.read(), status=200)
 

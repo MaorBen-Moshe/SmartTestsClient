@@ -13,7 +13,7 @@ class TestYamlParserClient(TestBase):
 
     @responses.activate
     def test_get_yaml_success(self):
-        path = "http://test.com/yaml"
+        path = "http://test.com/index.yaml"
         with open("resources/index.yaml", mode="r") as f:
             responses.add(responses.GET, path, body=f.read(), status=200)
 
