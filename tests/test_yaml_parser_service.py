@@ -23,6 +23,7 @@ class TestYamlParserService(TestBase):
 
         services_map = self.yaml_parser_service.request_yaml_external([path])
 
+        self.mock_get_yaml.assert_called()
         self.assertEqual(len(services_map), 10)
         self.assert_services_map_entry(services_map.get("productconfigurator-qualification"),
                                        '0.67.9',
@@ -61,6 +62,7 @@ class TestYamlParserService(TestBase):
 
         services_map = self.yaml_parser_service.request_yaml_external([path])
 
+        self.mock_get_yaml.assert_called()
         self.assertEqual(len(services_map), 0)
 
     def test_request_yaml_external_yaml_without_entries(self):
@@ -68,6 +70,7 @@ class TestYamlParserService(TestBase):
 
         services_map = self.yaml_parser_service.request_yaml_external([path])
 
+        self.mock_get_yaml.assert_called()
         self.assertEqual(len(services_map), 0)
 
     def test_request_yaml_external_empty_body(self):
@@ -75,6 +78,7 @@ class TestYamlParserService(TestBase):
 
         services_map = self.yaml_parser_service.request_yaml_external([path])
 
+        self.mock_get_yaml.assert_called()
         self.assertEqual(len(services_map), 0)
 
     def test_init_services_map_success_2_paths(self):
@@ -83,6 +87,7 @@ class TestYamlParserService(TestBase):
 
         services_map = self.yaml_parser_service.request_yaml_external([path, path2])
 
+        self.assertEqual(self.mock_get_yaml.call_count, 2)
         self.assertEqual(len(services_map), 10)
         self.assert_services_map_entry(services_map.get("productconfigurator-qualification"),
                                        '0.67.9',
@@ -122,6 +127,7 @@ class TestYamlParserService(TestBase):
 
         services_map = self.yaml_parser_service.request_yaml_external([path, path2])
 
+        self.assertEqual(self.mock_get_yaml.call_count, 2)
         self.assertEqual(len(services_map), 10)
         self.assert_services_map_entry(services_map.get("productconfigurator-qualification"),
                                        '0.67.9',
@@ -158,12 +164,15 @@ class TestYamlParserService(TestBase):
     def test_request_yaml_external_empty_input(self):
         services_map = self.yaml_parser_service.request_yaml_external([])
 
+        self.mock_get_yaml.assert_not_called()
         self.assertEqual(len(services_map), 0)
 
     def test_request_yaml_external_none_input(self):
         self.assert_exception(lambda: self.yaml_parser_service.request_yaml_external(None),
                               EmptyInputError,
                               "Provided to 'request_yaml_external' None urls list")
+
+        self.mock_get_yaml.assert_not_called()
 
     @staticmethod
     def __mock_ret_values(*args, **kwargs):

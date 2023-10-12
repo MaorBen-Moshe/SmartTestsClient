@@ -25,6 +25,7 @@ class TestHtmlParserService(TestBase):
 
         service.load_html(services_map)
 
+        self.mock_get_html.assert_called()
         self.assertEqual(len(services_map), 10)
         self.__assert_entry(services_map, "productconfigurator-action", '0.67.8', '0.67.8')
         self.__assert_entry(services_map, "productconfigurator-price", '0.67.15', '0.67.15')
@@ -47,6 +48,7 @@ class TestHtmlParserService(TestBase):
                               NotFoundError,
                               'error with build report structure. not found main deployment table')
 
+        self.mock_get_html.assert_called()
         self.assertEqual(len(services_map), 0)
 
     def test_load_html_services_map_contains_common_entry(self):
@@ -62,6 +64,7 @@ class TestHtmlParserService(TestBase):
 
         service.load_html(services_map)
 
+        self.mock_get_html.assert_called()
         self.assertEqual(len(services_map), 10)
         self.__assert_entry(services_map, "productconfigurator-action", '0.67.8', '0.67.9')
         self.__assert_entry(services_map, "productconfigurator-price", '0.67.15', '0.67.15')

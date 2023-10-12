@@ -16,7 +16,7 @@ class SmartTestsAnalyzeService:
                       services_map: dict[str, ServiceData] | None,
                       filter_group: list[str] | None,
                       groups_data: dict[str, GroupData] | None):
-        if services_map is not None:
+        if services_map is not None and groups_data is not None:
             include_groups_filter = Utils.create_filter_by_list(filter_group)
             for service_key in services_map:
                 if services_map[service_key].old_version == services_map[service_key].new_version:
@@ -34,7 +34,7 @@ class SmartTestsAnalyzeService:
                         if group_name in groups_data:
                             groups_data.get(group_name).add_flows(group.get("flows"))
         else:
-            raise EmptyInputError("failed to fetch flows to analyze. no services found.")
+            raise EmptyInputError("failed to fetch flows to analyze. no services or groups data found.")
 
     def get_all_flows_by_filter(self, include_filter_list: list[str] | None) -> dict[str, GroupData]:
         groups_data = {}

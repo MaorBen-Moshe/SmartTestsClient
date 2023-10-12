@@ -1,9 +1,11 @@
 import json
 
-import pytest
-import responses
+import mock
 
 from constants.constants import GROUP4_XML
+from exceptions.excpetions import EmptyInputError
+from models.group_data import GroupDataBuilder
+from models.service_data import ServiceDataBuilder
 from services.smart_test_analyze_service import SmartTestsAnalyzeService
 from tests.test_base import TestBase
 
@@ -13,14 +15,22 @@ class TestHandleGroupsDataStep(TestBase):
         super().setUp()
         self.smart_test_analyze_service = SmartTestsAnalyzeService()
 
-    @responses.activate
-    def test_get_all_flows_by_filter_success(self):
-        path = self.smart_test_analyze_service.client.smart_tests_all_url
-        with open("resources/all_flows_res.json", mode="r") as f:
-            responses.add(responses.POST, path, json=json.load(f), status=200)
+        self.get_all_flows_patcher = mock.patch("clients.smart_tests_client.SmartTestsClient.get_all_flows_stats")
+        self.mock_get_all_flows = self.get_all_flows_patcher.start()
+        self.mock_get_all_flows.side_effect = self.__mock_get_all_flows
 
+        self.analyze_flows_patcher = mock.patch("clients.smart_tests_client.SmartTestsClient.analyze_flows")
+        self.mock_analyze_flows = self.analyze_flows_patcher.start()
+        self.mock_analyze_flows.side_effect = self.__mock_analyze_flows
+
+    def tearDown(self):
+        self.get_all_flows_patcher.stop()
+        self.analyze_flows_patcher.stop()
+
+    def test_get_all_flows_by_filter_success(self):
         groups_data = self.smart_test_analyze_service.get_all_flows_by_filter(GROUP4_XML)
 
+        self.mock_get_all_flows.assert_called()
         self.assertEqual(len(groups_data), 2)
 
         self.assertIn("mat_APIGW_testng.xml", groups_data)
@@ -39,14 +49,10 @@ class TestHandleGroupsDataStep(TestBase):
 
         self.assertNotIn('unknown-group', groups_data)
 
-    @responses.activate
     def test_get_all_flows_by_filter_emtpy_group_filter(self):
-        path = self.smart_test_analyze_service.client.smart_tests_all_url
-        with open("resources/all_flows_res.json", mode="r") as f:
-            responses.add(responses.POST, path, json=json.load(f), status=200)
-
         groups_data = self.smart_test_analyze_service.get_all_flows_by_filter([])
 
+        self.mock_get_all_flows.assert_called()
         self.assertEqual(len(groups_data), 3)
 
         self.assertIn("mat_APIGW_testng.xml", groups_data)
@@ -70,18 +76,60 @@ class TestHandleGroupsDataStep(TestBase):
                                '',
                                655)
 
-    @pytest.mark.skip(reason="need to implement")
     def test_analyze_flows_success(self):
-        pass
+        services_map = {
+            "service1": ServiceDataBuilder().old_version("1.0").new_version("2.0").build(),
+            "service2": ServiceDataBuilder().old_version("3.0").new_version("4.0").build()
+        }
+        filter_group = ["group1", "group2"]
+        groups_data = {
+            "group1": GroupDataBuilder().group_name("group1").group_path("").total_flows_count(10).build(),
+            "group2": GroupDataBuilder().group_name("group2").group_path("").total_flows_count(20).build(),
+        }
 
-    @pytest.mark.skip(reason="need to implement")
+        self.smart_test_analyze_service.analyze_flows(services_map, filter_group, groups_data)
+
+        self.assertEqual(self.mock_analyze_flows.call_count, 2)
+        self.assertEqual(groups_data["group1"].curr_flows_count, 3)
+        self.assertListEqual(groups_data["group1"].flows, ["flow1", "flow2", "flow3"])
+        self.assertEqual(groups_data["group2"].curr_flows_count, 2)
+        self.assertListEqual(groups_data["group2"].flows, ["flow1", "flow2"])
+
     def test_analyze_flows_no_services_map(self):
-        pass
+        self.assert_exception(lambda: self.smart_test_analyze_service.analyze_flows(None,
+                                                                                    [],
+                                                                                    {}),
+                              EmptyInputError,
+                              "failed to fetch flows to analyze. no services or groups data found.")
 
-    @pytest.mark.skip(reason="need to implement")
-    def test_analyze_flows_no_groups_data(self):
-        pass
+        self.mock_analyze_flows.assert_not_called()
 
-    @pytest.mark.skip(reason="need to implement")
-    def test_analyze_flows_empty_input(self):
-        pass
+    @staticmethod
+    def __mock_get_all_flows(*args, **kwargs):
+        with open("resources/all_flows_res.json", mode="r") as f:
+            return json.load(f)
+
+    @staticmethod
+    def __mock_analyze_flows(*args, **kwargs):
+        if args[0] == "service1":
+            return {
+                "flowsCount": 5,
+                "flowsByGroupName": [
+                    {
+                        "name": "/path/group1",
+                        "flows": ["flow1", "flow2", "flow3"],
+                    },
+                ]
+            }
+        elif args[0] == "service2":
+            return {
+                "flowsCount": 5,
+                "flowsByGroupName": [
+                    {
+                        "name": "/path/group2",
+                        "flows": ["flow1", "flow2"],
+                    },
+                ]
+            }
+        else:
+            return None

@@ -44,5 +44,5 @@ class TestEndpoints(TestBase):
         res = self.client_fixture.post("/smart-tests-analyze", json=data, content_type='application/json')
         self.assertEqual(res.status_code, 400)
         self.assertEqual(
-            (b"Error: Group Name: 'None' is not supported. supported groups: ['oc-cd-group4-coc-include-ed']"),
+            b"Error: Group Name: 'None' is not supported. supported groups: ['oc-cd-group4-coc-include-ed']",
             res.data)
