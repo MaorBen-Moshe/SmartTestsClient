@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify, make_response
 
 from appServices.analyze_app_service import AnalyzeAppService
 from constants.constants import SUPPORTED_GROUPS
+from models.analyze_app_params import AnalyzeAppServiceParametersBuilder
 from models.config_manager import ConfigManager
 from steps.check_analyze_input import CheckAnalyzeClientInputStep
 
@@ -21,11 +22,14 @@ def analyze():
     except Exception as ex:
         return make_response(f"Error: {ex}", 400)
 
-    service = AnalyzeAppService(req_data.get("buildURL"), req_data.get("groupName"))
+    parameters = (AnalyzeAppServiceParametersBuilder().group_name(req_data.get("groupName"))
+                                                      .build_url(req_data.get("buildURL")).build())
+
+    service = AnalyzeAppService(parameters)
 
     res = service.analyze()
 
-    return jsonify(res)
+    return jsonify(res), 200
 
 
 if __name__ == '__main__':

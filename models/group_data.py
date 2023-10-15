@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from typing import Any
+
 
 class GroupData:
     def __init__(self):
@@ -17,14 +19,8 @@ class GroupData:
         self.flows.extend(filtered_flows)
         self.curr_flows_count += len(filtered_flows)
 
-    def serialize(self):
-        return {
-            "group_name": self.group_name,
-            "group_path": self.group_path,
-            "total_flows_count": self.total_flows_count,
-            "curr_flows_count": self.curr_flows_count,
-            "flows": self.flows,
-        }
+    def serialize(self) -> dict[str, Any]:
+        return self.__dict__
 
 
 class GroupDataBuilder:

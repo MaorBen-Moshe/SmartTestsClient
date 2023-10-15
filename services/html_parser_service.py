@@ -9,12 +9,14 @@ from models.service_data import ServiceData, ServiceDataBuilder
 
 
 class HtmlParserService:
-    def __init__(self, html_zip_url: str | None):
+    def __init__(self):
         self.table = None
+        self.html = None
+        self.soup = None
+
+    def load_html(self, html_zip_url:str | None, services_map: dict[str, ServiceData] | None):
         self.html = HtmlParserClient.get_html(html_zip_url)
         self.soup = BeautifulSoup(self.html, "html.parser")
-
-    def load_html(self, services_map: dict[str, ServiceData] | None):
         self.table = self.__find_table()
         if self.table is not None:
             name_index, version_index = self.__find_indexes()

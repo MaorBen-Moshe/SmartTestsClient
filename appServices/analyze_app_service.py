@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from models.analyze_app_params import AnalyzeAppServiceParameters
 from models.config_manager import ConfigManager
 from models.data_manager import DataManager
 from models.group_data import GroupData
@@ -9,11 +10,11 @@ from steps.init_services_data_step import InitServiceMapStep
 
 
 class AnalyzeAppService:
-    def __init__(self, build_url: str | None, group_name: str | None):
+    def __init__(self, parameters: AnalyzeAppServiceParameters):
         self.data_manager = DataManager()
-        self.data_manager.set_curr_group(group_name)
+        self.data_manager.set_curr_group(parameters.group_name)
         self.handle_group_data_step = HandleGroupsDataStep(self.data_manager.get_filter_for_curr_group())
-        self.html_parser = HtmlParserStep(build_url)
+        self.html_parser = HtmlParserStep(parameters.build_url)
         self.config_manager = ConfigManager()
 
     def analyze(self) -> dict[str, GroupData]:
