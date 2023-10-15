@@ -1,25 +1,159 @@
-import pytest
-
+import json
+import mock
+import yaml
 from tests.test_base import TestBase
 
 
 class TestEndpoints(TestBase):
+
+    def setUp(self):
+        super().setUp()
+        self.yaml_patcher = mock.patch("clients.yaml_parser_client.YamlParserClient.get_yaml")
+        self.mock_get_yaml = self.yaml_patcher.start()
+        self.html_patcher = mock.patch("clients.html_parser_client.HtmlParserClient.get_html")
+        self.mock_get_html = self.html_patcher.start()
+        self.mock_get_html.side_effect = self.__mock_html
+        self.get_all_flows_patcher = mock.patch("clients.smart_tests_client.SmartTestsClient.get_all_flows_stats")
+        self.mock_get_all_flows = self.get_all_flows_patcher.start()
+
+        self.analyze_flows_patcher = mock.patch("clients.smart_tests_client.SmartTestsClient.analyze_flows")
+        self.mock_analyze_flows = self.analyze_flows_patcher.start()
+
+    def tearDown(self):
+        self.yaml_patcher.stop()
+        self.html_patcher.stop()
+        self.get_all_flows_patcher.stop()
+        self.analyze_flows_patcher.stop()
 
     def test_supported_groups_endpoint_success(self):
         res = self.client_fixture.get("/supported-groups")
         self.assertEqual(res.status_code, 200)
         self.assertEqual(b'["oc-cd-group4-coc-include-ed"]\n', res.data)
 
-    # TODO fix test
-    @pytest.mark.skip(reason="need to implement mocks and asserts")
     def test_smart_tests_analyze_endpoint_success(self):
+        # parameters
         data = {
-            "buildURL": "http://testurl.com",
+            "buildURL": "http://illin5565:18080/job/oc-cd-group4/job/oc-cd-group4-include-ed/lastSuccessfulBuild"
+                        "/BuildReport/*zip*/BuildReport.zip",
             "groupName": "oc-cd-group4-coc-include-ed",
         }
 
+        # mocks
+        with open("resources/endpoints/index.yaml", mode="r") as f:
+            self.mock_get_yaml.return_value = yaml.safe_load(f.read())
+
+        with open("resources/endpoints/all_flows_stats.json", mode="r") as f:
+            self.mock_get_all_flows.return_value = json.load(f)
+
+        with open("resources/endpoints/smart_stats.json", mode="r") as f:
+            self.mock_analyze_flows.return_value = json.load(f)
+
+        # execute
         res = self.client_fixture.post("/smart-tests-analyze", json=data, content_type='application/json')
+
+        # asserts
         self.assertEqual(res.status_code, 200)
+        body = res.json
+        self.assertIsNotNone(body)
+        self.assertEqual(len(body), 2)
+        self.assertIn('extended_mat_7b_APIGW_testng.xml', body)
+        self.assertEqual(body['extended_mat_7b_APIGW_testng.xml']['curr_flows_count'], 0)
+        self.assertEqual(body['extended_mat_7b_APIGW_testng.xml']['total_flows_count'], 45)
+        self.assertListEqual(body['extended_mat_7b_APIGW_testng.xml']['flows'], [])
+        self.assertEqual(body['extended_mat_7b_APIGW_testng.xml']['group_name'], 'extended_mat_7b_APIGW_testng.xml')
+        self.assertEqual(body['extended_mat_7b_APIGW_testng.xml']['group_path'], 'com/amdocs/core/oc/testng')
+        self.assertIn('mat_APIGW_testng.xml', body)
+        self.assertEqual(body['mat_APIGW_testng.xml']['curr_flows_count'], 2)
+        self.assertEqual(body['mat_APIGW_testng.xml']['total_flows_count'], 12)
+        self.assertListEqual(body['mat_APIGW_testng.xml']['flows'],
+                             ['com.amdocs.core.oc.test.flows.schedulerTask.RetrieveSchedulerTaskFlow',
+                              'com.amdocs.core.oc.test.flows.discovery.categories.BrowsingCategoriesSelfServiceFlows'])
+        self.assertEqual(body['mat_APIGW_testng.xml']['group_name'], 'mat_APIGW_testng.xml')
+        self.assertEqual(body['mat_APIGW_testng.xml']['group_path'], 'com/amdocs/core/oc/testng')
+
+        self.mock_get_yaml.assert_called_once_with("http://illin5589:28080/repository/ms-helm-release/index.yaml")
+        self.mock_get_html.assert_called_once_with("http://illin5565:18080/job/oc-cd-group4/job/oc-cd-group4-include-ed"
+                                                   "/lastSuccessfulBuild/BuildReport/*zip*/BuildReport.zip")
+        self.mock_get_all_flows.assert_called_once_with(".*group4_integration_tests_testng.*|.*mat_APIGW_testng"
+                                                        ".*|.*extended_mat_7a_APIGW_testng.*|"
+                                                        ".*extended_mat_7b_APIGW_testng.*|.*extended_mat_APIGW_testng"
+                                                        ".*|.*shared_regression_testng"
+                                                        ".*|.*grp4_integration_to_CT_testng"
+                                                        ".*|.*ContratedOffer_tests_testng"
+                                                        ".*|.*ContratedOffer_Pack_testng"
+                                                        ".*|.*Everest_Configurator_Pack_testng"
+                                                        ".*|.*Everest_Qualification_Pack_testng"
+                                                        ".*|.*Everest_validator_pack.*|.*Olympus_pack_testng.*")
+
+        self.mock_analyze_flows.assert_called_once()
+        args, kwargs = self.mock_analyze_flows.call_args
+        self.assertEqual(len(args), 4)
+        self.assertEqual(args[0], "productconfigurator")
+        self.assertEqual(args[1], "0.67.18")
+        self.assertEqual(args[2], "0.67.19")
+        self.assertEqual(args[3], ".*group4_integration_tests_testng.*|.*mat_APIGW_testng"
+                                  ".*|.*extended_mat_7a_APIGW_testng.*|"
+                                  ".*extended_mat_7b_APIGW_testng.*|.*extended_mat_APIGW_testng"
+                                  ".*|.*shared_regression_testng"
+                                  ".*|.*grp4_integration_to_CT_testng"
+                                  ".*|.*ContratedOffer_tests_testng"
+                                  ".*|.*ContratedOffer_Pack_testng"
+                                  ".*|.*Everest_Configurator_Pack_testng"
+                                  ".*|.*Everest_Qualification_Pack_testng"
+                                  ".*|.*Everest_validator_pack.*|.*Olympus_pack_testng.*")
+
+    def test_smart_tests_analyze_endpoint_success_same_versions(self):
+        # parameters
+        data = {
+            "buildURL": "http://test_html_same_version/zipfile.zip",
+            "groupName": "oc-cd-group4-coc-include-ed",
+        }
+
+        # mocks
+        with open("resources/endpoints/index.yaml", mode="r") as f:
+            self.mock_get_yaml.return_value = yaml.safe_load(f.read())
+
+        with open("resources/endpoints/all_flows_stats.json", mode="r") as f:
+            self.mock_get_all_flows.return_value = json.load(f)
+
+        with open("resources/endpoints/smart_stats.json", mode="r") as f:
+            self.mock_analyze_flows.return_value = json.load(f)
+
+        # execute
+        res = self.client_fixture.post("/smart-tests-analyze", json=data, content_type='application/json')
+
+        # asserts
+        self.assertEqual(res.status_code, 200)
+        body = res.json
+        self.assertIsNotNone(body)
+        self.assertEqual(len(body), 2)
+        self.assertIn('extended_mat_7b_APIGW_testng.xml', body)
+        self.assertEqual(body['extended_mat_7b_APIGW_testng.xml']['curr_flows_count'], 0)
+        self.assertEqual(body['extended_mat_7b_APIGW_testng.xml']['total_flows_count'], 45)
+        self.assertListEqual(body['extended_mat_7b_APIGW_testng.xml']['flows'], [])
+        self.assertEqual(body['extended_mat_7b_APIGW_testng.xml']['group_name'], 'extended_mat_7b_APIGW_testng.xml')
+        self.assertEqual(body['extended_mat_7b_APIGW_testng.xml']['group_path'], 'com/amdocs/core/oc/testng')
+        self.assertIn('mat_APIGW_testng.xml', body)
+        self.assertEqual(body['mat_APIGW_testng.xml']['curr_flows_count'], 0)
+        self.assertEqual(body['mat_APIGW_testng.xml']['total_flows_count'], 12)
+        self.assertListEqual(body['mat_APIGW_testng.xml']['flows'], [])
+        self.assertEqual(body['mat_APIGW_testng.xml']['group_name'], 'mat_APIGW_testng.xml')
+        self.assertEqual(body['mat_APIGW_testng.xml']['group_path'], 'com/amdocs/core/oc/testng')
+
+        self.mock_get_yaml.assert_called_once_with("http://illin5589:28080/repository/ms-helm-release/index.yaml")
+        self.mock_get_html.assert_called_once_with("http://test_html_same_version/zipfile.zip")
+        self.mock_get_all_flows.assert_called_once_with(".*group4_integration_tests_testng.*|.*mat_APIGW_testng"
+                                                        ".*|.*extended_mat_7a_APIGW_testng.*|"
+                                                        ".*extended_mat_7b_APIGW_testng.*|.*extended_mat_APIGW_testng"
+                                                        ".*|.*shared_regression_testng"
+                                                        ".*|.*grp4_integration_to_CT_testng"
+                                                        ".*|.*ContratedOffer_tests_testng"
+                                                        ".*|.*ContratedOffer_Pack_testng"
+                                                        ".*|.*Everest_Configurator_Pack_testng"
+                                                        ".*|.*Everest_Qualification_Pack_testng"
+                                                        ".*|.*Everest_validator_pack.*|.*Olympus_pack_testng.*")
+
+        self.mock_analyze_flows.assert_not_called()
 
     def test_smart_tests_analyze_endpoint_missing_payload(self):
         res = self.client_fixture.post("/smart-tests-analyze", content_type='application/json')
@@ -46,3 +180,18 @@ class TestEndpoints(TestBase):
         self.assertEqual(
             b"Error: Group Name: 'None' is not supported. supported groups: ['oc-cd-group4-coc-include-ed']",
             res.data)
+
+    @staticmethod
+    def __mock_html(*args, **kwargs):
+        file_to_open = None
+        if args[0] == "http://test_html_same_version/zipfile.zip":
+            file_to_open = "resources/endpoints/build_report_same_versions.html"
+        elif args[0] == ("http://illin5565:18080/job/oc-cd-group4/job/oc-cd-group4-include-ed/lastSuccessfulBuild"
+                         "/BuildReport/*zip*/BuildReport.zip"):
+            file_to_open = "resources/endpoints/build_report.html"
+
+        if file_to_open:
+            with open(file_to_open) as f:
+                return f.read()
+        else:
+            return None

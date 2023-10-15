@@ -1,0 +1,12 @@
+{
+  "flowsCount": 2,
+  "flowsByGroupName": [
+    {
+      "name": "com/amdocs/core/oc/testng/mat_APIGW_testng.xml",
+      "flows": [
+        "com.amdocs.core.oc.test.flows.schedulerTask.RetrieveSchedulerTaskFlow",
+        "com.amdocs.core.oc.test.flows.discovery.categories.BrowsingCategoriesSelfServiceFlows"
+      ]
+    }
+  ]
+}

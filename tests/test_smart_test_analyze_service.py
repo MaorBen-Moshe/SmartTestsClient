@@ -113,7 +113,7 @@ class TestHandleGroupsDataStep(TestBase):
     def __mock_analyze_flows(*args, **kwargs):
         if args[0] == "service1":
             return {
-                "flowsCount": 5,
+                "flowsCount": 3,
                 "flowsByGroupName": [
                     {
                         "name": "/path/group1",
@@ -123,7 +123,7 @@ class TestHandleGroupsDataStep(TestBase):
             }
         elif args[0] == "service2":
             return {
-                "flowsCount": 5,
+                "flowsCount": 2,
                 "flowsByGroupName": [
                     {
                         "name": "/path/group2",
