@@ -1,29 +1,19 @@
-import mock
-
 from exceptions.excpetions import NotFoundError
 from models.service_data import ServiceData, ServiceDataBuilder
 from services.html_parser_service import HtmlParserService
-from tests.test_base import TestBase
+from tests.test_base import UnitTestBase
 
 
-class TestHtmlParserService(TestBase):
+class TestHtmlParserService(UnitTestBase):
 
     def setUp(self):
         super().setUp()
-        self.patcher = mock.patch("clients.html_parser_client.HtmlParserClient.get_html")
-        self.mock_get_html = self.patcher.start()
-
-    def tearDown(self):
-        self.patcher.stop()
 
     def test_load_html_success(self):
-        with open("resources/build_report.html") as f:
-            self.mock_get_html.return_value = f.read()
-
-        service = HtmlParserService("http://example.com/file.zip")
+        service = HtmlParserService()
         services_map = {}
 
-        service.load_html(services_map)
+        service.load_html("http://example.com/file.zip", services_map)
 
         self.mock_get_html.assert_called()
         self.assertEqual(len(services_map), 10)
@@ -41,10 +31,11 @@ class TestHtmlParserService(TestBase):
     def test_load_html_missing_table(self):
         self.mock_get_html.return_value = "<HTML></HTML>"
 
-        service = HtmlParserService("http://example.com/file.zip")
+        service = HtmlParserService()
         services_map = {}
 
-        self.assert_exception(lambda: service.load_html(services_map),
+        self.assert_exception(lambda: service.load_html("http://example.com/missing_table_file.zip",
+                                                        services_map),
                               NotFoundError,
                               'error with build report structure. not found main deployment table')
 
@@ -52,17 +43,14 @@ class TestHtmlParserService(TestBase):
         self.assertEqual(len(services_map), 0)
 
     def test_load_html_services_map_contains_common_entry(self):
-        with open("resources/build_report.html") as f:
-            self.mock_get_html.return_value = f.read()
-
-        service = HtmlParserService("http://example.com/file.zip")
+        service = HtmlParserService()
         services_map = {
             "productconfigurator-action": ServiceDataBuilder().old_version("0.67.6").new_version("0.67.9").build(),
             "productconfigurator-commitmentterm": ServiceDataBuilder().old_version("0.67.1").new_version(
                 "0.67.10").build(),
         }
 
-        service.load_html(services_map)
+        service.load_html("http://example.com/file.zip", services_map)
 
         self.mock_get_html.assert_called()
         self.assertEqual(len(services_map), 10)

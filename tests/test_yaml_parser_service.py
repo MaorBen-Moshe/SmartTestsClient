@@ -1,21 +1,14 @@
-import mock
-import yaml
-
 from exceptions.excpetions import EmptyInputError
 from services.yaml_parser_service import YamlParserService
-from tests.test_base import TestBase
+from tests.test_base import UnitTestBase
 
 
-class TestYamlParserService(TestBase):
+class TestYamlParserService(UnitTestBase):
     def setUp(self):
         super().setUp()
         self.yaml_parser_service = YamlParserService()
-        self.patcher = mock.patch("clients.yaml_parser_client.YamlParserClient.get_yaml")
-        self.mock_get_yaml = self.patcher.start()
-        self.mock_get_yaml.side_effect = self.__mock_ret_values
 
     def tearDown(self):
-        self.patcher.stop()
         self.yaml_parser_service.services_map = {}
 
     def test_request_yaml_external_success(self):
@@ -173,20 +166,3 @@ class TestYamlParserService(TestBase):
                               "Provided to 'request_yaml_external' None urls list")
 
         self.mock_get_yaml.assert_not_called()
-
-    @staticmethod
-    def __mock_ret_values(*args, **kwargs):
-        if args[0] == "http://test.com/index.yaml":
-            with open("resources/index.yaml", mode="r") as f:
-                return yaml.safe_load(f.read())
-        elif args[0] == "http://test2.com/index.yaml":
-            with open("resources/index_without_filtered.yaml", mode="r") as f:
-                return yaml.safe_load(f.read())
-        elif args[0] == "http://test3.com/index.yaml":
-            with open("resources/index_with_configurator_only.yaml", mode="r") as f:
-                return yaml.safe_load(f.read())
-        elif args[0] == "http://test4.com/index.yaml":
-            with open("resources/index_without_entries.yaml", mode="r") as f:
-                return yaml.safe_load(f.read())
-        else:
-            return None

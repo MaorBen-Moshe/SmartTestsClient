@@ -17,7 +17,7 @@ class TestSmartTestsClient(TestBase):
     @responses.activate
     def test_get_all_flows_stats_success(self):
         path = self.client.smart_tests_all_url
-        with open("resources/all_flows_res.json", mode="r") as f:
+        with open("resources/all_flows_stats.json", mode="r") as f:
             responses.add(responses.POST, path, json=json.load(f), status=200)
 
         groups_data = self.client.get_all_flows_stats(Utils.create_filter_by_list(GROUP4_XML))

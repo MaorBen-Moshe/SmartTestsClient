@@ -27,7 +27,7 @@ class SmartTestsAnalyzeService:
                                                      services_map.get(service_key).new_version,
                                                      include_groups_filter)
 
-                if int(res_json.get("flowsCount")) > 0:
+                if res_json is not None and int(res_json.get("flowsCount")) > 0:
                     groups = res_json.get("flowsByGroupName")
                     for group in groups:
                         group_name = group.get("name").split("/")[-1]

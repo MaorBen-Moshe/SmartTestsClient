@@ -1,31 +1,15 @@
-import json
-
-import mock
-
 from constants.constants import GROUP4_XML
 from exceptions.excpetions import EmptyInputError
 from models.group_data import GroupDataBuilder
 from models.service_data import ServiceDataBuilder
 from services.smart_test_analyze_service import SmartTestsAnalyzeService
-from tests.test_base import TestBase
+from tests.test_base import UnitTestBase
 
 
-class TestHandleGroupsDataStep(TestBase):
+class TestHandleGroupsDataStep(UnitTestBase):
     def setUp(self):
         super().setUp()
         self.smart_test_analyze_service = SmartTestsAnalyzeService()
-
-        self.get_all_flows_patcher = mock.patch("clients.smart_tests_client.SmartTestsClient.get_all_flows_stats")
-        self.mock_get_all_flows = self.get_all_flows_patcher.start()
-        self.mock_get_all_flows.side_effect = self.__mock_get_all_flows
-
-        self.analyze_flows_patcher = mock.patch("clients.smart_tests_client.SmartTestsClient.analyze_flows")
-        self.mock_analyze_flows = self.analyze_flows_patcher.start()
-        self.mock_analyze_flows.side_effect = self.__mock_analyze_flows
-
-    def tearDown(self):
-        self.get_all_flows_patcher.stop()
-        self.analyze_flows_patcher.stop()
 
     def test_get_all_flows_by_filter_success(self):
         groups_data = self.smart_test_analyze_service.get_all_flows_by_filter(GROUP4_XML)
@@ -103,33 +87,3 @@ class TestHandleGroupsDataStep(TestBase):
                               "failed to fetch flows to analyze. no services or groups data found.")
 
         self.mock_analyze_flows.assert_not_called()
-
-    @staticmethod
-    def __mock_get_all_flows(*args, **kwargs):
-        with open("resources/all_flows_res.json", mode="r") as f:
-            return json.load(f)
-
-    @staticmethod
-    def __mock_analyze_flows(*args, **kwargs):
-        if args[0] == "service1":
-            return {
-                "flowsCount": 3,
-                "flowsByGroupName": [
-                    {
-                        "name": "/path/group1",
-                        "flows": ["flow1", "flow2", "flow3"],
-                    },
-                ]
-            }
-        elif args[0] == "service2":
-            return {
-                "flowsCount": 2,
-                "flowsByGroupName": [
-                    {
-                        "name": "/path/group2",
-                        "flows": ["flow1", "flow2"],
-                    },
-                ]
-            }
-        else:
-            return None

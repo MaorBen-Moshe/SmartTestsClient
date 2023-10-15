@@ -1,29 +1,10 @@
-import json
-import mock
-import yaml
-from tests.test_base import TestBase
+from tests.test_base import UnitTestBase
 
 
-class TestEndpoints(TestBase):
+class TestEndpoints(UnitTestBase):
 
     def setUp(self):
         super().setUp()
-        self.yaml_patcher = mock.patch("clients.yaml_parser_client.YamlParserClient.get_yaml")
-        self.mock_get_yaml = self.yaml_patcher.start()
-        self.html_patcher = mock.patch("clients.html_parser_client.HtmlParserClient.get_html")
-        self.mock_get_html = self.html_patcher.start()
-        self.mock_get_html.side_effect = self.__mock_html
-        self.get_all_flows_patcher = mock.patch("clients.smart_tests_client.SmartTestsClient.get_all_flows_stats")
-        self.mock_get_all_flows = self.get_all_flows_patcher.start()
-
-        self.analyze_flows_patcher = mock.patch("clients.smart_tests_client.SmartTestsClient.analyze_flows")
-        self.mock_analyze_flows = self.analyze_flows_patcher.start()
-
-    def tearDown(self):
-        self.yaml_patcher.stop()
-        self.html_patcher.stop()
-        self.get_all_flows_patcher.stop()
-        self.analyze_flows_patcher.stop()
 
     def test_supported_groups_endpoint_success(self):
         res = self.client_fixture.get("/supported-groups")
@@ -37,16 +18,6 @@ class TestEndpoints(TestBase):
                         "/BuildReport/*zip*/BuildReport.zip",
             "groupName": "oc-cd-group4-coc-include-ed",
         }
-
-        # mocks
-        with open("resources/endpoints/index.yaml", mode="r") as f:
-            self.mock_get_yaml.return_value = yaml.safe_load(f.read())
-
-        with open("resources/endpoints/all_flows_stats.json", mode="r") as f:
-            self.mock_get_all_flows.return_value = json.load(f)
-
-        with open("resources/endpoints/smart_stats.json", mode="r") as f:
-            self.mock_analyze_flows.return_value = json.load(f)
 
         # execute
         res = self.client_fixture.post("/smart-tests-analyze", json=data, content_type='application/json')
@@ -109,16 +80,6 @@ class TestEndpoints(TestBase):
             "groupName": "oc-cd-group4-coc-include-ed",
         }
 
-        # mocks
-        with open("resources/endpoints/index.yaml", mode="r") as f:
-            self.mock_get_yaml.return_value = yaml.safe_load(f.read())
-
-        with open("resources/endpoints/all_flows_stats.json", mode="r") as f:
-            self.mock_get_all_flows.return_value = json.load(f)
-
-        with open("resources/endpoints/smart_stats.json", mode="r") as f:
-            self.mock_analyze_flows.return_value = json.load(f)
-
         # execute
         res = self.client_fixture.post("/smart-tests-analyze", json=data, content_type='application/json')
 
@@ -180,18 +141,3 @@ class TestEndpoints(TestBase):
         self.assertEqual(
             b"Error: Group Name: 'None' is not supported. supported groups: ['oc-cd-group4-coc-include-ed']",
             res.data)
-
-    @staticmethod
-    def __mock_html(*args, **kwargs):
-        file_to_open = None
-        if args[0] == "http://test_html_same_version/zipfile.zip":
-            file_to_open = "resources/endpoints/build_report_same_versions.html"
-        elif args[0] == ("http://illin5565:18080/job/oc-cd-group4/job/oc-cd-group4-include-ed/lastSuccessfulBuild"
-                         "/BuildReport/*zip*/BuildReport.zip"):
-            file_to_open = "resources/endpoints/build_report.html"
-
-        if file_to_open:
-            with open(file_to_open) as f:
-                return f.read()
-        else:
-            return None

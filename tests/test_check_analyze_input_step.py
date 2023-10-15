@@ -1,10 +1,10 @@
 from constants.constants import SUPPORTED_GROUPS
 from exceptions.excpetions import BadRequest
 from steps.check_analyze_input import CheckAnalyzeClientInputStep
-from tests.test_base import TestBase
+from tests.test_base import UnitTestBase
 
 
-class TestCheckAnalyzeInput(TestBase):
+class TestCheckAnalyzeInput(UnitTestBase):
     def test_check_input_success(self):
 
         req_data = {
