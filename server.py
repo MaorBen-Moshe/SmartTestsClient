@@ -9,6 +9,10 @@ from steps.check_analyze_input import CheckAnalyzeClientInputStep
 app = Flask(__name__)
 
 
+@app.route("/health")
+def health():
+    return jsonify({"status": "I'm fine."}), 200
+
 @app.route("/supported-groups", methods=["GET"])
 def supported_groups():
     return jsonify(SUPPORTED_GROUPS)
@@ -34,5 +38,5 @@ def analyze():
 
 if __name__ == '__main__':
     config = ConfigManager()
-    config.init_configs("config.ini")
+    config.init_configs("/root/smart-tests-client/config.ini")
     app.run(host="0.0.0.0", port=5001)
