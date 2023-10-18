@@ -13,9 +13,10 @@ app = Flask(__name__)
 def health():
     return jsonify({"status": "I'm fine."}), 200
 
+
 @app.route("/supported-groups", methods=["GET"])
 def supported_groups():
-    return jsonify(SUPPORTED_GROUPS)
+    return jsonify(SUPPORTED_GROUPS), 200
 
 
 @app.route("/smart-tests-analyze", methods=["POST"])

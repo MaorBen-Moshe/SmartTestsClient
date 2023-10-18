@@ -1,7 +1,7 @@
 import json
 import unittest
 
-import mock
+import unittest.mock as mock
 import pytest
 import yaml
 
@@ -31,7 +31,7 @@ class TestBase(unittest.TestCase):
             self.fail("Passed even though expected to raise exception.")
 
 
-class UnitTestBase(TestBase):
+class TestUnitBase(TestBase):
     def setUp(self):
         super().setUp()
         # mocks

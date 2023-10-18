@@ -1,9 +1,9 @@
 from exceptions.excpetions import EmptyInputError
 from services.yaml_parser_service import YamlParserService
-from tests.test_base import UnitTestBase
+from tests.test_base import TestUnitBase
 
 
-class TestYamlParserService(UnitTestBase):
+class TestYamlParserServiceUnit(TestUnitBase):
     def setUp(self):
         super().setUp()
         self.yaml_parser_service = YamlParserService()

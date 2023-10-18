@@ -3,10 +3,10 @@ from exceptions.excpetions import EmptyInputError
 from models.group_data import GroupDataBuilder
 from models.service_data import ServiceDataBuilder
 from services.smart_test_analyze_service import SmartTestsAnalyzeService
-from tests.test_base import UnitTestBase
+from tests.test_base import TestUnitBase
 
 
-class TestHandleGroupsDataStep(UnitTestBase):
+class TestHandleGroupsDataStepUnit(TestUnitBase):
     def setUp(self):
         super().setUp()
         self.smart_test_analyze_service = SmartTestsAnalyzeService()

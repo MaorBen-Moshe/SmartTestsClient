@@ -1,7 +1,7 @@
-from tests.test_base import UnitTestBase
+from tests.test_base import TestUnitBase
 
 
-class TestEndpoints(UnitTestBase):
+class TestEndpointsUnit(TestUnitBase):
 
     def setUp(self):
         super().setUp()
