@@ -11,24 +11,22 @@ from models.service_data import ServiceData
 
 
 class TestBase(unittest.TestCase):
-    def setUp(self):
-        super().setUp()
-        self.config = ConfigManager()
-        self.config.init_configs("../config.ini")
+    config = None
+
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        cls.config = ConfigManager()
+        cls.config.init_configs("../config.ini")
 
     @pytest.fixture(autouse=True)
     def prepare_client_fixture(self, client):
         self.client_fixture = client
 
-    def assert_exception(self, function, exception: type, msg_expected: str):
-        try:
+    def assert_exception(self, function, exception, msg_expected: str):
+        with self.assertRaises(exception) as context:
             function()
-        except exception as ex:
-            self.assertEqual(f"{ex}", msg_expected)
-        except Exception as ex:
-            self.fail(f"Expected {type(exception)} exception, but got: {ex}")
-        else:
-            self.fail("Passed even though expected to raise exception.")
+            self.assertEqual(f"{context.exception}", msg_expected)
 
 
 class TestUnitBase(TestBase):
