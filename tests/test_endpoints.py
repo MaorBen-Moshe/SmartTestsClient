@@ -24,7 +24,10 @@ class TestEndpointsUnit(TestUnitBase):
 
         # asserts
         self.assertEqual(res.status_code, 200)
-        body = res.json
+        self.assertIsNotNone(res.json)
+        self.assertEqual(57, res.json['total_flows_count'])
+        self.assertEqual(2, res.json['curr_flows_count'])
+        body = res.json['groups']
         self.assertIsNotNone(body)
         self.assertEqual(len(body), 2)
         self.assertIn('extended_mat_7b_APIGW_testng.xml', body)
@@ -85,7 +88,10 @@ class TestEndpointsUnit(TestUnitBase):
 
         # asserts
         self.assertEqual(res.status_code, 200)
-        body = res.json
+        self.assertIsNotNone(res.json)
+        self.assertEqual(57, res.json['total_flows_count'])
+        self.assertEqual(0, res.json['curr_flows_count'])
+        body = res.json['groups']
         self.assertIsNotNone(body)
         self.assertEqual(len(body), 2)
         self.assertIn('extended_mat_7b_APIGW_testng.xml', body)

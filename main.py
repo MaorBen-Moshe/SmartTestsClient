@@ -1,3 +1,5 @@
+import json
+
 from flask import Flask, request, jsonify, make_response
 
 from appServices.analyze_app_service import AnalyzeAppService
@@ -34,7 +36,7 @@ def analyze():
 
     res = service.analyze()
 
-    return jsonify(res), 200
+    return jsonify(res.serialize()), 200
 
 
 if __name__ == '__main__':
