@@ -41,5 +41,5 @@ def analyze():
 
 if __name__ == '__main__':
     config = ConfigManager()
-    config.init_configs("/root/smart-tests-client/config.ini")
+    config.init_configs("config.ini")
     app.run(host="0.0.0.0", port=5001)
