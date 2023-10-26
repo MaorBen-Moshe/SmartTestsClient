@@ -21,3 +21,10 @@ class Utils:
             return True
 
         return False
+
+    @staticmethod
+    def serialize_class(cls):
+        return (dict(
+            (i.replace(cls.__class__.__name__, '').lstrip("_"), value)
+            for i, value in cls.__dict__.items()
+        ))

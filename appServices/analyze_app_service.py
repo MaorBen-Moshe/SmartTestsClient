@@ -13,8 +13,8 @@ from steps.prepare_response_step import PrepareResponseStep
 class AnalyzeAppService:
     def __init__(self, parameters: AnalyzeAppServiceParameters):
         self.data_manager = DataManager()
-        self.data_manager.set_curr_group(parameters.group_name)
-        self.handle_group_data_step = HandleGroupsDataStep(self.data_manager.get_filter_for_curr_group())
+        self.data_manager.curr_group = parameters.group_name
+        self.handle_group_data_step = HandleGroupsDataStep(self.data_manager.filter_for_curr_group)
         self.html_parser = HtmlParserStep(parameters.build_url)
         self.config_manager = ConfigManager()
         self.prepare_response_step = PrepareResponseStep()

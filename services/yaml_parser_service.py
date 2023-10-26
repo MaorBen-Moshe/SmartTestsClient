@@ -2,14 +2,9 @@ from __future__ import annotations
 
 from distutils.version import LooseVersion
 
-import requests
-import yaml
-from requests.auth import HTTPBasicAuth
-
 from clients.yaml_parser_client import YamlParserClient
 from constants.constants import *
 from exceptions.excpetions import EmptyInputError
-from models.config_manager import ConfigManager
 from models.service_data import ServiceData, ServiceDataBuilder
 
 

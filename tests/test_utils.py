@@ -1,5 +1,6 @@
 import pytest
 
+from models.service_data import ServiceDataBuilder
 from tests.test_base import TestBase
 from utils.utils import Utils
 
@@ -35,3 +36,22 @@ class TestUtils(TestBase):
             result = Utils.is_valid_url(url)
 
             self.assertEqual(result, expected)
+
+    def test_serialize_class(self):
+        class WithoutProperties:
+            def __init__(self, name, age, gender):
+                self._name = name
+                self._age = age
+                self.gender = gender
+
+        @pytest.mark.parametrize("cls, expected", [
+            (ServiceDataBuilder().old_version("old_version").new_version("new_version").build(),
+             {"old_version": "old_version","new_version": "new_version"}),
+            (WithoutProperties("Alice", 25, "female"),
+             {"name": "Alice", "age": 25, "gender": "female"}),
+            (None, None)
+        ])
+        def test(cls, expected):
+            res = Utils.serialize_class(cls)
+
+            self.assertEqual(res, expected)
