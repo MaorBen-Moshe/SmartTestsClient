@@ -1,10 +1,12 @@
 from __future__ import annotations
 
 from configparser import ConfigParser
+
 from cryptography.fernet import Fernet
 
 from exceptions.excpetions import ConfigurationError
 from models.singleton_meta import SingletonMeta
+from models.supported_group import SupportedGroup, SupportedGroupBuilder
 
 
 class ConfigManager(metaclass=SingletonMeta):
@@ -18,6 +20,14 @@ class ConfigManager(metaclass=SingletonMeta):
 
         self._config.read(config_path)
         self._fernet = Fernet(self._config["DEFAULT"]["key"])
+
+    def get_supported_groups(self) -> dict[str, SupportedGroup]:
+        supported_groups_str = self._config["DEFAULT"]["supported_groups"]
+        return self.__get_supported_groups_helper(supported_groups_str)
+
+    def get_filtered_ms_list(self) -> list[str]:
+        filtered_ms_list_str = self._config["DEFAULT"]["filtered_ms_list"]
+        return filtered_ms_list_str.split(",") if filtered_ms_list_str is not None else []
 
     def get_nexus_cred(self) -> (str, str):
         return (self._config["NEXUS"]["nexus_user"],
@@ -36,3 +46,32 @@ class ConfigManager(metaclass=SingletonMeta):
 
     def get_smart_tests_statistics_url(self) -> str:
         return self._config["SMART_CLIENT"]["smart_tests_statistics"]
+
+    def __get_supported_groups_helper(self, supported_groups_str_format: str) -> dict[str, SupportedGroup]:
+        groups = {}
+        testng_xml_per_group = self.__get_testng_xml_per_group_helper(self._config["DEFAULT"]["testng_xml_per_group"])
+        if supported_groups_str_format:
+            split_supported_groups = supported_groups_str_format.split(",")
+            for supported_group in split_supported_groups:
+                group_name, cluster = supported_group.strip().split("|")
+                if group_name is not None and cluster is not None:
+                    testng_xml = testng_xml_per_group.get(group_name, [])
+                    groups[group_name] = (SupportedGroupBuilder().group_name(group_name)
+                                          .testng_xml(testng_xml)
+                                          .cluster(cluster).build())
+
+        return groups
+
+    @staticmethod
+    def __get_testng_xml_per_group_helper(testng_xml_per_group_str: str) -> dict[str, list[str]]:
+        testng_xml_per_group = {}
+        if testng_xml_per_group_str:
+            split_testng_xml_per_group = testng_xml_per_group_str.split(",")
+            for testng_xml in split_testng_xml_per_group:
+                group_name, testng_xml_str_format = testng_xml.strip().split(":")
+                if group_name is not None:
+                    testng_xml = testng_xml_str_format.split("|")
+                    if testng_xml is not None:
+                        testng_xml_per_group[group_name] = testng_xml
+
+        return testng_xml_per_group

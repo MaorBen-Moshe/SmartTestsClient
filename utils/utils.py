@@ -23,8 +23,9 @@ class Utils:
         return False
 
     @staticmethod
-    def serialize_class(cls):
+    def serialize_class(cls, ignored_fields: list[str]):
         return (dict(
             (i.replace(cls.__class__.__name__, '').lstrip("_"), value)
             for i, value in cls.__dict__.items()
+            if i.replace(cls.__class__.__name__, '').lstrip("_") not in ignored_fields
         ))

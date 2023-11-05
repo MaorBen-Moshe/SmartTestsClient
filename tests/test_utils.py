@@ -44,14 +44,19 @@ class TestUtils(TestBase):
                 self._age = age
                 self.gender = gender
 
-        @pytest.mark.parametrize("cls, expected", [
+        @pytest.mark.parametrize("cls, ignore_fields, expected", [
             (ServiceDataBuilder().old_version("old_version").new_version("new_version").build(),
-             {"old_version": "old_version","new_version": "new_version"}),
+             [],
+             {"old_version": "old_version", "new_version": "new_version"}),
+            (ServiceDataBuilder().old_version("old_version").new_version("new_version").build(),
+             ['_old_version'],
+             {"new_version": "new_version"}),
             (WithoutProperties("Alice", 25, "female"),
+             [],
              {"name": "Alice", "age": 25, "gender": "female"}),
-            (None, None)
+            (None, [], None)
         ])
-        def test(cls, expected):
-            res = Utils.serialize_class(cls)
+        def test(cls, ignore_fields, expected):
+            res = Utils.serialize_class(cls, ignore_fields)
 
             self.assertEqual(res, expected)

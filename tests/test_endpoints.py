@@ -9,7 +9,7 @@ class TestEndpointsUnit(TestUnitBase):
     def test_supported_groups_endpoint_success(self):
         res = self.client_fixture.get("/supported-groups")
         self.assertEqual(res.status_code, 200)
-        self.assertEqual(b'["oc-cd-group4-coc-include-ed"]\n', res.data)
+        self.assertEqual(b'[{"cluster":"ilocpde456","group_name":"oc-cd-group4-coc-include-ed"}]\n', res.data)
 
     def test_smart_tests_analyze_endpoint_success(self):
         # parameters
@@ -144,6 +144,4 @@ class TestEndpointsUnit(TestUnitBase):
 
         res = self.client_fixture.post("/smart-tests-analyze", json=data, content_type='application/json')
         self.assertEqual(res.status_code, 400)
-        self.assertEqual(
-            b"Error: Group Name: 'None' is not supported. supported groups: ['oc-cd-group4-coc-include-ed']",
-            res.data)
+        self.assertEqual(b"Error: Group Name: 'None' is not supported.", res.data)

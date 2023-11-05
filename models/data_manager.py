@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from constants.constants import *
+from models.config_manager import ConfigManager
 from models.group_data import GroupData
 from models.service_data import ServiceData
 
@@ -11,9 +11,6 @@ class DataManager:
         self.curr_group: str | None = None
         self.services_map: dict[str, ServiceData] | None = {}
         self.groups_data: dict[str, GroupData] = {}
-        self.__filter_by_group: dict[str, list[str]] = {
-            "oc-cd-group4-coc-include-ed": GROUP4_XML,
-        }
 
     @property
     def curr_group(self) -> str | None:
@@ -40,5 +37,6 @@ class DataManager:
         self._groups_data = groups_data
 
     @property
-    def filter_for_curr_group(self):
-        return self.__filter_by_group.get(self.curr_group)
+    def filter_for_curr_group(self) -> list[str]:
+        config = ConfigManager()
+        return config.get_supported_groups().get(self.curr_group).testng_xml

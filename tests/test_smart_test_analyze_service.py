@@ -1,4 +1,3 @@
-from constants.constants import GROUP4_XML
 from exceptions.excpetions import EmptyInputError
 from models.group_data import GroupDataBuilder
 from models.service_data import ServiceDataBuilder
@@ -12,7 +11,8 @@ class TestHandleGroupsDataStepUnit(TestUnitBase):
         self.smart_test_analyze_service = SmartTestsAnalyzeService()
 
     def test_get_all_flows_by_filter_success(self):
-        groups_data = self.smart_test_analyze_service.get_all_flows_by_filter(GROUP4_XML)
+        group4_xml = self.config.get_supported_groups().get('oc-cd-group4-coc-include-ed').testng_xml
+        groups_data = self.smart_test_analyze_service.get_all_flows_by_filter(group4_xml)
 
         self.mock_get_all_flows.assert_called()
         self.assertEqual(len(groups_data), 2)

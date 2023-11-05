@@ -3,7 +3,7 @@ from __future__ import annotations
 from bs4 import BeautifulSoup
 
 from clients.html_parser_client import HtmlParserClient
-from constants.constants import *
+from constants.constants import TR, TD, B
 from exceptions.excpetions import NotFoundError
 from models.service_data import ServiceData, ServiceDataBuilder
 
@@ -14,13 +14,16 @@ class HtmlParserService:
         self.html = None
         self.soup = None
 
-    def load_html(self, html_zip_url:str | None, services_map: dict[str, ServiceData] | None):
+    def load_html(self,
+                  html_zip_url: str | None,
+                  services_map: dict[str, ServiceData] | None,
+                  filtered_ms_list: list[str]):
         self.html = HtmlParserClient.get_html(html_zip_url)
         self.soup = BeautifulSoup(self.html, "html.parser")
         self.table = self.__find_table()
         if self.table is not None:
             name_index, version_index = self.__find_indexes()
-            self.__update_map(services_map, name_index, version_index)
+            self.__update_map(services_map, name_index, version_index, filtered_ms_list)
         else:
             raise NotFoundError("error with build report structure. not found main deployment table")
 
@@ -44,14 +47,18 @@ class HtmlParserService:
                 version_index = i
         return name_index, version_index
 
-    def __update_map(self, services_map: dict[str, ServiceData] | None, name_index: int, version_index: int):
+    def __update_map(self,
+                     services_map: dict[str, ServiceData] | None,
+                     name_index: int,
+                     version_index: int,
+                     filtered_ms_list: list[str]):
         rows = self.table.find_all(TR)[2:]  # Skip the first and second rows
         for row in rows:
             cells = row.find_all(TD)
             if cells[name_index] is not None:
                 name = cells[name_index].text.split(" ")[0].replace("(Microservice)", "").strip()
                 version = cells[version_index].text.strip()
-                if len(name) > 0 and len(version) > 0 and name in FILTERED_MS_LIST:
+                if len(name) > 0 and len(version) > 0 and name in filtered_ms_list:
                     if name in services_map:
                         services_map[name].old_version = version
                     else:

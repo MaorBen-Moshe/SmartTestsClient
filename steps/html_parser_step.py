@@ -9,5 +9,5 @@ class HtmlParserStep:
         self.html_parser_service = HtmlParserService()
         self.build_url = build_url
 
-    def load_html_step(self, services_map: dict[str, ServiceData] | None):
-        self.html_parser_service.load_html(self.build_url, services_map)
+    def load_html_step(self, services_map: dict[str, ServiceData] | None, filtered_ms_list: list[str]):
+        self.html_parser_service.load_html(self.build_url, services_map, filtered_ms_list)

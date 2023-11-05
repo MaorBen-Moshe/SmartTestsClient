@@ -14,7 +14,7 @@ class TestYamlParserServiceUnit(TestUnitBase):
     def test_request_yaml_external_success(self):
         path = "http://test.com/index.yaml"
 
-        services_map = self.yaml_parser_service.request_yaml_external([path])
+        services_map = self.yaml_parser_service.request_yaml_external([path], self.config.get_filtered_ms_list())
 
         self.mock_get_yaml.assert_called()
         self.assertEqual(len(services_map), 10)
@@ -53,7 +53,7 @@ class TestYamlParserServiceUnit(TestUnitBase):
     def test_request_yaml_external_input_without_filtered_entries(self):
         path = "http://test2.com/index.yaml"
 
-        services_map = self.yaml_parser_service.request_yaml_external([path])
+        services_map = self.yaml_parser_service.request_yaml_external([path], self.config.get_filtered_ms_list())
 
         self.mock_get_yaml.assert_called()
         self.assertEqual(len(services_map), 0)
@@ -61,7 +61,7 @@ class TestYamlParserServiceUnit(TestUnitBase):
     def test_request_yaml_external_yaml_without_entries(self):
         path = "http://test4.com/index.yaml"
 
-        services_map = self.yaml_parser_service.request_yaml_external([path])
+        services_map = self.yaml_parser_service.request_yaml_external([path], self.config.get_filtered_ms_list())
 
         self.mock_get_yaml.assert_called()
         self.assertEqual(len(services_map), 0)
@@ -69,7 +69,7 @@ class TestYamlParserServiceUnit(TestUnitBase):
     def test_request_yaml_external_empty_body(self):
         path = "http://test5.com/index.yaml"
 
-        services_map = self.yaml_parser_service.request_yaml_external([path])
+        services_map = self.yaml_parser_service.request_yaml_external([path], self.config.get_filtered_ms_list())
 
         self.mock_get_yaml.assert_called()
         self.assertEqual(len(services_map), 0)
@@ -78,7 +78,8 @@ class TestYamlParserServiceUnit(TestUnitBase):
         path = "http://test.com/index.yaml"
         path2 = "http://test2.com/index.yaml"
 
-        services_map = self.yaml_parser_service.request_yaml_external([path, path2])
+        services_map = self.yaml_parser_service.request_yaml_external([path, path2],
+                                                                      self.config.get_filtered_ms_list())
 
         self.assertEqual(self.mock_get_yaml.call_count, 2)
         self.assertEqual(len(services_map), 10)
@@ -118,7 +119,8 @@ class TestYamlParserServiceUnit(TestUnitBase):
         path = "http://test.com/index.yaml"
         path2 = "http://test3.com/index.yaml"
 
-        services_map = self.yaml_parser_service.request_yaml_external([path, path2])
+        services_map = self.yaml_parser_service.request_yaml_external([path, path2],
+                                                                      self.config.get_filtered_ms_list())
 
         self.assertEqual(self.mock_get_yaml.call_count, 2)
         self.assertEqual(len(services_map), 10)
@@ -155,13 +157,14 @@ class TestYamlParserServiceUnit(TestUnitBase):
                                        '0.66.118')
 
     def test_request_yaml_external_empty_input(self):
-        services_map = self.yaml_parser_service.request_yaml_external([])
+        services_map = self.yaml_parser_service.request_yaml_external([], self.config.get_filtered_ms_list())
 
         self.mock_get_yaml.assert_not_called()
         self.assertEqual(len(services_map), 0)
 
     def test_request_yaml_external_none_input(self):
-        self.assert_exception(lambda: self.yaml_parser_service.request_yaml_external(None),
+        self.assert_exception(lambda: self.yaml_parser_service.request_yaml_external(None,
+                                                                                     self.config.get_filtered_ms_list()),
                               EmptyInputError,
                               "Provided to 'request_yaml_external' None urls list")
 

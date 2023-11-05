@@ -36,7 +36,7 @@ class SmartAnalyzeResponse:
         self._groups = groups
 
     def serialize(self) -> dict[str, Any]:
-        return utils.Utils.serialize_class(self)
+        return utils.Utils.serialize_class(self, [])
 
 
 class SmartAnalyzeResponseBuilder:

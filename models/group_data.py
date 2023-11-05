@@ -62,7 +62,7 @@ class GroupData:
         self.curr_flows_count += len(filtered_flows)
 
     def serialize(self) -> dict[str, Any]:
-        return utils.Utils.serialize_class(self)
+        return utils.Utils.serialize_class(self, [])
 
 
 class GroupDataBuilder:

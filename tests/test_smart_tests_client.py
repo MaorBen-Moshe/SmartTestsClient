@@ -3,7 +3,6 @@ import json
 import responses
 
 from clients.smart_tests_client import SmartTestsClient
-from constants.constants import GROUP4_XML
 from tests.test_base import TestBase
 from utils.utils import Utils
 
@@ -20,7 +19,8 @@ class TestSmartTestsClient(TestBase):
         with open("resources/all_flows_stats.json", mode="r") as f:
             responses.add(responses.POST, path, json=json.load(f), status=200)
 
-        groups_data = self.client.get_all_flows_stats(Utils.create_filter_by_list(GROUP4_XML))
+        group4_xml = self.config.get_supported_groups().get('oc-cd-group4-coc-include-ed').testng_xml
+        groups_data = self.client.get_all_flows_stats(Utils.create_filter_by_list(group4_xml))
 
         self.assertEqual(len(groups_data), 2)
 
