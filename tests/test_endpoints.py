@@ -125,7 +125,7 @@ class TestEndpointsUnit(TestUnitBase):
     def test_smart_tests_analyze_endpoint_missing_payload(self):
         res = self.client_fixture.post("/smart-tests-analyze", content_type='application/json')
         self.assertEqual(res.status_code, 400)
-        self.assertEqual((b'Error: 400 Bad Request: The browser (or proxy) sent a request that this server could not '
+        self.assertEqual((b'[ERROR] 400 Bad Request: The browser (or proxy) sent a request that this server could not '
                           b'understand.'), res.data)
 
     def test_smart_tests_analyze_endpoint_missing_buildUrl(self):
@@ -135,7 +135,7 @@ class TestEndpointsUnit(TestUnitBase):
 
         res = self.client_fixture.post("/smart-tests-analyze", json=data, content_type='application/json')
         self.assertEqual(res.status_code, 400)
-        self.assertEqual(b'Error: No build url provided.', res.data)
+        self.assertEqual(b'[ERROR] 400: No build url provided.', res.data)
 
     def test_smart_tests_analyze_endpoint_missing_groupName(self):
         data = {
@@ -144,4 +144,4 @@ class TestEndpointsUnit(TestUnitBase):
 
         res = self.client_fixture.post("/smart-tests-analyze", json=data, content_type='application/json')
         self.assertEqual(res.status_code, 400)
-        self.assertEqual(b"Error: Group Name: 'None' is not supported.", res.data)
+        self.assertEqual(b"[ERROR] 400: Group Name: 'None' is not supported.", res.data)

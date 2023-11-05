@@ -1,6 +1,8 @@
 from flask import Flask, request, jsonify, make_response
+from werkzeug.exceptions import HTTPException
 
 from appServices.analyze_app_service import AnalyzeAppService
+from exceptions.excpetions import SmartClientBaseException
 from models.analyze_app_params import AnalyzeAppServiceParametersBuilder
 from models.config_manager import ConfigManager
 from steps.check_analyze_input import CheckAnalyzeClientInputStep
@@ -29,9 +31,6 @@ def analyze():
         groups = config.get_supported_groups()
         req_data = request.get_json()
         CheckAnalyzeClientInputStep.check_input(req_data, groups)
-    except Exception as ex:
-        return make_response(f"Error: {ex}", 400)
-    else:
         parameters = (AnalyzeAppServiceParametersBuilder().group_name(req_data.get("groupName"))
                                                           .build_url(req_data.get("buildURL"))
                                                           .supported_groups(groups)
@@ -42,6 +41,13 @@ def analyze():
 
         res = service.analyze()
 
+    except SmartClientBaseException as ex:
+        return make_response(f"{ex}", ex.code)
+    except HTTPException as ex:
+        return make_response(f"[ERROR] {ex}", ex.code)
+    except Exception as ex:
+        return make_response(f"[ERROR] {ex}", 500)
+    else:
         return jsonify(res.serialize()), 200
 
 
