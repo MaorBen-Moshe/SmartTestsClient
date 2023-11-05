@@ -9,7 +9,10 @@ class TestEndpointsUnit(TestUnitBase):
     def test_supported_groups_endpoint_success(self):
         res = self.client_fixture.get("/supported-groups")
         self.assertEqual(res.status_code, 200)
-        self.assertEqual(b'[{"cluster":"ilocpde456","group_name":"oc-cd-group4-coc-include-ed"}]\n', res.data)
+        self.assertEqual(b'{"oc-cd-group4-coc-include-ed":{"cluster":"ilocpde456",'
+                         b'"group_name":"oc-cd-group4-coc-include-ed",'
+                         b'"url":"http://illin5565:18080/job/oc-cd-group4/job/oc-cd-group4-include-ed/"}}\n',
+                         res.data)
 
     def test_smart_tests_analyze_endpoint_success(self):
         # parameters

@@ -53,12 +53,14 @@ class ConfigManager(metaclass=SingletonMeta):
         if supported_groups_str_format:
             split_supported_groups = supported_groups_str_format.split(",")
             for supported_group in split_supported_groups:
-                group_name, cluster = supported_group.strip().split("|")
-                if group_name is not None and cluster is not None:
+                group_name, cluster, url = supported_group.strip().split("|")
+                if group_name is not None:
                     testng_xml = testng_xml_per_group.get(group_name, [])
                     groups[group_name] = (SupportedGroupBuilder().group_name(group_name)
-                                          .testng_xml(testng_xml)
-                                          .cluster(cluster).build())
+                                                                 .url(url)
+                                                                 .cluster(cluster)
+                                                                 .testng_xml(testng_xml)
+                                                                 .build())
 
         return groups
 

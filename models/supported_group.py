@@ -10,6 +10,7 @@ class SupportedGroup:
         self.group_name: str | None = None
         self.cluster: str | None = None
         self.testng_xml: list[str] = []
+        self.url: str | None = None
 
     def serialize(self) -> dict[str, Any]:
         return utils.Utils.serialize_class(self, ['testng_xml'])
@@ -29,6 +30,14 @@ class SupportedGroup:
     @cluster.setter
     def cluster(self, cluster: str | None):
         self._cluster = cluster
+
+    @property
+    def url(self) -> str | None:
+        return self._url
+
+    @url.setter
+    def url(self, url: str | None):
+        self._url = url
 
     @property
     def testng_xml(self) -> list[str]:
@@ -52,6 +61,10 @@ class SupportedGroupBuilder:
 
     def cluster(self, cluster: str | None) -> SupportedGroupBuilder:
         self.supported_group.cluster = cluster
+        return self
+
+    def url(self, url: str | None) -> SupportedGroupBuilder:
+        self.supported_group.url = url
         return self
 
     def testng_xml(self, testng_xml: list[str]) -> SupportedGroupBuilder:

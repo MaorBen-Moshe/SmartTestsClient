@@ -20,7 +20,7 @@ def health():
 def supported_groups():
     groups = config.get_supported_groups()
 
-    serialized_groups = [groups[group_name].serialize() for group_name in groups]
+    serialized_groups = {group_name: groups[group_name].serialize() for group_name in groups}
 
     return jsonify(serialized_groups), 200
 
