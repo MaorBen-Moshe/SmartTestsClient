@@ -1,6 +1,7 @@
 import os
 
 from flask import Flask, request, jsonify, make_response
+from flask_cors import CORS
 from werkzeug.exceptions import HTTPException
 
 from appServices.analyze_app_service import AnalyzeAppService
@@ -10,6 +11,7 @@ from models.config_manager import ConfigManager
 from steps.check_analyze_input import CheckAnalyzeClientInputStep
 
 app = Flask(__name__)
+CORS(app)
 config = ConfigManager()
 
 
