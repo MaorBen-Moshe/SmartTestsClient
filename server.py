@@ -1,3 +1,5 @@
+import os
+
 from flask import Flask, request, jsonify, make_response
 from werkzeug.exceptions import HTTPException
 
@@ -52,5 +54,6 @@ def analyze():
 
 
 if __name__ == '__main__':
-    config.init_configs("/root/smart-tests-client/config.ini")
+    dir_name = os.path.dirname(__file__)
+    config.init_configs(os.path.join(dir_name, "config.ini"))
     app.run(host="0.0.0.0", port=5001)

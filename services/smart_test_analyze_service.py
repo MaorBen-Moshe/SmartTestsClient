@@ -42,22 +42,23 @@ class SmartTestsAnalyzeService:
 
         data = self.client.get_all_flows_stats(include_groups_filter)
 
-        for curr_xml in data.get("smartTestsAllItem"):
-            split_name = curr_xml.get("name", "").rsplit('/', 1)
-            if len(split_name) == 2:
-                path = split_name[0]
-                name = split_name[1]
-            else:
-                name = split_name[0]
-                path = ""
+        if data is not None and type(data.get("flowsCount") is int) and data.get("flowsCount") > 0:
+            for curr_xml in data.get("smartTestsAllItem"):
+                split_name = curr_xml.get("name", "").rsplit('/', 1)
+                if len(split_name) == 2:
+                    path = split_name[0]
+                    name = split_name[1]
+                else:
+                    name = split_name[0]
+                    path = ""
 
-            total_count = curr_xml.get("flowsCount")
+                total_count = curr_xml.get("flowsCount")
 
-            if len(include_filter_list) == 0 or name.replace(".xml", "") in include_filter_list:
-                groups_data[name] = (GroupDataBuilder()
-                                     .group_name(name)
-                                     .group_path(path)
-                                     .total_flows_count(total_count)
-                                     .build())
+                if len(include_filter_list) == 0 or name.replace(".xml", "") in include_filter_list:
+                    groups_data[name] = (GroupDataBuilder()
+                                         .group_name(name)
+                                         .group_path(path)
+                                         .total_flows_count(total_count)
+                                         .build())
 
         return groups_data
