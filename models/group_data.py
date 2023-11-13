@@ -7,27 +7,27 @@ from utils import utils
 
 class GroupData:
     def __init__(self):
-        self.group_name = None
-        self.group_path = None
+        self.test_xml_name = None
+        self.test_xml_path = None
         self.total_flows_count = 0
         self.curr_flows_count = 0
         self.flows = []
 
     @property
-    def group_name(self) -> str | None:
-        return self._group_name
+    def test_xml_name(self) -> str | None:
+        return self._test_xml_name
 
-    @group_name.setter
-    def group_name(self, group_name: str | None):
-        self._group_name = group_name
+    @test_xml_name.setter
+    def test_xml_name(self, test_xml_name: str | None):
+        self._test_xml_name = test_xml_name
 
     @property
-    def group_path(self) -> str | None:
-        return self._group_path
+    def test_xml_path(self) -> str | None:
+        return self._test_xml_path
 
-    @group_path.setter
-    def group_path(self, group_path: str | None):
-        self._group_path = group_path
+    @test_xml_path.setter
+    def test_xml_path(self, test_xml_path: str | None):
+        self._test_xml_path = test_xml_path
 
     @property
     def total_flows_count(self) -> int:
@@ -72,12 +72,12 @@ class GroupDataBuilder:
     def build(self) -> GroupData:
         return self.group_data
 
-    def group_name(self, group_name: str | None) -> GroupDataBuilder:
-        self.group_data.group_name = group_name
+    def test_xml_name(self, test_xml_name: str | None) -> GroupDataBuilder:
+        self.group_data.test_xml_name = test_xml_name
         return self
 
-    def group_path(self, group_path: str | None) -> GroupDataBuilder:
-        self.group_data.group_path = group_path
+    def test_xml_path(self, test_xml_path: str | None) -> GroupDataBuilder:
+        self.group_data.test_xml_path = test_xml_path
         return self
 
     def total_flows_count(self, total_flows_count: int) -> GroupDataBuilder:

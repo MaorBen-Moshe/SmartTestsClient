@@ -62,8 +62,8 @@ class TestUnitBase(TestBase):
 
     def assert_group_data(self, group_data: GroupData, name: str, path: str, total_count: int):
         self.assertIsNotNone(group_data)
-        self.assertEqual(group_data.group_name, name)
-        self.assertEqual(group_data.group_path, path)
+        self.assertEqual(group_data.test_xml_name, name)
+        self.assertEqual(group_data.test_xml_path, path)
         self.assertEqual(group_data.total_flows_count, total_count)
 
     @staticmethod

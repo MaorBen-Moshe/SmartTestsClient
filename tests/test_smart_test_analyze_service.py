@@ -67,8 +67,8 @@ class TestHandleGroupsDataStepUnit(TestUnitBase):
         }
         filter_group = ["group1", "group2"]
         groups_data = {
-            "group1": GroupDataBuilder().group_name("group1").group_path("").total_flows_count(10).build(),
-            "group2": GroupDataBuilder().group_name("group2").group_path("").total_flows_count(20).build(),
+            "group1": GroupDataBuilder().test_xml_name("group1").test_xml_path("").total_flows_count(10).build(),
+            "group2": GroupDataBuilder().test_xml_name("group2").test_xml_path("").total_flows_count(20).build(),
         }
 
         self.smart_test_analyze_service.analyze_flows(services_map, filter_group, groups_data)

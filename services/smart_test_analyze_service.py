@@ -56,8 +56,8 @@ class SmartTestsAnalyzeService:
 
                 if len(include_filter_list) == 0 or name.replace(".xml", "") in include_filter_list:
                     groups_data[name] = (GroupDataBuilder()
-                                         .group_name(name)
-                                         .group_path(path)
+                                         .test_xml_name(name)
+                                         .test_xml_path(path)
                                          .total_flows_count(total_count)
                                          .build())
 
