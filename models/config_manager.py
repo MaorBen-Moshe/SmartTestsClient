@@ -47,6 +47,12 @@ class ConfigManager(metaclass=SingletonMeta):
     def get_smart_tests_statistics_url(self) -> str:
         return self._config["SMART_CLIENT"]["smart_tests_statistics"]
 
+    def get_admin_api_token(self) -> str:
+        return self._config["API"]["admin_token"]
+
+    def get_user_api_token(self) -> str:
+        return self._config["API"]["user_token"]
+
     def __get_supported_groups_helper(self, supported_groups_str_format: str) -> dict[str, SupportedGroup]:
         groups = {}
         testng_xml_per_group = self.__get_testng_xml_per_group_helper(self._config["DEFAULT"]["testng_xml_per_group"])

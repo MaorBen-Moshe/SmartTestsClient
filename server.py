@@ -1,26 +1,37 @@
 import os
+from http import HTTPStatus
 
+import flask
 from flask import Flask, request, jsonify, make_response
 from flask_cors import CORS
+from flask_login import LoginManager, login_required, current_user
 from werkzeug.exceptions import HTTPException
 
 from appServices.analyze_app_service import AnalyzeAppService
 from exceptions.excpetions import SmartClientBaseException
 from models.analyze_app_params import AnalyzeAppServiceParametersBuilder
 from models.config_manager import ConfigManager
+from models.user import UserBuilder
 from steps.check_analyze_input import CheckAnalyzeClientInputStep
 
 app = Flask(__name__)
 CORS(app)
 config = ConfigManager()
+login_manager = LoginManager()
+login_manager.init_app(app)
 
 
 @app.route("/health")
+@login_required
 def health():
-    return jsonify({"status": "I'm fine."}), 200
+    if current_user.is_admin:
+        return jsonify({"status": "I'm fine."}), 200
+    else:
+        flask.abort(HTTPStatus.UNAUTHORIZED)
 
 
 @app.route("/supported-groups", methods=["GET"])
+@login_required
 def supported_groups():
     groups = config.get_supported_groups()
 
@@ -30,6 +41,7 @@ def supported_groups():
 
 
 @app.route("/smart-tests-analyze", methods=["POST"])
+@login_required
 def analyze():
     try:
         groups = config.get_supported_groups()
@@ -53,6 +65,20 @@ def analyze():
         return make_response(f"[ERROR] {ex}", 500)
     else:
         return jsonify(res.serialize()), 200
+
+
+@login_manager.request_loader
+def load_user_from_request(req):
+    api_key = req.args.get('api_key')
+    if api_key:
+        if config.get_admin_api_token() == api_key:
+            return UserBuilder().is_admin(True).build()
+        elif config.get_user_api_token() == api_key:
+            return UserBuilder().is_admin(False).build()
+        else:
+            return None
+
+    return None
 
 
 if __name__ == '__main__':

@@ -7,12 +7,17 @@ class TestEndpointsUnit(TestUnitBase):
         super().setUp()
 
     def test_supported_groups_endpoint_success(self):
-        res = self.client_fixture.get("/supported-groups")
+        res = self.client_fixture.get("/supported-groups", query_string={"api_key": self.config.get_user_api_token()})
         self.assertEqual(res.status_code, 200)
         self.assertEqual(b'{"oc-cd-group4-coc-include-ed":{"cluster":"ilocpde456",'
                          b'"group_name":"oc-cd-group4-coc-include-ed",'
                          b'"url":"http://illin5565:18080/job/oc-cd-group4/job/oc-cd-group4-include-ed/"}}\n',
                          res.data)
+
+    def test_supported_groups_endpoint_missing_api_key(self):
+        res = self.client_fixture.get("/supported-groups")
+
+        self.assertEqual(res.status_code, 401)
 
     def test_smart_tests_analyze_endpoint_success(self):
         # parameters
@@ -23,7 +28,10 @@ class TestEndpointsUnit(TestUnitBase):
         }
 
         # execute
-        res = self.client_fixture.post("/smart-tests-analyze", json=data, content_type='application/json')
+        res = self.client_fixture.post("/smart-tests-analyze",
+                                       json=data,
+                                       content_type='application/json',
+                                       query_string={"api_key": self.config.get_user_api_token()})
 
         # asserts
         self.assertEqual(res.status_code, 200)
@@ -87,7 +95,10 @@ class TestEndpointsUnit(TestUnitBase):
         }
 
         # execute
-        res = self.client_fixture.post("/smart-tests-analyze", json=data, content_type='application/json')
+        res = self.client_fixture.post("/smart-tests-analyze",
+                                       json=data,
+                                       content_type='application/json',
+                                       query_string={"api_key": self.config.get_user_api_token()})
 
         # asserts
         self.assertEqual(res.status_code, 200)
@@ -126,7 +137,9 @@ class TestEndpointsUnit(TestUnitBase):
         self.mock_analyze_flows.assert_not_called()
 
     def test_smart_tests_analyze_endpoint_missing_payload(self):
-        res = self.client_fixture.post("/smart-tests-analyze", content_type='application/json')
+        res = self.client_fixture.post("/smart-tests-analyze",
+                                       content_type='application/json',
+                                       query_string={"api_key": self.config.get_user_api_token()})
         self.assertEqual(res.status_code, 400)
         self.assertEqual((b'[ERROR] 400 Bad Request: The browser (or proxy) sent a request that this server could not '
                           b'understand.'), res.data)
@@ -136,7 +149,10 @@ class TestEndpointsUnit(TestUnitBase):
             "groupName": "group_name",
         }
 
-        res = self.client_fixture.post("/smart-tests-analyze", json=data, content_type='application/json')
+        res = self.client_fixture.post("/smart-tests-analyze",
+                                       json=data,
+                                       content_type='application/json',
+                                       query_string={"api_key": self.config.get_user_api_token()})
         self.assertEqual(res.status_code, 400)
         self.assertEqual(b'[ERROR] 400: No build url provided.', res.data)
 
@@ -145,6 +161,23 @@ class TestEndpointsUnit(TestUnitBase):
             "buildURL": "build_url",
         }
 
-        res = self.client_fixture.post("/smart-tests-analyze", json=data, content_type='application/json')
+        res = self.client_fixture.post("/smart-tests-analyze",
+                                       json=data,
+                                       content_type='application/json',
+                                       query_string={"api_key": self.config.get_user_api_token()})
         self.assertEqual(res.status_code, 400)
         self.assertEqual(b"[ERROR] 400: Group Name: 'None' is not supported.", res.data)
+
+    def test_smart_tests_analyze_endpoint_missing_api_key(self):
+        # parameters
+        data = {
+            "buildURL": "http://illin5565:18080/job/oc-cd-group4/job/oc-cd-group4-include-ed/lastSuccessfulBuild"
+                        "/BuildReport/*zip*/BuildReport.zip",
+            "groupName": "oc-cd-group4-coc-include-ed",
+        }
+
+        # execute
+        res = self.client_fixture.post("/smart-tests-analyze", json=data, content_type='application/json')
+
+        # asserts
+        self.assertEqual(res.status_code, 401)

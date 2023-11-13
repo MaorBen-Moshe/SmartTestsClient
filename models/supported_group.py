@@ -50,23 +50,23 @@ class SupportedGroup:
 
 class SupportedGroupBuilder:
     def __init__(self):
-        self.supported_group = SupportedGroup()
+        self._supported_group = SupportedGroup()
 
     def build(self) -> SupportedGroup:
-        return self.supported_group
+        return self._supported_group
 
     def group_name(self, group_name: str | None) -> SupportedGroupBuilder:
-        self.supported_group.group_name = group_name
+        self._supported_group.group_name = group_name
         return self
 
     def cluster(self, cluster: str | None) -> SupportedGroupBuilder:
-        self.supported_group.cluster = cluster
+        self._supported_group.cluster = cluster
         return self
 
     def url(self, url: str | None) -> SupportedGroupBuilder:
-        self.supported_group.url = url
+        self._supported_group.url = url
         return self
 
     def testng_xml(self, testng_xml: list[str]) -> SupportedGroupBuilder:
-        self.supported_group.testng_xml = testng_xml
+        self._supported_group.testng_xml = testng_xml
         return self
