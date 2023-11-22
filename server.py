@@ -43,28 +43,20 @@ def supported_groups():
 @app.route("/smart-tests-analyze", methods=["POST"])
 @login_required
 def analyze():
-    try:
-        groups = config.get_supported_groups()
-        req_data = request.get_json()
-        CheckAnalyzeClientInputStep.check_input(req_data, groups)
-        parameters = (AnalyzeAppServiceParametersBuilder().group_name(req_data.get("groupName"))
-                                                          .build_url(req_data.get("buildURL"))
-                                                          .supported_groups(groups)
-                                                          .filtered_ms_list(config.get_filtered_ms_list())
-                                                          .build())
+    groups = config.get_supported_groups()
+    req_data = request.get_json()
+    CheckAnalyzeClientInputStep.check_input(req_data, groups)
+    parameters = (AnalyzeAppServiceParametersBuilder().group_name(req_data.get("groupName"))
+                  .build_url(req_data.get("buildURL"))
+                  .supported_groups(groups)
+                  .filtered_ms_list(config.get_filtered_ms_list())
+                  .build())
 
-        service = AnalyzeAppService(parameters)
+    service = AnalyzeAppService(parameters)
 
-        res = service.analyze()
+    res = service.analyze()
 
-    except SmartClientBaseException as ex:
-        return make_response(f"{ex}", ex.code)
-    except HTTPException as ex:
-        return make_response(f"[ERROR] {ex}", ex.code)
-    except Exception as ex:
-        return make_response(f"[ERROR] {ex}", 500)
-    else:
-        return jsonify(res.serialize()), 200
+    return jsonify(res.serialize()), 200
 
 
 @login_manager.request_loader
@@ -79,6 +71,18 @@ def load_user_from_request(req):
             return None
 
     return None
+
+
+@app.errorhandler(Exception)
+def handle_exception(ex):
+    error_msg = f"[ERROR] {ex}"
+    error_code = 500
+    if isinstance(ex, SmartClientBaseException):
+        error_code = ex.code
+    elif isinstance(ex, HTTPException):
+        error_code = ex.code
+
+    return make_response(error_msg, error_code)
 
 
 if __name__ == '__main__':

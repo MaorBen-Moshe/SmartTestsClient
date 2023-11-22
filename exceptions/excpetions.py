@@ -2,8 +2,8 @@ from __future__ import annotations
 
 
 class SmartClientBaseException(Exception):
-    def __init__(self, message: str | None, code: int, level: str = 'ERROR'):
-        super().__init__(f"[{level}] {code}: {message}")
+    def __init__(self, message: str | None, code: int):
+        super().__init__(f"{code}: {message}")
         self.code = code
 
 
