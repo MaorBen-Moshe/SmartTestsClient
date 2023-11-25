@@ -2,6 +2,8 @@ from __future__ import annotations
 
 from flask_login import UserMixin
 
+from app.models.builder import Builder
+
 
 class User(UserMixin):
     def __init__(self):
@@ -15,14 +17,16 @@ class User(UserMixin):
     def is_admin(self, is_admin: bool | None):
         self._is_admin = False if is_admin is None else is_admin
 
+    @staticmethod
+    def create():
+        return UserBuilder()
 
-class UserBuilder:
-    def __init__(self):
-        self._user = User()
 
-    def build(self) -> User:
-        return self._user
+class UserBuilder(Builder):
+    def __init__(self, user=None):
+        user = user if user is not None else User()
+        super().__init__(user)
 
     def is_admin(self, is_admin: bool | None) -> UserBuilder:
-        self._user.is_admin = is_admin
+        self.item.is_admin = is_admin
         return self

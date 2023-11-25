@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 from app.clients.html_parser_client import HtmlParserClient
 from app.constants.constants import TR, TD, B
 from app.exceptions.excpetions import NotFoundError
-from app.models.service_data import ServiceData, ServiceDataBuilder
+from app.models.service_data import ServiceData
 
 
 class HtmlParserService:
@@ -62,4 +62,4 @@ class HtmlParserService:
                     if name in services_map:
                         services_map[name].old_version = version
                     else:
-                        services_map[name] = ServiceDataBuilder().old_version(version).new_version(version).build()
+                        services_map[name] = ServiceData.create().old_version(version).new_version(version).build()

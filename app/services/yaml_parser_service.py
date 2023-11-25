@@ -4,7 +4,7 @@ from distutils.version import LooseVersion
 
 from app.clients.yaml_parser_client import YamlParserClient
 from app.exceptions.excpetions import EmptyInputError
-from app.models.service_data import ServiceData, ServiceDataBuilder
+from app.models.service_data import ServiceData
 
 
 class YamlParserService:
@@ -32,7 +32,7 @@ class YamlParserService:
                         version_list = [curr.get('version') for curr in entries.get(entry)]
                         sorted_list = sorted(version_list, key=LooseVersion, reverse=True)
                         if len(sorted_list) > 0:
-                            self.services_map[entry] = (ServiceDataBuilder().new_version(sorted_list[0])
+                            self.services_map[entry] = (ServiceData.create().new_version(sorted_list[0])
                                                         .old_version(sorted_list[0])
                                                         .build())
                 except Exception as ex:

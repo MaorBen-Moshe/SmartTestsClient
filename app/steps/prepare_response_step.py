@@ -1,5 +1,5 @@
 from app.models.group_data import GroupData
-from app.models.smart_analyze_response import SmartAnalyzeResponse, SmartAnalyzeResponseBuilder
+from app.models.smart_analyze_response import SmartAnalyzeResponse
 
 
 class PrepareResponseStep:
@@ -11,6 +11,6 @@ class PrepareResponseStep:
         curr_flows_count = sum([groups_data[key].curr_flows_count for key in groups_data
                                 if groups_data[key].curr_flows_count > 0])
 
-        return (SmartAnalyzeResponseBuilder().total_flows_count(total_count)
+        return (SmartAnalyzeResponse.create().total_flows_count(total_count)
                 .curr_flows_count(curr_flows_count)
                 .groups({key: groups_data.get(key).serialize() for key in groups_data}).build())

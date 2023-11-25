@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from app.clients.smart_tests_client import SmartTestsClient
 from app.exceptions.excpetions import EmptyInputError
-from app.models.group_data import GroupData, GroupDataBuilder
+from app.models.group_data import GroupData
 from app.models.service_data import ServiceData
 from app.utils.utils import Utils
 
@@ -55,7 +55,8 @@ class SmartTestsAnalyzeService:
                 total_count = curr_xml.get("flowsCount")
 
                 if len(include_filter_list) == 0 or name.replace(".xml", "") in include_filter_list:
-                    groups_data[name] = (GroupDataBuilder()
+                    groups_data[name] = (GroupData
+                                         .create()
                                          .test_xml_name(name)
                                          .test_xml_path(path)
                                          .total_flows_count(total_count)

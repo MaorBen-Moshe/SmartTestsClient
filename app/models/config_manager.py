@@ -6,7 +6,7 @@ from cryptography.fernet import Fernet
 
 from app.exceptions.excpetions import ConfigurationError
 from app.models.singleton_meta import SingletonMeta
-from app.models.supported_group import SupportedGroup, SupportedGroupBuilder
+from app.models.supported_group import SupportedGroup
 
 
 class ConfigManager(metaclass=SingletonMeta):
@@ -62,11 +62,11 @@ class ConfigManager(metaclass=SingletonMeta):
                 group_name, cluster, url = supported_group.strip().split("|")
                 if group_name is not None:
                     testng_xml = testng_xml_per_group.get(group_name, [])
-                    groups[group_name] = (SupportedGroupBuilder().group_name(group_name)
-                                                                 .url(url)
-                                                                 .cluster(cluster)
-                                                                 .testng_xml(testng_xml)
-                                                                 .build())
+                    groups[group_name] = (SupportedGroup.create().group_name(group_name)
+                                          .url(url)
+                                          .cluster(cluster)
+                                          .testng_xml(testng_xml)
+                                          .build())
 
         return groups
 

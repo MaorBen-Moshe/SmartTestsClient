@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from typing import Any
 
+from app.models.builder import Builder
 from app.utils import utils
 
 
@@ -47,26 +48,28 @@ class SupportedGroup:
     def testng_xml(self, testng_xml: list[str]):
         self._testng_xml = testng_xml
 
+    @staticmethod
+    def create():
+        return SupportedGroupBuilder()
 
-class SupportedGroupBuilder:
-    def __init__(self):
-        self._supported_group = SupportedGroup()
 
-    def build(self) -> SupportedGroup:
-        return self._supported_group
+class SupportedGroupBuilder(Builder):
+    def __init__(self, supported_group=None):
+        supported_group = supported_group if supported_group is not None else SupportedGroup()
+        super().__init__(supported_group)
 
     def group_name(self, group_name: str | None) -> SupportedGroupBuilder:
-        self._supported_group.group_name = group_name
+        self.item.group_name = group_name
         return self
 
     def cluster(self, cluster: str | None) -> SupportedGroupBuilder:
-        self._supported_group.cluster = cluster
+        self.item.cluster = cluster
         return self
 
     def url(self, url: str | None) -> SupportedGroupBuilder:
-        self._supported_group.url = url
+        self.item.url = url
         return self
 
     def testng_xml(self, testng_xml: list[str]) -> SupportedGroupBuilder:
-        self._supported_group.testng_xml = testng_xml
+        self.item.testng_xml = testng_xml
         return self

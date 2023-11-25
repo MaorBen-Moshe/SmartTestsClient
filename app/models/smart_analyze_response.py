@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from typing import Any
 
+from app.models.builder import Builder
 from app.utils import utils
 
 
@@ -38,22 +39,24 @@ class SmartAnalyzeResponse:
     def serialize(self) -> dict[str, Any]:
         return utils.Utils.serialize_class(self, [])
 
+    @staticmethod
+    def create():
+        return SmartAnalyzeResponseBuilder()
 
-class SmartAnalyzeResponseBuilder:
-    def __init__(self):
-        self._smart_analyze_response = SmartAnalyzeResponse()
 
-    def build(self) -> SmartAnalyzeResponse:
-        return self._smart_analyze_response
+class SmartAnalyzeResponseBuilder(Builder):
+    def __init__(self, smart_analyze_response=None):
+        smart_analyze_response = smart_analyze_response if smart_analyze_response is not None else SmartAnalyzeResponse()
+        super().__init__(smart_analyze_response)
 
     def total_flows_count(self, total_flows_count: int) -> SmartAnalyzeResponseBuilder:
-        self._smart_analyze_response.total_flows_count = total_flows_count
+        self.item.total_flows_count = total_flows_count
         return self
 
     def curr_flows_count(self, curr_flows_count: int) -> SmartAnalyzeResponseBuilder:
-        self._smart_analyze_response.curr_flows_count = curr_flows_count
+        self.item.curr_flows_count = curr_flows_count
         return self
 
     def groups(self, groups: dict[str, Any] | None) -> SmartAnalyzeResponseBuilder:
-        self._smart_analyze_response.groups = groups
+        self.item.groups = groups
         return self

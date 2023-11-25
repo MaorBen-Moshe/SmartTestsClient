@@ -1,21 +1,19 @@
-from app import app
-
 import os
 from http import HTTPStatus
 
 import flask
-from flask import Flask, request, jsonify, make_response
+from flask import request, jsonify, make_response
 from flask_cors import CORS
 from flask_login import LoginManager, login_required, current_user
 from werkzeug.exceptions import HTTPException
 
+from app import app
 from app.appServices.analyze_app_service import AnalyzeAppService
 from app.exceptions.excpetions import SmartClientBaseException
 from app.models.analyze_app_params import AnalyzeAppServiceParametersBuilder
 from app.models.config_manager import ConfigManager
-from app.models.user import UserBuilder
+from app.models.user import User
 from app.steps.check_analyze_input import CheckAnalyzeClientInputStep
-
 
 CORS(app)
 
@@ -69,9 +67,9 @@ def load_user_from_request(req):
     api_key = req.args.get('api_key')
     if api_key:
         if config.get_admin_api_token() == api_key:
-            return UserBuilder().is_admin(True).build()
+            return User.create().is_admin(True).build()
         elif config.get_user_api_token() == api_key:
-            return UserBuilder().is_admin(False).build()
+            return User.create().is_admin(False).build()
         else:
             return None
 

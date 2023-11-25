@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from app.models.builder import Builder
 from app.models.supported_group import SupportedGroup
 
 
@@ -42,26 +43,28 @@ class AnalyzeAppServiceParameters:
     def filtered_ms_list(self, filtered_ms_list: list[str]) -> None:
         self._filtered_ms_list = filtered_ms_list
 
+    @staticmethod
+    def create():
+        return AnalyzeAppServiceParametersBuilder()
 
-class AnalyzeAppServiceParametersBuilder:
-    def __init__(self):
-        self.parameters = AnalyzeAppServiceParameters()
 
-    def build(self) -> AnalyzeAppServiceParameters:
-        return self.parameters
+class AnalyzeAppServiceParametersBuilder(Builder):
+    def __init__(self, parameters=None):
+        parameters = parameters if parameters is not None else AnalyzeAppServiceParameters()
+        super().__init__(parameters)
 
     def group_name(self, group_name: str | None) -> AnalyzeAppServiceParametersBuilder:
-        self.parameters.group_name = group_name
+        self.item.group_name = group_name
         return self
 
     def build_url(self, build_url: str | None) -> AnalyzeAppServiceParametersBuilder:
-        self.parameters.build_url = build_url
+        self.item.build_url = build_url
         return self
 
     def supported_groups(self, supported_groups: dict[str, SupportedGroup]) -> AnalyzeAppServiceParametersBuilder:
-        self.parameters.supported_groups = supported_groups
+        self.item.supported_groups = supported_groups
         return self
 
     def filtered_ms_list(self, filtered_ms_list: list[str]) -> AnalyzeAppServiceParametersBuilder:
-        self.parameters.filtered_ms_list = filtered_ms_list
+        self.item.filtered_ms_list = filtered_ms_list
         return self

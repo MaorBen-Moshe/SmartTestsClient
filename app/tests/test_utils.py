@@ -1,6 +1,6 @@
 import pytest
 
-from app.models.service_data import ServiceDataBuilder
+from app.models.service_data import ServiceData
 from test_base import TestBase
 from app.utils.utils import Utils
 
@@ -45,10 +45,10 @@ class TestUtils(TestBase):
                 self.gender = gender
 
         @pytest.mark.parametrize("cls, ignore_fields, expected", [
-            (ServiceDataBuilder().old_version("old_version").new_version("new_version").build(),
+            (ServiceData.create().old_version("old_version").new_version("new_version").build(),
              [],
              {"old_version": "old_version", "new_version": "new_version"}),
-            (ServiceDataBuilder().old_version("old_version").new_version("new_version").build(),
+            (ServiceData.create().old_version("old_version").new_version("new_version").build(),
              ['_old_version'],
              {"new_version": "new_version"}),
             (WithoutProperties("Alice", 25, "female"),

@@ -1,5 +1,5 @@
 from app.exceptions.excpetions import NotFoundError
-from app.models.service_data import ServiceData, ServiceDataBuilder
+from app.models.service_data import ServiceData
 from app.services.html_parser_service import HtmlParserService
 from test_base import TestUnitBase
 
@@ -45,8 +45,8 @@ class TestHtmlParserServiceUnit(TestUnitBase):
     def test_load_html_services_map_contains_common_entry(self):
         service = HtmlParserService()
         services_map = {
-            "productconfigurator-action": ServiceDataBuilder().old_version("0.67.6").new_version("0.67.9").build(),
-            "productconfigurator-commitmentterm": ServiceDataBuilder().old_version("0.67.1").new_version(
+            "productconfigurator-action": ServiceData.create().old_version("0.67.6").new_version("0.67.9").build(),
+            "productconfigurator-commitmentterm": ServiceData.create().old_version("0.67.1").new_version(
                 "0.67.10").build(),
         }
 

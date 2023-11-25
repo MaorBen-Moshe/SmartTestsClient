@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from typing import Any
 
+from app.models.builder import Builder
 from app.utils import utils
 
 
@@ -64,27 +65,29 @@ class GroupData:
     def serialize(self) -> dict[str, Any]:
         return utils.Utils.serialize_class(self, [])
 
+    @staticmethod
+    def create():
+        return GroupDataBuilder()
 
-class GroupDataBuilder:
-    def __init__(self):
-        self._group_data = GroupData()
 
-    def build(self) -> GroupData:
-        return self._group_data
+class GroupDataBuilder(Builder):
+    def __init__(self, group_data=None):
+        group_data = group_data if group_data is not None else GroupData()
+        super().__init__(group_data)
 
     def test_xml_name(self, test_xml_name: str | None) -> GroupDataBuilder:
-        self._group_data.test_xml_name = test_xml_name
+        self.item.test_xml_name = test_xml_name
         return self
 
     def test_xml_path(self, test_xml_path: str | None) -> GroupDataBuilder:
-        self._group_data.test_xml_path = test_xml_path
+        self.item.test_xml_path = test_xml_path
         return self
 
     def total_flows_count(self, total_flows_count: int) -> GroupDataBuilder:
-        self._group_data.total_flows_count = total_flows_count
+        self.item.total_flows_count = total_flows_count
         return self
 
     def flows(self, flows: list[str] | None) -> GroupDataBuilder:
-        self._group_data.flows = flows
-        self._group_data.curr_flows_count = len(flows) if flows is not None else 0
+        self.item.flows = flows
+        self.item.curr_flows_count = len(flows) if flows is not None else 0
         return self
