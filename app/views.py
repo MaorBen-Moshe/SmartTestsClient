@@ -10,7 +10,7 @@ from werkzeug.exceptions import HTTPException
 from app import app
 from app.appServices.analyze_app_service import AnalyzeAppService
 from app.exceptions.excpetions import SmartClientBaseException
-from app.models.analyze_app_params import AnalyzeAppServiceParametersBuilder
+from app.models.analyze_app_params import AnalyzeAppServiceParameters
 from app.models.config_manager import ConfigManager
 from app.models.user import User
 from app.steps.check_analyze_input import CheckAnalyzeClientInputStep
@@ -49,7 +49,9 @@ def analyze():
     groups = config.get_supported_groups()
     req_data = request.get_json()
     CheckAnalyzeClientInputStep.check_input(req_data, groups)
-    parameters = (AnalyzeAppServiceParametersBuilder().group_name(req_data.get("groupName"))
+    parameters = (AnalyzeAppServiceParameters
+                  .create()
+                  .group_name(req_data.get("groupName"))
                   .build_url(req_data.get("buildURL"))
                   .supported_groups(groups)
                   .filtered_ms_list(config.get_filtered_ms_list())
