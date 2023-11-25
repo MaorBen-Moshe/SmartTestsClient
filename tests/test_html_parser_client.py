@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 
 from clients.html_parser_client import HtmlParserClient
 from exceptions.excpetions import URLError
-from tests.test_base import TestBase
+from test_base import TestBase
 
 
 class TestHtmlParserClient(TestBase):

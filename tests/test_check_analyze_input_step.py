@@ -1,6 +1,6 @@
 from exceptions.excpetions import BadRequest
 from steps.check_analyze_input import CheckAnalyzeClientInputStep
-from tests.test_base import TestUnitBase
+from test_base import TestUnitBase
 
 
 class TestCheckAnalyzeInputUnit(TestUnitBase):

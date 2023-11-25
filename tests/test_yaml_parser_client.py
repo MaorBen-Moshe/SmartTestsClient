@@ -2,7 +2,7 @@ import responses
 
 from clients.yaml_parser_client import YamlParserClient
 from exceptions.excpetions import URLError
-from tests.test_base import TestBase
+from test_base import TestBase
 
 
 class TestYamlParserClient(TestBase):

@@ -2,7 +2,7 @@ from exceptions.excpetions import EmptyInputError
 from models.group_data import GroupDataBuilder
 from models.service_data import ServiceDataBuilder
 from services.smart_test_analyze_service import SmartTestsAnalyzeService
-from tests.test_base import TestUnitBase
+from test_base import TestUnitBase
 
 
 class TestHandleGroupsDataStepUnit(TestUnitBase):

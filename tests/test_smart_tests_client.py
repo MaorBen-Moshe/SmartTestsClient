@@ -3,7 +3,7 @@ import json
 import responses
 
 from clients.smart_tests_client import SmartTestsClient
-from tests.test_base import TestBase
+from test_base import TestBase
 from utils.utils import Utils
 
 

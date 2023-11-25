@@ -1,7 +1,7 @@
 from exceptions.excpetions import NotFoundError
 from models.service_data import ServiceData, ServiceDataBuilder
 from services.html_parser_service import HtmlParserService
-from tests.test_base import TestUnitBase
+from test_base import TestUnitBase
 
 
 class TestHtmlParserServiceUnit(TestUnitBase):

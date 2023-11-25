@@ -1,4 +1,4 @@
-from tests.test_base import TestUnitBase
+from test_base import TestUnitBase
 
 
 class TestEndpointsUnit(TestUnitBase):

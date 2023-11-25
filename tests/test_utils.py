@@ -1,7 +1,7 @@
 import pytest
 
 from models.service_data import ServiceDataBuilder
-from tests.test_base import TestBase
+from test_base import TestBase
 from utils.utils import Utils
 
 
