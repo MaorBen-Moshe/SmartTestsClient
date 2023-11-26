@@ -44,7 +44,7 @@ class SmartAnalyzeResponse:
         return SmartAnalyzeResponseBuilder()
 
 
-class SmartAnalyzeResponseBuilder(Builder):
+class SmartAnalyzeResponseBuilder(Builder[SmartAnalyzeResponse]):
     def __init__(self, smart_analyze_response=None):
         smart_analyze_response = smart_analyze_response if smart_analyze_response is not None else SmartAnalyzeResponse()
         super().__init__(smart_analyze_response)

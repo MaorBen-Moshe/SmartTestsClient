@@ -1,9 +1,11 @@
-from typing import Any
+from typing import TypeVar, Generic
+
+T = TypeVar("T")
 
 
-class Builder:
-    def __init__(self, item: Any):
+class Builder(Generic[T]):
+    def __init__(self, item: T):
         self.item = item
 
-    def build(self) -> Any:
+    def build(self) -> T:
         return self.item

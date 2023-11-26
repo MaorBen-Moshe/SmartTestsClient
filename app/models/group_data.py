@@ -70,7 +70,7 @@ class GroupData:
         return GroupDataBuilder()
 
 
-class GroupDataBuilder(Builder):
+class GroupDataBuilder(Builder[GroupData]):
     def __init__(self, group_data=None):
         group_data = group_data if group_data is not None else GroupData()
         super().__init__(group_data)

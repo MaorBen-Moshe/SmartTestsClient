@@ -29,7 +29,7 @@ class ServiceData:
         return ServiceDataBuilder()
 
 
-class ServiceDataBuilder(Builder):
+class ServiceDataBuilder(Builder[ServiceData]):
     def __init__(self, service_data=None):
         service_data = service_data if service_data is not None else ServiceData()
         super().__init__(service_data)

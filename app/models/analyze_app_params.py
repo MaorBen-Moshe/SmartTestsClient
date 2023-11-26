@@ -48,7 +48,7 @@ class AnalyzeAppServiceParameters:
         return AnalyzeAppServiceParametersBuilder()
 
 
-class AnalyzeAppServiceParametersBuilder(Builder):
+class AnalyzeAppServiceParametersBuilder(Builder[AnalyzeAppServiceParameters]):
     def __init__(self, parameters=None):
         parameters = parameters if parameters is not None else AnalyzeAppServiceParameters()
         super().__init__(parameters)

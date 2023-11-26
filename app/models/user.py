@@ -22,7 +22,7 @@ class User(UserMixin):
         return UserBuilder()
 
 
-class UserBuilder(Builder):
+class UserBuilder(Builder[User]):
     def __init__(self, user=None):
         user = user if user is not None else User()
         super().__init__(user)

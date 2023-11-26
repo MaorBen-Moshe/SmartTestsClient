@@ -53,7 +53,7 @@ class SupportedGroup:
         return SupportedGroupBuilder()
 
 
-class SupportedGroupBuilder(Builder):
+class SupportedGroupBuilder(Builder[SupportedGroup]):
     def __init__(self, supported_group=None):
         supported_group = supported_group if supported_group is not None else SupportedGroup()
         super().__init__(supported_group)
