@@ -25,6 +25,7 @@ class TestEndpointsUnit(TestUnitBase):
             "buildURL": "http://illin5565:18080/job/oc-cd-group4/job/oc-cd-group4-include-ed/lastSuccessfulBuild"
                         "/BuildReport/*zip*/BuildReport.zip",
             "groupName": "oc-cd-group4-coc-include-ed",
+            "sessionID": "session_id",
         }
 
         # execute
@@ -92,6 +93,7 @@ class TestEndpointsUnit(TestUnitBase):
         data = {
             "buildURL": "http://test_html_same_version/zipfile.zip",
             "groupName": "oc-cd-group4-coc-include-ed",
+            "sessionID": "session_id",
         }
 
         # execute

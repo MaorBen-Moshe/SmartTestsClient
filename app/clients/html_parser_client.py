@@ -8,7 +8,7 @@ import requests
 from requests.auth import HTTPBasicAuth
 
 from app.exceptions.excpetions import URLError
-from app.models.config_manager import ConfigManager
+from app import config
 from app.utils.utils import Utils
 
 
@@ -18,7 +18,6 @@ class HtmlParserClient:
         if not Utils.is_valid_url(build_url):
             raise URLError(f"Build report url: '{build_url}' is not valid.")
 
-        config = ConfigManager()
         user, password = config.get_jenkins_cred()
         html = None
         with (requests.get(url=build_url,

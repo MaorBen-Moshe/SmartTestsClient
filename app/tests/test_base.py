@@ -5,7 +5,7 @@ import unittest.mock as mock
 import pytest
 import yaml
 
-from app.models.config_manager import ConfigManager
+from app import config
 from app.models.group_data import GroupData
 from app.models.service_data import ServiceData
 
@@ -16,8 +16,7 @@ class TestBase(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
-        cls.config = ConfigManager()
-        cls.config.init_configs("../config.ini")
+        cls.config = config
 
     @pytest.fixture(autouse=True)
     def prepare_client_fixture(self, client):

@@ -5,13 +5,12 @@ import yaml
 from requests.auth import HTTPBasicAuth
 
 from app.exceptions.excpetions import URLError
-from app.models.config_manager import ConfigManager
+from app import config
 from app.utils.utils import Utils
 
 
 class YamlParserClient:
     def __init__(self):
-        config = ConfigManager()
         user, password = config.get_nexus_cred()
         self.user_cred = user
         self.password_cred = password

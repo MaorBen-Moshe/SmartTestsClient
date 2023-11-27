@@ -1,27 +1,18 @@
-import os
+import time
 from http import HTTPStatus
 
 import flask
 from flask import request, jsonify, make_response
-from flask_cors import CORS
-from flask_login import LoginManager, login_required, current_user
+from flask_login import login_required, current_user
+from flask_socketio import emit
 from werkzeug.exceptions import HTTPException
 
-from app import app
+from app import app, login_manager, config, socket_handler
 from app.appServices.analyze_app_service import AnalyzeAppService
 from app.exceptions.excpetions import SmartClientBaseException
 from app.models.analyze_app_params import AnalyzeAppServiceParameters
-from app.models.config_manager import ConfigManager
 from app.models.user import User
 from app.steps.check_analyze_input import CheckAnalyzeClientInputStep
-
-CORS(app)
-
-config = ConfigManager()
-config.init_configs(os.path.join(os.path.dirname(__file__), "config.ini"))
-
-login_manager = LoginManager()
-login_manager.init_app(app)
 
 
 @app.route("/health")
@@ -53,6 +44,7 @@ def analyze():
                   .create()
                   .group_name(req_data.get("groupName"))
                   .build_url(req_data.get("buildURL"))
+                  .session_id(req_data.get("sessionID"))
                   .supported_groups(groups)
                   .filtered_ms_list(config.get_filtered_ms_list())
                   .build())
@@ -88,3 +80,17 @@ def handle_exception(ex):
         error_code = ex.code
 
     return make_response(error_msg, error_code)
+
+
+@socket_handler.socketio.on(socket_handler.internal_event_name, namespace=socket_handler.namespace)
+def handle_socket_event(data):
+    emit(socket_handler.event_name,
+         data,
+         broadcast=True,
+         callback=lambda x: print(f"Sent {data}."),
+         namespace=socket_handler.namespace)
+
+
+@socket_handler.socketio.on_error_default
+def error_handler(e):
+    print(f'[ERROR] [{time.localtime().strftime("%Y/%m/%d %H:%M:$S")}] An error has occurred: {e}')

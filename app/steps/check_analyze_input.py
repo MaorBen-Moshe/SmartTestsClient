@@ -15,3 +15,6 @@ class CheckAnalyzeClientInputStep:
         group_name = req_data.get("groupName")
         if group_name not in supported_groups:
             raise BadRequest(f"Group Name: '{group_name}' is not supported.")
+        session_id = req_data.get("sessionID")
+        if session_id is None:
+            raise BadRequest("No session id provided.")

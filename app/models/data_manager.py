@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from app.models.config_manager import ConfigManager
+from app import config
 from app.models.group_data import GroupData
 from app.models.service_data import ServiceData
 
@@ -38,5 +38,4 @@ class DataManager:
 
     @property
     def filter_for_curr_group(self) -> list[str]:
-        config = ConfigManager()
         return config.get_supported_groups().get(self.curr_group).testng_xml

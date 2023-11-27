@@ -9,6 +9,7 @@ class TestCheckAnalyzeInputUnit(TestUnitBase):
         req_data = {
             "buildURL": "build_url",
             "groupName": "oc-cd-group4-coc-include-ed",
+            "sessionID": "session_id"
         }
 
         try:
@@ -69,3 +70,13 @@ class TestCheckAnalyzeInputUnit(TestUnitBase):
                               BadRequest,
                               (f"Group Name: 'oc-cd-group4-coc-include-ed_NotSupported' is not supported. supported "
                               f"groups: {self.config.get_supported_groups()}"))
+
+    def test_check_input_input_is_session_id_none(self):
+        data = {
+            "buildURL": "build_url",
+            "groupName": "oc-cd-group4-coc-include-ed",
+        }
+
+        self.assert_exception(lambda: CheckAnalyzeClientInputStep.check_input(data, self.config.get_supported_groups()),
+                              BadRequest,
+                              "No session id provided.")

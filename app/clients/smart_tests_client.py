@@ -2,13 +2,13 @@ from __future__ import annotations
 
 import requests
 
+from app import config
 from app.constants.constants import MS_POSTFIX
 from app.models.config_manager import ConfigManager
 
 
 class SmartTestsClient:
     def __init__(self):
-        config = ConfigManager()
         self.smart_tests_all_url = config.get_smart_tests_all_url()
         self.smart_tests_statistics_url = config.get_smart_tests_statistics_url()
 

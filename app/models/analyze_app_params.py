@@ -10,6 +10,7 @@ class AnalyzeAppServiceParameters:
         self._filtered_ms_list: list[str] = []
         self.build_url: str | None = None
         self.group_name: str | None = None
+        self.session_id: str | None = None
 
     @property
     def build_url(self) -> str | None:
@@ -43,6 +44,14 @@ class AnalyzeAppServiceParameters:
     def filtered_ms_list(self, filtered_ms_list: list[str]) -> None:
         self._filtered_ms_list = filtered_ms_list
 
+    @property
+    def session_id(self) -> str | None:
+        return self._session_id
+
+    @session_id.setter
+    def session_id(self, session_id: str | None) -> None:
+        self._session_id = session_id
+
     @staticmethod
     def create():
         return AnalyzeAppServiceParametersBuilder()
@@ -67,4 +76,8 @@ class AnalyzeAppServiceParametersBuilder(Builder[AnalyzeAppServiceParameters]):
 
     def filtered_ms_list(self, filtered_ms_list: list[str]) -> AnalyzeAppServiceParametersBuilder:
         self.item.filtered_ms_list = filtered_ms_list
+        return self
+
+    def session_id(self, session_id: str | None) -> AnalyzeAppServiceParametersBuilder:
+        self.item.session_id = session_id
         return self
