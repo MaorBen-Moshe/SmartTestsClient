@@ -24,6 +24,7 @@ class AnalyzeAppService:
         self.session_id = parameters.session_id
 
     def analyze(self) -> SmartAnalyzeResponse:
+        socket_handler.send_message("[INFO] Starting analyze.", self.session_id)
         # load version from nexus
         socket_handler.send_message("[INFO] Loading services version from nexus.", self.session_id)
         repository = self.config_manager.get_index_data_repository()

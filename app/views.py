@@ -84,6 +84,7 @@ def handle_exception(ex):
 
 @socket_handler.socketio.on(socket_handler.internal_event_name, namespace=socket_handler.namespace)
 def handle_socket_event(data):
+    print("Sending message: " + data)
     emit(socket_handler.event_name,
          data,
          broadcast=True,
