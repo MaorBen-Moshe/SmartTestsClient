@@ -26,14 +26,14 @@ class YamlParserService:
 
     def __load_yaml(self, entries, filtered_ms_list: list[str]):
         if entries is not None:
-            for entry in entries:
+            filtered_entries = [entry for entry in entries if entry in filtered_ms_list]
+            for entry in filtered_entries:
                 try:
-                    if entry in filtered_ms_list:
-                        version_list = [curr.get('version') for curr in entries.get(entry)]
-                        sorted_list = sorted(version_list, key=LooseVersion, reverse=True)
-                        if len(sorted_list) > 0:
-                            self.services_map[entry] = (ServiceData.create().new_version(sorted_list[0])
-                                                        .old_version(sorted_list[0])
-                                                        .build())
+                    version_list = [curr.get('version') for curr in entries.get(entry)]
+                    sorted_list = sorted(version_list, key=LooseVersion, reverse=True)
+                    if len(sorted_list) > 0:
+                        self.services_map[entry] = (ServiceData.create().new_version(sorted_list[0])
+                                                    .old_version(sorted_list[0])
+                                                    .build())
                 except Exception as ex:
                     raise ex
