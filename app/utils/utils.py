@@ -17,7 +17,7 @@ class Utils:
     def is_valid_url(url):
         parsed = urllib.parse.urlparse(url)
         ext = os.path.splitext(parsed.path)[1]
-        if ext in [".zip", ".yaml", ".html"]:
+        if ext in [".zip", ".html"]:
             return True
 
         return False

@@ -1,0 +1,12 @@
+{
+  "flowsCount": 2,
+  "flowsByGroupName": [
+    {
+      "name": "/path/group2",
+      "flows": [
+        "flow1",
+        "flow2"
+      ]
+    }
+  ]
+}

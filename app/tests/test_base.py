@@ -1,9 +1,8 @@
 import json
 import unittest
-
 import unittest.mock as mock
+
 import pytest
-import yaml
 
 from app import config
 from app.models.group_data import GroupData
@@ -32,9 +31,9 @@ class TestUnitBase(TestBase):
     def setUp(self):
         super().setUp()
         # mocks
-        self.get_yaml_patcher = mock.patch("app.clients.yaml_parser_client.YamlParserClient.get_yaml")
-        self.mock_get_yaml = self.get_yaml_patcher.start()
-        self.mock_get_yaml.side_effect = self.__mock_get_yaml
+        self.nexus_search_patcher = mock.patch("app.clients.nexus_client.NexusClient.search_data")
+        self.mock_nexus_search = self.nexus_search_patcher.start()
+        self.mock_nexus_search.side_effect = self.__mock_search_data
 
         self.get_html_patcher = mock.patch("app.clients.html_parser_client.HtmlParserClient.get_html")
         self.mock_get_html = self.get_html_patcher.start()
@@ -49,7 +48,8 @@ class TestUnitBase(TestBase):
         self.mock_analyze_flows.side_effect = self.__mock_analyze_flows
 
     def tearDown(self):
-        self.get_yaml_patcher.stop()
+        super().tearDown()
+        self.nexus_search_patcher.stop()
         self.get_html_patcher.stop()
         self.get_all_flows_patcher.stop()
         self.analyze_flows_patcher.stop()
@@ -66,22 +66,21 @@ class TestUnitBase(TestBase):
         self.assertEqual(group_data.total_flows_count, total_count)
 
     @staticmethod
-    def __mock_get_yaml(*args, **kwargs):
+    def __mock_search_data(*args, **kwargs):
+        name = args[0]['name']
         file_name = None
-        if args[0] == "http://illin5589:28080/repository/ms-helm-release/index.yaml":
-            file_name = "resources/endpoints/index.yaml"
-        elif args[0] == "http://test.com/index.yaml":
-            file_name = "resources/index.yaml"
-        elif args[0] == "http://test2.com/index.yaml":
-            file_name = "resources/index_without_filtered.yaml"
-        elif args[0] == "http://test3.com/index.yaml":
-            file_name = "resources/index_with_configurator_only.yaml"
-        elif args[0] == "http://test4.com/index.yaml":
-            file_name = "resources/index_without_entries.yaml"
+        if name == "productconfigurator":
+            file_name = "resources/nexus_search/configurator_nexus_search_res.json"
+        elif name == "productconfigurator-pioperations":
+            file_name = "resources/nexus_search/pioperations_nexus_search_res.json"
+        elif name == "empty_entry":
+            file_name = "resources/nexus_search/empty_nexus_search_res.json"
+        elif name == "productconfigurator-missing_version":
+            file_name = "resources/nexus_search/configurator_missing_version_nexus_search_res.json"
 
         if file_name:
             with open(file_name, mode="r") as f:
-                return yaml.safe_load(f.read())
+                return json.load(f)
         else:
             return None
 
@@ -89,14 +88,14 @@ class TestUnitBase(TestBase):
     def __mock_get_html(*args, **kwargs):
         file_to_open = None
         if args[0] == "http://example.com/file.zip":
-            file_to_open = "resources/build_report.html"
+            file_to_open = "resources/html_parse/build_report.html"
         elif args[0] == "http://test_html_same_version/zipfile.zip":
             file_to_open = "resources/endpoints/build_report_same_versions.html"
         elif args[0] == ("http://illin5565:18080/job/oc-cd-group4/job/oc-cd-group4-include-ed/lastSuccessfulBuild"
                          "/BuildReport/*zip*/BuildReport.zip"):
             file_to_open = "resources/endpoints/build_report.html"
         elif args[0] == "http://example.com/missing_table_file.zip":
-            file_to_open = "resources/build_report_missing_table.html"
+            file_to_open = "resources/html_parse/build_report_missing_table.html"
 
         if file_to_open:
             with open(file_to_open) as f:
@@ -106,16 +105,16 @@ class TestUnitBase(TestBase):
 
     @staticmethod
     def __mock_get_all_flows(*args, **kwargs):
-        with open("resources/all_flows_stats.json", mode="r") as f:
+        with open("resources/analyze_flows/all_flows_stats.json", mode="r") as f:
             return json.load(f)
 
     @staticmethod
     def __mock_analyze_flows(*args, **kwargs):
         file_name = None
         if args[0] == "service1":
-            file_name = "resources/analyze_services1.json"
+            file_name = "resources/analyze_flows/analyze_services1.json"
         elif args[0] == "service2":
-            file_name = "resources/analyze_services2.json"
+            file_name = "resources/analyze_flows/analyze_services2.json"
         elif args[0] == "productconfigurator":
             file_name = "resources/endpoints/smart_stats.json"
 

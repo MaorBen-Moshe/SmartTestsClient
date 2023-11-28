@@ -1,14 +1,14 @@
 from __future__ import annotations
 
 from app.models.service_data import ServiceData
-from app.services.yaml_parser_service import YamlParserService
+from app.services.nexus_search_service import NexusSearchService
 
 
 class InitServiceMapStep:
     @staticmethod
-    def init_services_map(paths: list[str] | None, filtered_ms_list: list[str]) -> dict[str, ServiceData]:
-        yaml_parser = YamlParserService()
+    def init_services_map(repository: str | None, filtered_ms_list: list[str]) -> dict[str, ServiceData]:
+        nexus_search = NexusSearchService()
 
-        services_map = yaml_parser.request_yaml_external(paths, filtered_ms_list)
+        services_map = nexus_search.get_services_master_version(repository, filtered_ms_list)
 
         return services_map

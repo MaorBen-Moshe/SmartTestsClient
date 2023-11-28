@@ -13,7 +13,7 @@ class TestHtmlParserClient(TestBase):
     @responses.activate
     def test_get_html_success(self):
         path = "http://test.com/file.zip"
-        with open("resources/html_zip_data.zip", mode="rb") as f:
+        with open("resources/html_parse/html_zip_data.zip", mode="rb") as f:
             responses.add(responses.GET, path, body=f.read(), status=200, content_type="application/zip ")
 
         html = HtmlParserClient.get_html(path)

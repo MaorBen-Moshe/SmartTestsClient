@@ -6,6 +6,9 @@ class TestEndpointsUnit(TestUnitBase):
     def setUp(self):
         super().setUp()
 
+    def tearDown(self):
+        super().tearDown()
+
     def test_supported_groups_endpoint_success(self):
         res = self.client_fixture.get("/supported-groups", query_string={"api_key": self.config.get_user_api_token()})
         self.assertEqual(res.status_code, 200)
@@ -57,7 +60,7 @@ class TestEndpointsUnit(TestUnitBase):
         self.assertEqual(body['mat_APIGW_testng.xml']['test_xml_name'], 'mat_APIGW_testng.xml')
         self.assertEqual(body['mat_APIGW_testng.xml']['test_xml_path'], 'com/amdocs/core/oc/testng')
 
-        self.mock_get_yaml.assert_called_once_with("http://illin5589:28080/repository/ms-helm-release/index.yaml")
+        self.assertEqual(10, self.mock_nexus_search.call_count)
         self.mock_get_html.assert_called_once_with("http://illin5565:18080/job/oc-cd-group4/job/oc-cd-group4-include-ed"
                                                    "/lastSuccessfulBuild/BuildReport/*zip*/BuildReport.zip")
         self.mock_get_all_flows.assert_called_once_with(".*group4_integration_tests_testng.*|.*mat_APIGW_testng"
@@ -123,7 +126,7 @@ class TestEndpointsUnit(TestUnitBase):
         self.assertEqual(body['mat_APIGW_testng.xml']['test_xml_name'], 'mat_APIGW_testng.xml')
         self.assertEqual(body['mat_APIGW_testng.xml']['test_xml_path'], 'com/amdocs/core/oc/testng')
 
-        self.mock_get_yaml.assert_called_once_with("http://illin5589:28080/repository/ms-helm-release/index.yaml")
+        self.assertEqual(10, self.mock_nexus_search.call_count)
         self.mock_get_html.assert_called_once_with("http://test_html_same_version/zipfile.zip")
         self.mock_get_all_flows.assert_called_once_with(".*group4_integration_tests_testng.*|.*mat_APIGW_testng"
                                                         ".*|.*extended_mat_7a_APIGW_testng.*|"

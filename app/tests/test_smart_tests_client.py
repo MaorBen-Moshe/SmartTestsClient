@@ -13,10 +13,13 @@ class TestSmartTestsClient(TestBase):
         super().setUp()
         self.client = SmartTestsClient()
 
+    def tearDown(self):
+        super().tearDown()
+
     @responses.activate
     def test_get_all_flows_stats_success(self):
         path = self.client.smart_tests_all_url
-        with open("resources/all_flows_stats.json", mode="r") as f:
+        with open("resources/analyze_flows/all_flows_stats.json", mode="r") as f:
             responses.add(responses.POST, path, json=json.load(f), status=200)
 
         group4_xml = self.config.get_supported_groups().get('oc-cd-group4-coc-include-ed').testng_xml
@@ -27,7 +30,7 @@ class TestSmartTestsClient(TestBase):
     @responses.activate
     def test_analyze_flows(self):
         path = self.client.smart_tests_statistics_url
-        with open("resources/smart_stats.json", mode="r") as f:
+        with open("resources/analyze_flows/smart_stats.json", mode="r") as f:
             responses.add(responses.POST, path, json=json.load(f), status=200)
 
         res_json = self.client.analyze_flows("productcofigurator",

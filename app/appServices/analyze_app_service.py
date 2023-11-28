@@ -24,24 +24,24 @@ class AnalyzeAppService:
         self.session_id = parameters.session_id
 
     def analyze(self) -> SmartAnalyzeResponse:
-        # load index yaml
-        socket_handler.send_message("[INFO] Loading index yaml", self.session_id)
-        self.data_manager.services_map = InitServiceMapStep.init_services_map(self.config_manager.get_index_data_urls(),
-                                                                              self.filtered_ms_list)
+        # load version from nexus
+        socket_handler.send_message("[INFO] Loading services version from nexus.", self.session_id)
+        repository = self.config_manager.get_index_data_repository()
+        self.data_manager.services_map = InitServiceMapStep.init_services_map(repository, self.filtered_ms_list)
 
         # load build report data
-        socket_handler.send_message("[INFO] Loading build report data", self.session_id)
+        socket_handler.send_message("[INFO] Loading build report data.", self.session_id)
         self.html_parser.load_html_step(self.data_manager.services_map, self.filtered_ms_list)
 
         # update data per group
-        socket_handler.send_message("[INFO] Updating data per group", self.session_id)
+        socket_handler.send_message("[INFO] Updating data per group.", self.session_id)
         self.data_manager.groups_data = self.handle_group_data_step.init_groups_data()
 
         # analyze flows to run
-        socket_handler.send_message("[INFO] Analyzing flows to run", self.session_id)
+        socket_handler.send_message("[INFO] Analyzing flows to run.", self.session_id)
         self.handle_group_data_step.analyze_flows_per_group(self.data_manager.services_map,
                                                             self.data_manager.groups_data)
 
         # prepare response
-        socket_handler.send_message("[INFO] Preparing response", self.session_id)
+        socket_handler.send_message("[INFO] Preparing response.", self.session_id)
         return self.prepare_response_step.prepare_response(self.data_manager.groups_data)

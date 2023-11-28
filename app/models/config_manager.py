@@ -37,9 +37,9 @@ class ConfigManager(metaclass=SingletonMeta):
         return (self._config["JENKINS"]["jenkins_user"],
                 self._fernet.decrypt(self._config["JENKINS"]["jenkins_password"]).decode("utf-8"))
 
-    def get_index_data_urls(self) -> list[str]:
-        data = self._config["NEXUS"]["index_data_urls"]
-        return [val.strip() for val in data.split(",")] if data is not None else []
+    def get_index_data_repository(self) -> str | None:
+        data = self._config["NEXUS"]["index_data_repository"]
+        return data
 
     def get_smart_tests_all_url(self) -> str:
         return self._config["SMART_CLIENT"]["smart_tests_all"]

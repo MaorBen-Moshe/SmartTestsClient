@@ -1,0 +1,1405 @@
+{
+  "items": [
+    {
+      "id": "bXMtaGVsbS1yZWxlYXNlOmYxMTBjYTg0YTNiNjRlYWI0YjNlMDBlOWI0YmYxNmRi",
+      "repository": "ms-helm-release",
+      "format": "helm",
+      "group": null,
+      "name": "productconfigurator-pioperations",
+      "version": "0.1.25",
+      "assets": [
+        {
+          "downloadUrl": "http://illin5589:28080/repository/ms-helm-release/productconfigurator-pioperations-0.1.25.tgz",
+          "path": "productconfigurator-pioperations-0.1.25.tgz",
+          "id": "bXMtaGVsbS1yZWxlYXNlOjRjNjBlM2Q5ODk5ZDc4MGNmYTQ0MDhjMzIyZGMzZmM4",
+          "repository": "ms-helm-release",
+          "format": "helm",
+          "checksum": {
+            "sha1": "01461ef2ef89c45090f718e822a487422309a1ae",
+            "sha256": "f1f6dca8b88da65af7ede18a27e71db2eb20c4d68909b164e34aaa641ef09531"
+          },
+          "contentType": "application/x-tgz",
+          "lastModified": "2023-10-16T03:35:26.458+00:00",
+          "lastDownloaded": null,
+          "uploader": "d1master",
+          "uploaderIp": "10.238.97.48",
+          "fileSize": 0
+        }
+      ],
+      "tags": []
+    },
+    {
+      "id": "bXMtaGVsbS1yZWxlYXNlOjQzNDE2YWU0MTM2ZjBlYzM5MDFiYjYxNWI0ZWIyNDY4",
+      "repository": "ms-helm-release",
+      "format": "helm",
+      "group": null,
+      "name": "productconfigurator-pioperations",
+      "version": "0.1.26",
+      "assets": [
+        {
+          "downloadUrl": "http://illin5589:28080/repository/ms-helm-release/productconfigurator-pioperations-0.1.26.tgz",
+          "path": "productconfigurator-pioperations-0.1.26.tgz",
+          "id": "bXMtaGVsbS1yZWxlYXNlOjlkNGU2NmQ3NmZkYjk1OTE4NGQ5OWI0ZjMxMjRmNTVj",
+          "repository": "ms-helm-release",
+          "format": "helm",
+          "checksum": {
+            "sha1": "a3222bc3c52e429abf1ef9c924f5762ef684b763",
+            "sha256": "5f5775e3b29e54c854dadd237fb2a4a5e44db63f4d39a7cb6d94a418f904bada"
+          },
+          "contentType": "application/x-tgz",
+          "lastModified": "2023-10-16T03:35:25.238+00:00",
+          "lastDownloaded": null,
+          "uploader": "d1master",
+          "uploaderIp": "10.238.97.48",
+          "fileSize": 0
+        }
+      ],
+      "tags": []
+    },
+    {
+      "id": "bXMtaGVsbS1yZWxlYXNlOjZlMjRiODA0YTgxOTlmYjk3NGNkMzAxMWM3ZmMyYzQz",
+      "repository": "ms-helm-release",
+      "format": "helm",
+      "group": null,
+      "name": "productconfigurator-pioperations",
+      "version": "0.1.27",
+      "assets": [
+        {
+          "downloadUrl": "http://illin5589:28080/repository/ms-helm-release/productconfigurator-pioperations-0.1.27.tgz",
+          "path": "productconfigurator-pioperations-0.1.27.tgz",
+          "id": "bXMtaGVsbS1yZWxlYXNlOjhmNzY5MmE4NzcyYmI5ZThkZjE1ZDQyYTlhMGU1NmUw",
+          "repository": "ms-helm-release",
+          "format": "helm",
+          "checksum": {
+            "sha1": "90dfe301412f7e6a5b0e806b2ac9f2e33e62f536",
+            "sha256": "db559345d73ca8c8daec78f2b070b705c56ec73ce13873e9b77d5694698ffe01"
+          },
+          "contentType": "application/x-tgz",
+          "lastModified": "2023-10-16T03:35:23.766+00:00",
+          "lastDownloaded": null,
+          "uploader": "d1master",
+          "uploaderIp": "10.238.97.48",
+          "fileSize": 0
+        }
+      ],
+      "tags": []
+    },
+    {
+      "id": "bXMtaGVsbS1yZWxlYXNlOjQzNDE2YWU0MTM2ZjBlYzNmZTAyOTQyZTY1NjFmZjM5",
+      "repository": "ms-helm-release",
+      "format": "helm",
+      "group": null,
+      "name": "productconfigurator-pioperations",
+      "version": "0.1.29",
+      "assets": [
+        {
+          "downloadUrl": "http://illin5589:28080/repository/ms-helm-release/productconfigurator-pioperations-0.1.29.tgz",
+          "path": "productconfigurator-pioperations-0.1.29.tgz",
+          "id": "bXMtaGVsbS1yZWxlYXNlOjlkNGU2NmQ3NmZkYjk1OTEyYTA4MzVmZDAzYTE2YWEw",
+          "repository": "ms-helm-release",
+          "format": "helm",
+          "checksum": {
+            "sha1": "2b6a7410a4856a173101720d51a4b0d5c8598167",
+            "sha256": "ab2731e31ce23c906846854d0be2bb42b1ae2ef30aaef88062e862b41a82ffab"
+          },
+          "contentType": "application/x-tgz",
+          "lastModified": "2023-10-16T03:35:22.218+00:00",
+          "lastDownloaded": null,
+          "uploader": "d1master",
+          "uploaderIp": "10.238.97.48",
+          "fileSize": 0
+        }
+      ],
+      "tags": []
+    },
+    {
+      "id": "bXMtaGVsbS1yZWxlYXNlOjZlMjRiODA0YTgxOTlmYjk3ZjFjNmY1YzU0MTRhOTQx",
+      "repository": "ms-helm-release",
+      "format": "helm",
+      "group": null,
+      "name": "productconfigurator-pioperations",
+      "version": "0.1.30",
+      "assets": [
+        {
+          "downloadUrl": "http://illin5589:28080/repository/ms-helm-release/productconfigurator-pioperations-0.1.30.tgz",
+          "path": "productconfigurator-pioperations-0.1.30.tgz",
+          "id": "bXMtaGVsbS1yZWxlYXNlOjhmNzY5MmE4NzcyYmI5ZTg3N2YwNzc3NWExMzA3NjZj",
+          "repository": "ms-helm-release",
+          "format": "helm",
+          "checksum": {
+            "sha1": "0608c8b4c197447bc54511c8451dfe1f20ecd601",
+            "sha256": "f7e1c363f09f0917804991490775f75ccdae4a3495c3ef61f42d0b6104e10d51"
+          },
+          "contentType": "application/x-tgz",
+          "lastModified": "2023-10-16T03:35:20.971+00:00",
+          "lastDownloaded": null,
+          "uploader": "d1master",
+          "uploaderIp": "10.238.97.48",
+          "fileSize": 0
+        }
+      ],
+      "tags": []
+    },
+    {
+      "id": "bXMtaGVsbS1yZWxlYXNlOjBiNzkzNDc3ODQ0YTcyMjg1NzhkNDM2ODQ0YjFkNDNl",
+      "repository": "ms-helm-release",
+      "format": "helm",
+      "group": null,
+      "name": "productconfigurator-pioperations",
+      "version": "0.2.1",
+      "assets": [
+        {
+          "downloadUrl": "http://illin5589:28080/repository/ms-helm-release/productconfigurator-pioperations-0.2.1.tgz",
+          "path": "productconfigurator-pioperations-0.2.1.tgz",
+          "id": "bXMtaGVsbS1yZWxlYXNlOmZkOWE0MTNjYTM0ZDE4NDhmYWM1MmM5MGEyZDkyOTUy",
+          "repository": "ms-helm-release",
+          "format": "helm",
+          "checksum": {
+            "sha1": "807546c3c7c8f2ba7d4497a18c835c543fcfadc0",
+            "sha256": "784a8f047574ad754a4da51ac06dc849425b00de96ef45128b98499d254a3384"
+          },
+          "contentType": "application/x-tgz",
+          "lastModified": "2023-11-09T13:47:21.411+00:00",
+          "lastDownloaded": null,
+          "uploader": "psmdocker",
+          "uploaderIp": "10.245.181.194",
+          "fileSize": 0
+        }
+      ],
+      "tags": []
+    },
+    {
+      "id": "bXMtaGVsbS1yZWxlYXNlOmYxMTBjYTg0YTNiNjRlYWJjODdkY2I4ZGFmNjU1YmFj",
+      "repository": "ms-helm-release",
+      "format": "helm",
+      "group": null,
+      "name": "productconfigurator-pioperations",
+      "version": "0.2.2",
+      "assets": [
+        {
+          "downloadUrl": "http://illin5589:28080/repository/ms-helm-release/productconfigurator-pioperations-0.2.2.tgz",
+          "path": "productconfigurator-pioperations-0.2.2.tgz",
+          "id": "bXMtaGVsbS1yZWxlYXNlOjg3YmZhMmFjZWFiMjFjODBiOWYyOTZkMDllODY0ZmRm",
+          "repository": "ms-helm-release",
+          "format": "helm",
+          "checksum": {
+            "sha1": "e2bf68793deff5fbf5541464c660a22f25e73351",
+            "sha256": "17ea4abcb23eaf6b1dfa8665fdb9831d592fd12b21cb218c6f6859cc8281503c"
+          },
+          "contentType": "application/x-tgz",
+          "lastModified": "2023-11-09T14:12:09.835+00:00",
+          "lastDownloaded": null,
+          "uploader": "psmdocker",
+          "uploaderIp": "10.245.172.27",
+          "fileSize": 0
+        }
+      ],
+      "tags": []
+    },
+    {
+      "id": "bXMtaGVsbS1yZWxlYXNlOmYxMTBjYTg0YTNiNjRlYWIzMDA1MDg5M2VmZmI0YTQ2",
+      "repository": "ms-helm-release",
+      "format": "helm",
+      "group": null,
+      "name": "productconfigurator-pioperations",
+      "version": "0.49.10",
+      "assets": [
+        {
+          "downloadUrl": "http://illin5589:28080/repository/ms-helm-release/productconfigurator-pioperations-0.49.10.tgz",
+          "path": "productconfigurator-pioperations-0.49.10.tgz",
+          "id": "bXMtaGVsbS1yZWxlYXNlOjRjNjBlM2Q5ODk5ZDc4MGM5MTZjMWI2NmJhOTMxZWRk",
+          "repository": "ms-helm-release",
+          "format": "helm",
+          "checksum": {
+            "sha1": "c72ecbc12bbad7dd38a22e4555053d7f9c06e495",
+            "sha256": "deb9698e15d54c173f8fb33092f9b460a7900ee120b012684e7c5102b3bda308"
+          },
+          "contentType": "application/x-tgz",
+          "lastModified": "2023-10-16T03:35:11.956+00:00",
+          "lastDownloaded": null,
+          "uploader": "d1master",
+          "uploaderIp": "10.238.97.48",
+          "fileSize": 0
+        }
+      ],
+      "tags": []
+    },
+    {
+      "id": "bXMtaGVsbS1yZWxlYXNlOjBiNzkzNDc3ODQ0YTcyMjg5NTk5NDYzZTYwMTdjNWMx",
+      "repository": "ms-helm-release",
+      "format": "helm",
+      "group": null,
+      "name": "productconfigurator-pioperations",
+      "version": "0.49.11",
+      "assets": [
+        {
+          "downloadUrl": "http://illin5589:28080/repository/ms-helm-release/productconfigurator-pioperations-0.49.11.tgz",
+          "path": "productconfigurator-pioperations-0.49.11.tgz",
+          "id": "bXMtaGVsbS1yZWxlYXNlOmRhNTEyMGU2NGYzYmU1NTBlNzY4NmJiOTZmYzY0Mjhk",
+          "repository": "ms-helm-release",
+          "format": "helm",
+          "checksum": {
+            "sha1": "16bbc56994ac1ddc7dc6f2c4c921dd74ad7898cd",
+            "sha256": "9663a4726e5a7528cd012f4f040f9d030eae5bba2e66f1783b1f871be2dfcedd"
+          },
+          "contentType": "application/x-tgz",
+          "lastModified": "2023-10-16T03:35:10.677+00:00",
+          "lastDownloaded": null,
+          "uploader": "d1master",
+          "uploaderIp": "10.238.97.48",
+          "fileSize": 0
+        }
+      ],
+      "tags": []
+    },
+    {
+      "id": "bXMtaGVsbS1yZWxlYXNlOjQzNDE2YWU0MTM2ZjBlYzNmNmM1ZWMxYmVmZjY0YTBj",
+      "repository": "ms-helm-release",
+      "format": "helm",
+      "group": null,
+      "name": "productconfigurator-pioperations",
+      "version": "0.49.12",
+      "assets": [
+        {
+          "downloadUrl": "http://illin5589:28080/repository/ms-helm-release/productconfigurator-pioperations-0.49.12.tgz",
+          "path": "productconfigurator-pioperations-0.49.12.tgz",
+          "id": "bXMtaGVsbS1yZWxlYXNlOjlkNGU2NmQ3NmZkYjk1OTEyYTdmNDBjM2Y4NDhmNDFl",
+          "repository": "ms-helm-release",
+          "format": "helm",
+          "checksum": {
+            "sha1": "46a5b9e15f05a6e2f912020905caebe32e6fd64c",
+            "sha256": "661b4f81a0bd03f18ebf65a06d43fab1f237be245146dc5f7c193b41e3d69722"
+          },
+          "contentType": "application/x-tgz",
+          "lastModified": "2023-10-16T03:35:09.200+00:00",
+          "lastDownloaded": null,
+          "uploader": "d1master",
+          "uploaderIp": "10.238.97.48",
+          "fileSize": 0
+        }
+      ],
+      "tags": []
+    },
+    {
+      "id": "bXMtaGVsbS1yZWxlYXNlOjQzNDE2YWU0MTM2ZjBlYzM0NmE4ZjI1MGJiMzgwMjUy",
+      "repository": "ms-helm-release",
+      "format": "helm",
+      "group": null,
+      "name": "productconfigurator-pioperations",
+      "version": "0.49.13",
+      "assets": [
+        {
+          "downloadUrl": "http://illin5589:28080/repository/ms-helm-release/productconfigurator-pioperations-0.49.13.tgz",
+          "path": "productconfigurator-pioperations-0.49.13.tgz",
+          "id": "bXMtaGVsbS1yZWxlYXNlOjlkNGU2NmQ3NmZkYjk1OTE4MDE1NDJiM2QxNzE0OTI5",
+          "repository": "ms-helm-release",
+          "format": "helm",
+          "checksum": {
+            "sha1": "68edca94ddeda17efe4309223c837092364b47a5",
+            "sha256": "b00b5a66fc79c521c441a732d0a2cbdffb77a1fd963589db9d412fe78cad0b04"
+          },
+          "contentType": "application/x-tgz",
+          "lastModified": "2023-10-16T03:35:07.664+00:00",
+          "lastDownloaded": null,
+          "uploader": "d1master",
+          "uploaderIp": "10.238.97.48",
+          "fileSize": 0
+        }
+      ],
+      "tags": []
+    },
+    {
+      "id": "bXMtaGVsbS1yZWxlYXNlOjQzNDE2YWU0MTM2ZjBlYzMzZTcyYWI2Y2NmOTNkMTcw",
+      "repository": "ms-helm-release",
+      "format": "helm",
+      "group": null,
+      "name": "productconfigurator-pioperations",
+      "version": "0.49.14",
+      "assets": [
+        {
+          "downloadUrl": "http://illin5589:28080/repository/ms-helm-release/productconfigurator-pioperations-0.49.14.tgz",
+          "path": "productconfigurator-pioperations-0.49.14.tgz",
+          "id": "bXMtaGVsbS1yZWxlYXNlOjlkNGU2NmQ3NmZkYjk1OTE3YzMyMTk1Y2FmN2I2MTRl",
+          "repository": "ms-helm-release",
+          "format": "helm",
+          "checksum": {
+            "sha1": "6ab95918f78e203119cca35aa02c6da63d530c56",
+            "sha256": "5c9628de474e927f1b568709a583514c6f68798b390cebc9ae779bd14a54b9d5"
+          },
+          "contentType": "application/x-tgz",
+          "lastModified": "2023-10-16T03:35:06.278+00:00",
+          "lastDownloaded": null,
+          "uploader": "d1master",
+          "uploaderIp": "10.238.97.48",
+          "fileSize": 0
+        }
+      ],
+      "tags": []
+    },
+    {
+      "id": "bXMtaGVsbS1yZWxlYXNlOjQzNDE2YWU0MTM2ZjBlYzM2NGUwMTkzZjZhYzNkMDU0",
+      "repository": "ms-helm-release",
+      "format": "helm",
+      "group": null,
+      "name": "productconfigurator-pioperations",
+      "version": "0.49.15",
+      "assets": [
+        {
+          "downloadUrl": "http://illin5589:28080/repository/ms-helm-release/productconfigurator-pioperations-0.49.15.tgz",
+          "path": "productconfigurator-pioperations-0.49.15.tgz",
+          "id": "bXMtaGVsbS1yZWxlYXNlOjlkNGU2NmQ3NmZkYjk1OTE1YTQzYzhlZDAyMTEwZjhh",
+          "repository": "ms-helm-release",
+          "format": "helm",
+          "checksum": {
+            "sha1": "6a444c098f949f4169e81619c9c28fa83120d6d0",
+            "sha256": "caf6933690c62550754dff8d3b9e309043a0fceed790bdf80fad70ac5ddc5849"
+          },
+          "contentType": "application/x-tgz",
+          "lastModified": "2023-10-16T03:35:04.663+00:00",
+          "lastDownloaded": null,
+          "uploader": "d1master",
+          "uploaderIp": "10.238.97.48",
+          "fileSize": 0
+        }
+      ],
+      "tags": []
+    },
+    {
+      "id": "bXMtaGVsbS1yZWxlYXNlOmYxMTBjYTg0YTNiNjRlYWJmNmVhNDRjMDE5NTA4YjIx",
+      "repository": "ms-helm-release",
+      "format": "helm",
+      "group": null,
+      "name": "productconfigurator-pioperations",
+      "version": "0.49.16",
+      "assets": [
+        {
+          "downloadUrl": "http://illin5589:28080/repository/ms-helm-release/productconfigurator-pioperations-0.49.16.tgz",
+          "path": "productconfigurator-pioperations-0.49.16.tgz",
+          "id": "bXMtaGVsbS1yZWxlYXNlOjRjNjBlM2Q5ODk5ZDc4MGM5MWM5Y2E3NDM5ZWUxOTg5",
+          "repository": "ms-helm-release",
+          "format": "helm",
+          "checksum": {
+            "sha1": "8268442c3802ed02d34f68ce939bc1d0e07b7428",
+            "sha256": "245d5a744e226cb3f722906dc0d5ea2771268d8ec5949eeb7e9a03e02c95f3db"
+          },
+          "contentType": "application/x-tgz",
+          "lastModified": "2023-10-16T03:35:03.288+00:00",
+          "lastDownloaded": null,
+          "uploader": "d1master",
+          "uploaderIp": "10.238.97.48",
+          "fileSize": 0
+        }
+      ],
+      "tags": []
+    },
+    {
+      "id": "bXMtaGVsbS1yZWxlYXNlOjZlMjRiODA0YTgxOTlmYjlhOGQ3ZjYzMzJlZjgzZTE0",
+      "repository": "ms-helm-release",
+      "format": "helm",
+      "group": null,
+      "name": "productconfigurator-pioperations",
+      "version": "0.49.18",
+      "assets": [
+        {
+          "downloadUrl": "http://illin5589:28080/repository/ms-helm-release/productconfigurator-pioperations-0.49.18.tgz",
+          "path": "productconfigurator-pioperations-0.49.18.tgz",
+          "id": "bXMtaGVsbS1yZWxlYXNlOjhmNzY5MmE4NzcyYmI5ZTg1MTk3M2MxZTlmZWJhN2Rh",
+          "repository": "ms-helm-release",
+          "format": "helm",
+          "checksum": {
+            "sha1": "e3d66eb71ef5b97d23f2bb1dbdd46c6e9db4d240",
+            "sha256": "f4cba651ee2335a0163b0a1e2d86b64feea1b100bf07b1bc730eeea553a3d156"
+          },
+          "contentType": "application/x-tgz",
+          "lastModified": "2023-10-16T03:35:01.932+00:00",
+          "lastDownloaded": null,
+          "uploader": "d1master",
+          "uploaderIp": "10.238.97.48",
+          "fileSize": 0
+        }
+      ],
+      "tags": []
+    },
+    {
+      "id": "bXMtaGVsbS1yZWxlYXNlOjZlMjRiODA0YTgxOTlmYjlhM2Q2NDUyZmYzMjc0NDNi",
+      "repository": "ms-helm-release",
+      "format": "helm",
+      "group": null,
+      "name": "productconfigurator-pioperations",
+      "version": "0.49.19",
+      "assets": [
+        {
+          "downloadUrl": "http://illin5589:28080/repository/ms-helm-release/productconfigurator-pioperations-0.49.19.tgz",
+          "path": "productconfigurator-pioperations-0.49.19.tgz",
+          "id": "bXMtaGVsbS1yZWxlYXNlOjhmNzY5MmE4NzcyYmI5ZTg5MWQ0YTA1NWUzNDFkZjYw",
+          "repository": "ms-helm-release",
+          "format": "helm",
+          "checksum": {
+            "sha1": "ee4a29d637a755faca311e7cb67d563f6c614d15",
+            "sha256": "35922f8a409afa27a8af4175c042a0c1c2e944c86c7f6c6dd56a850aab7e7e88"
+          },
+          "contentType": "application/x-tgz",
+          "lastModified": "2023-10-16T03:35:00.350+00:00",
+          "lastDownloaded": null,
+          "uploader": "d1master",
+          "uploaderIp": "10.238.97.48",
+          "fileSize": 0
+        }
+      ],
+      "tags": []
+    },
+    {
+      "id": "bXMtaGVsbS1yZWxlYXNlOmYxMTBjYTg0YTNiNjRlYWJmOTRmOWM4YWVmMTc2ODQ1",
+      "repository": "ms-helm-release",
+      "format": "helm",
+      "group": null,
+      "name": "productconfigurator-pioperations",
+      "version": "0.49.20",
+      "assets": [
+        {
+          "downloadUrl": "http://illin5589:28080/repository/ms-helm-release/productconfigurator-pioperations-0.49.20.tgz",
+          "path": "productconfigurator-pioperations-0.49.20.tgz",
+          "id": "bXMtaGVsbS1yZWxlYXNlOjRjNjBlM2Q5ODk5ZDc4MGMxNmU0OTQ1MTg5M2FlMWU5",
+          "repository": "ms-helm-release",
+          "format": "helm",
+          "checksum": {
+            "sha1": "897525029d47532d764cd386cd9c7668e8d779f9",
+            "sha256": "116315f3fd233e017b81bcaa6ee4ef40f62030154e9752beb0f7445b4bf8f087"
+          },
+          "contentType": "application/x-tgz",
+          "lastModified": "2023-10-16T03:34:59.013+00:00",
+          "lastDownloaded": null,
+          "uploader": "d1master",
+          "uploaderIp": "10.238.97.48",
+          "fileSize": 0
+        }
+      ],
+      "tags": []
+    },
+    {
+      "id": "bXMtaGVsbS1yZWxlYXNlOjZlMjRiODA0YTgxOTlmYjllOWY2ZjkzZDUwZjIyYmMy",
+      "repository": "ms-helm-release",
+      "format": "helm",
+      "group": null,
+      "name": "productconfigurator-pioperations",
+      "version": "0.49.4",
+      "assets": [
+        {
+          "downloadUrl": "http://illin5589:28080/repository/ms-helm-release/productconfigurator-pioperations-0.49.4.tgz",
+          "path": "productconfigurator-pioperations-0.49.4.tgz",
+          "id": "bXMtaGVsbS1yZWxlYXNlOjhmNzY5MmE4NzcyYmI5ZTg2ZWFkOGFmZmI4OWY3NDA1",
+          "repository": "ms-helm-release",
+          "format": "helm",
+          "checksum": {
+            "sha1": "cac63dda38b4187e5f2ad528ec2d92d28a1376ea",
+            "sha256": "db47536bbe552ae1af47cd499925b88dd4ae5895633ef8c80665f0d518fbe77f"
+          },
+          "contentType": "application/x-tgz",
+          "lastModified": "2023-10-16T03:35:19.215+00:00",
+          "lastDownloaded": null,
+          "uploader": "d1master",
+          "uploaderIp": "10.238.97.48",
+          "fileSize": 0
+        }
+      ],
+      "tags": []
+    },
+    {
+      "id": "bXMtaGVsbS1yZWxlYXNlOjZlMjRiODA0YTgxOTlmYjkxMzA5MTBkMGI0ZWYwYmNh",
+      "repository": "ms-helm-release",
+      "format": "helm",
+      "group": null,
+      "name": "productconfigurator-pioperations",
+      "version": "0.49.5",
+      "assets": [
+        {
+          "downloadUrl": "http://illin5589:28080/repository/ms-helm-release/productconfigurator-pioperations-0.49.5.tgz",
+          "path": "productconfigurator-pioperations-0.49.5.tgz",
+          "id": "bXMtaGVsbS1yZWxlYXNlOjhmNzY5MmE4NzcyYmI5ZTgzODc2Y2NmNTFkOTY2YjRm",
+          "repository": "ms-helm-release",
+          "format": "helm",
+          "checksum": {
+            "sha1": "cab8a4986b43256e41f3958d58f8860a8a189418",
+            "sha256": "2603135cd09ab0c397e2cf3dfb785e534a0b0d4ea9aa8baf9abccc42524e1ed5"
+          },
+          "contentType": "application/x-tgz",
+          "lastModified": "2023-10-16T03:35:17.993+00:00",
+          "lastDownloaded": null,
+          "uploader": "d1master",
+          "uploaderIp": "10.238.97.48",
+          "fileSize": 0
+        }
+      ],
+      "tags": []
+    },
+    {
+      "id": "bXMtaGVsbS1yZWxlYXNlOjZlMjRiODA0YTgxOTlmYjllMmM3NjQyMmNlYTIxYzA0",
+      "repository": "ms-helm-release",
+      "format": "helm",
+      "group": null,
+      "name": "productconfigurator-pioperations",
+      "version": "0.49.6",
+      "assets": [
+        {
+          "downloadUrl": "http://illin5589:28080/repository/ms-helm-release/productconfigurator-pioperations-0.49.6.tgz",
+          "path": "productconfigurator-pioperations-0.49.6.tgz",
+          "id": "bXMtaGVsbS1yZWxlYXNlOjhmNzY5MmE4NzcyYmI5ZThhNGQyODI0NWMzNmM1YmY5",
+          "repository": "ms-helm-release",
+          "format": "helm",
+          "checksum": {
+            "sha1": "1d5522265e9bf8145cdc634546e7c9c521ed220d",
+            "sha256": "b6cbcc9fb15e06e01a5f9de54788451c919e17a83a66f624c6e22fdeaef2df5b"
+          },
+          "contentType": "application/x-tgz",
+          "lastModified": "2023-10-16T03:35:16.484+00:00",
+          "lastDownloaded": null,
+          "uploader": "d1master",
+          "uploaderIp": "10.238.97.48",
+          "fileSize": 0
+        }
+      ],
+      "tags": []
+    },
+    {
+      "id": "bXMtaGVsbS1yZWxlYXNlOjBiNzkzNDc3ODQ0YTcyMjgyNjJlNWQ5ODg2NDExMWFj",
+      "repository": "ms-helm-release",
+      "format": "helm",
+      "group": null,
+      "name": "productconfigurator-pioperations",
+      "version": "0.49.7",
+      "assets": [
+        {
+          "downloadUrl": "http://illin5589:28080/repository/ms-helm-release/productconfigurator-pioperations-0.49.7.tgz",
+          "path": "productconfigurator-pioperations-0.49.7.tgz",
+          "id": "bXMtaGVsbS1yZWxlYXNlOmRhNTEyMGU2NGYzYmU1NTA5ZGE2MmEzZDZhYjUwYjk2",
+          "repository": "ms-helm-release",
+          "format": "helm",
+          "checksum": {
+            "sha1": "b1b63d576e0d7740f20003ddf14663a29e353b3c",
+            "sha256": "bd25913f974cf2ddb6132d2ae061bbf064dd05ce5f85e81a512986718adc796e"
+          },
+          "contentType": "application/x-tgz",
+          "lastModified": "2023-10-16T03:35:14.943+00:00",
+          "lastDownloaded": null,
+          "uploader": "d1master",
+          "uploaderIp": "10.238.97.48",
+          "fileSize": 0
+        }
+      ],
+      "tags": []
+    },
+    {
+      "id": "bXMtaGVsbS1yZWxlYXNlOjBiNzkzNDc3ODQ0YTcyMjgzZWIzZDllY2MyZTAyMzVl",
+      "repository": "ms-helm-release",
+      "format": "helm",
+      "group": null,
+      "name": "productconfigurator-pioperations",
+      "version": "0.49.9",
+      "assets": [
+        {
+          "downloadUrl": "http://illin5589:28080/repository/ms-helm-release/productconfigurator-pioperations-0.49.9.tgz",
+          "path": "productconfigurator-pioperations-0.49.9.tgz",
+          "id": "bXMtaGVsbS1yZWxlYXNlOmRhNTEyMGU2NGYzYmU1NTBiODVmZjNjMWI5YzUyMGUy",
+          "repository": "ms-helm-release",
+          "format": "helm",
+          "checksum": {
+            "sha1": "e33ebb66274f92f895e4f7b3d7667c239155ad81",
+            "sha256": "b0b7e06f3fd4526a38a71b77ac44201e128dc109ea1f1cf2dcafe88507f71cfa"
+          },
+          "contentType": "application/x-tgz",
+          "lastModified": "2023-10-16T03:35:13.715+00:00",
+          "lastDownloaded": null,
+          "uploader": "d1master",
+          "uploaderIp": "10.238.97.48",
+          "fileSize": 0
+        }
+      ],
+      "tags": []
+    },
+    {
+      "id": "bXMtaGVsbS1yZWxlYXNlOjZlMjRiODA0YTgxOTlmYjk5MTM0MDU5N2MwYTk3Mzc3",
+      "repository": "ms-helm-release",
+      "format": "helm",
+      "group": null,
+      "name": "productconfigurator-pioperations",
+      "version": "0.50.1",
+      "assets": [
+        {
+          "downloadUrl": "http://illin5589:28080/repository/ms-helm-release/productconfigurator-pioperations-0.50.1.tgz",
+          "path": "productconfigurator-pioperations-0.50.1.tgz",
+          "id": "bXMtaGVsbS1yZWxlYXNlOjhmNzY5MmE4NzcyYmI5ZThkZmRiMTIxMmM3YTM3Yjdm",
+          "repository": "ms-helm-release",
+          "format": "helm",
+          "checksum": {
+            "sha1": "65d01c1fb6e3b0821d2c062af12289b17c9207ae",
+            "sha256": "72fc50a373789e4c6a13506f28e2de7c41587cfed5e83045a47772f3fe8ee9ac"
+          },
+          "contentType": "application/x-tgz",
+          "lastModified": "2023-10-16T03:34:57.360+00:00",
+          "lastDownloaded": null,
+          "uploader": "d1master",
+          "uploaderIp": "10.238.97.48",
+          "fileSize": 0
+        }
+      ],
+      "tags": []
+    },
+    {
+      "id": "bXMtaGVsbS1yZWxlYXNlOjZlMjRiODA0YTgxOTlmYjkwYmUwNzJkYmUxYzgyYTUy",
+      "repository": "ms-helm-release",
+      "format": "helm",
+      "group": null,
+      "name": "productconfigurator-pioperations",
+      "version": "0.50.10",
+      "assets": [
+        {
+          "downloadUrl": "http://illin5589:28080/repository/ms-helm-release/productconfigurator-pioperations-0.50.10.tgz",
+          "path": "productconfigurator-pioperations-0.50.10.tgz",
+          "id": "bXMtaGVsbS1yZWxlYXNlOjhmNzY5MmE4NzcyYmI5ZTgyNWRmYjZkOGQ2NmU5ZDE1",
+          "repository": "ms-helm-release",
+          "format": "helm",
+          "checksum": {
+            "sha1": "af1dc3a88284cc94b788eeb0bf5cef72cea18c94",
+            "sha256": "aaeea731dfccca6ccdcc6d0a41cf915a0c366371c9b0e2087ca53f96a18794cc"
+          },
+          "contentType": "application/x-tgz",
+          "lastModified": "2023-10-16T03:34:45.748+00:00",
+          "lastDownloaded": null,
+          "uploader": "d1master",
+          "uploaderIp": "10.238.97.48",
+          "fileSize": 0
+        }
+      ],
+      "tags": []
+    },
+    {
+      "id": "bXMtaGVsbS1yZWxlYXNlOjZlMjRiODA0YTgxOTlmYjk0ZGI5YTFkMzU5N2MzOGM4",
+      "repository": "ms-helm-release",
+      "format": "helm",
+      "group": null,
+      "name": "productconfigurator-pioperations",
+      "version": "0.50.12",
+      "assets": [
+        {
+          "downloadUrl": "http://illin5589:28080/repository/ms-helm-release/productconfigurator-pioperations-0.50.12.tgz",
+          "path": "productconfigurator-pioperations-0.50.12.tgz",
+          "id": "bXMtaGVsbS1yZWxlYXNlOjhmNzY5MmE4NzcyYmI5ZTg5MmVkZDRjZWJiMTcwNjZl",
+          "repository": "ms-helm-release",
+          "format": "helm",
+          "checksum": {
+            "sha1": "f5c13d7568dbadb38ee4aab4403743dd1fe3b2f4",
+            "sha256": "1a6ff90542060f4a4fb94153821b7670f137cc0edae442ebcb176aec85f89dd2"
+          },
+          "contentType": "application/x-tgz",
+          "lastModified": "2023-10-16T03:34:44.396+00:00",
+          "lastDownloaded": null,
+          "uploader": "d1master",
+          "uploaderIp": "10.238.97.48",
+          "fileSize": 0
+        }
+      ],
+      "tags": []
+    },
+    {
+      "id": "bXMtaGVsbS1yZWxlYXNlOjBiNzkzNDc3ODQ0YTcyMjgxNGZlNzEwZTA3ZmE4YTJh",
+      "repository": "ms-helm-release",
+      "format": "helm",
+      "group": null,
+      "name": "productconfigurator-pioperations",
+      "version": "0.50.13",
+      "assets": [
+        {
+          "downloadUrl": "http://illin5589:28080/repository/ms-helm-release/productconfigurator-pioperations-0.50.13.tgz",
+          "path": "productconfigurator-pioperations-0.50.13.tgz",
+          "id": "bXMtaGVsbS1yZWxlYXNlOmRhNTEyMGU2NGYzYmU1NTBiMzZmZjc3ZjA1ZTgyMjQx",
+          "repository": "ms-helm-release",
+          "format": "helm",
+          "checksum": {
+            "sha1": "8d389ee0b067eb58c32ac016a94602b7c10cb2bc",
+            "sha256": "7ef09a59df2f67a8f64ff25a416985d324d900af65dd95907bcf89f4399cdfef"
+          },
+          "contentType": "application/x-tgz",
+          "lastModified": "2023-10-16T03:34:42.811+00:00",
+          "lastDownloaded": null,
+          "uploader": "d1master",
+          "uploaderIp": "10.238.97.48",
+          "fileSize": 0
+        }
+      ],
+      "tags": []
+    },
+    {
+      "id": "bXMtaGVsbS1yZWxlYXNlOjBiNzkzNDc3ODQ0YTcyMjg5ODA5Zjg1Y2RjYTRiYWEw",
+      "repository": "ms-helm-release",
+      "format": "helm",
+      "group": null,
+      "name": "productconfigurator-pioperations",
+      "version": "0.50.14",
+      "assets": [
+        {
+          "downloadUrl": "http://illin5589:28080/repository/ms-helm-release/productconfigurator-pioperations-0.50.14.tgz",
+          "path": "productconfigurator-pioperations-0.50.14.tgz",
+          "id": "bXMtaGVsbS1yZWxlYXNlOmRhNTEyMGU2NGYzYmU1NTAwOGM0Mjc2MGYwNDZiOGY1",
+          "repository": "ms-helm-release",
+          "format": "helm",
+          "checksum": {
+            "sha1": "2844791972149941034eefcec86b1cd3d280c054",
+            "sha256": "2899879a7798c0ba99ace9283319e4e3c1d0953524dd577e9c7c62f5b2b65a4e"
+          },
+          "contentType": "application/x-tgz",
+          "lastModified": "2023-10-16T03:34:41.454+00:00",
+          "lastDownloaded": null,
+          "uploader": "d1master",
+          "uploaderIp": "10.238.97.48",
+          "fileSize": 0
+        }
+      ],
+      "tags": []
+    },
+    {
+      "id": "bXMtaGVsbS1yZWxlYXNlOjBiNzkzNDc3ODQ0YTcyMjg1ZTg0MTVhMzNjNzZkNjM0",
+      "repository": "ms-helm-release",
+      "format": "helm",
+      "group": null,
+      "name": "productconfigurator-pioperations",
+      "version": "0.50.15",
+      "assets": [
+        {
+          "downloadUrl": "http://illin5589:28080/repository/ms-helm-release/productconfigurator-pioperations-0.50.15.tgz",
+          "path": "productconfigurator-pioperations-0.50.15.tgz",
+          "id": "bXMtaGVsbS1yZWxlYXNlOmRhNTEyMGU2NGYzYmU1NTBkZmU4ZmQ5YjAxMjRjMTZi",
+          "repository": "ms-helm-release",
+          "format": "helm",
+          "checksum": {
+            "sha1": "59fbd4dcb797e9239a8183eacbff718df5b15597",
+            "sha256": "fba29bbc8a5cb529939c51cf894e0a9263c41e6f380c44db346628243b972ec9"
+          },
+          "contentType": "application/x-tgz",
+          "lastModified": "2023-10-16T03:34:40.047+00:00",
+          "lastDownloaded": null,
+          "uploader": "d1master",
+          "uploaderIp": "10.238.97.48",
+          "fileSize": 0
+        }
+      ],
+      "tags": []
+    },
+    {
+      "id": "bXMtaGVsbS1yZWxlYXNlOmYxMTBjYTg0YTNiNjRlYWIwNjU1OGYyNTJjOTAxNmE2",
+      "repository": "ms-helm-release",
+      "format": "helm",
+      "group": null,
+      "name": "productconfigurator-pioperations",
+      "version": "0.50.16",
+      "assets": [
+        {
+          "downloadUrl": "http://illin5589:28080/repository/ms-helm-release/productconfigurator-pioperations-0.50.16.tgz",
+          "path": "productconfigurator-pioperations-0.50.16.tgz",
+          "id": "bXMtaGVsbS1yZWxlYXNlOjRjNjBlM2Q5ODk5ZDc4MGNiZTY1ODc5MmIxMDJmOWMy",
+          "repository": "ms-helm-release",
+          "format": "helm",
+          "checksum": {
+            "sha1": "423a6150c14b2052576685c631ed6e34b18de881",
+            "sha256": "78f804a3fd525c651865002035a50475f4d8b510af715a1814158610280dadf9"
+          },
+          "contentType": "application/x-tgz",
+          "lastModified": "2023-10-16T03:34:38.479+00:00",
+          "lastDownloaded": null,
+          "uploader": "d1master",
+          "uploaderIp": "10.238.97.48",
+          "fileSize": 0
+        }
+      ],
+      "tags": []
+    },
+    {
+      "id": "bXMtaGVsbS1yZWxlYXNlOjQzNDE2YWU0MTM2ZjBlYzM5YmE1NGRkMDg2ZmY5Yzcy",
+      "repository": "ms-helm-release",
+      "format": "helm",
+      "group": null,
+      "name": "productconfigurator-pioperations",
+      "version": "0.50.17",
+      "assets": [
+        {
+          "downloadUrl": "http://illin5589:28080/repository/ms-helm-release/productconfigurator-pioperations-0.50.17.tgz",
+          "path": "productconfigurator-pioperations-0.50.17.tgz",
+          "id": "bXMtaGVsbS1yZWxlYXNlOjlkNGU2NmQ3NmZkYjk1OTE3ODA4ZGI3ZGNlZmJjNmZj",
+          "repository": "ms-helm-release",
+          "format": "helm",
+          "checksum": {
+            "sha1": "4cd70873b180e194aa45d8d050e3b8c632bf0f7e",
+            "sha256": "3ef681a1c4e0b8d524c7ce4755c756c6dbe9f44b37b25ac0ba6d442f509f7307"
+          },
+          "contentType": "application/x-tgz",
+          "lastModified": "2023-10-16T03:34:37.020+00:00",
+          "lastDownloaded": null,
+          "uploader": "d1master",
+          "uploaderIp": "10.238.97.48",
+          "fileSize": 0
+        }
+      ],
+      "tags": []
+    },
+    {
+      "id": "bXMtaGVsbS1yZWxlYXNlOjQzNDE2YWU0MTM2ZjBlYzM2MTEwMmNhZjI4ZGU3ZGI4",
+      "repository": "ms-helm-release",
+      "format": "helm",
+      "group": null,
+      "name": "productconfigurator-pioperations",
+      "version": "0.50.19",
+      "assets": [
+        {
+          "downloadUrl": "http://illin5589:28080/repository/ms-helm-release/productconfigurator-pioperations-0.50.19.tgz",
+          "path": "productconfigurator-pioperations-0.50.19.tgz",
+          "id": "bXMtaGVsbS1yZWxlYXNlOjlkNGU2NmQ3NmZkYjk1OTEzYTIwZGY2NmYzNTVjZGU3",
+          "repository": "ms-helm-release",
+          "format": "helm",
+          "checksum": {
+            "sha1": "f3b0f486bb0999ec3913e1e33d36adbaf54154b6",
+            "sha256": "a5950023478f87fdc5e59fe51a538ee8fe5170ce240bdfd0043be147f7642ffb"
+          },
+          "contentType": "application/x-tgz",
+          "lastModified": "2023-10-16T03:34:35.571+00:00",
+          "lastDownloaded": null,
+          "uploader": "d1master",
+          "uploaderIp": "10.238.97.48",
+          "fileSize": 0
+        }
+      ],
+      "tags": []
+    },
+    {
+      "id": "bXMtaGVsbS1yZWxlYXNlOjBiNzkzNDc3ODQ0YTcyMjhkNTEyNGExZGMwMjZhN2Yy",
+      "repository": "ms-helm-release",
+      "format": "helm",
+      "group": null,
+      "name": "productconfigurator-pioperations",
+      "version": "0.50.2",
+      "assets": [
+        {
+          "downloadUrl": "http://illin5589:28080/repository/ms-helm-release/productconfigurator-pioperations-0.50.2.tgz",
+          "path": "productconfigurator-pioperations-0.50.2.tgz",
+          "id": "bXMtaGVsbS1yZWxlYXNlOmRhNTEyMGU2NGYzYmU1NTAzMTgxZGQ2NzFiNjRmZmUx",
+          "repository": "ms-helm-release",
+          "format": "helm",
+          "checksum": {
+            "sha1": "a25c04213712b72d5b09063d0810d5fe80bb34ea",
+            "sha256": "029ace352eb083383db72a10ac7fab319bbc978b680abb40ef87a505a5d228f9"
+          },
+          "contentType": "application/x-tgz",
+          "lastModified": "2023-10-16T03:34:55.985+00:00",
+          "lastDownloaded": null,
+          "uploader": "d1master",
+          "uploaderIp": "10.238.97.48",
+          "fileSize": 0
+        }
+      ],
+      "tags": []
+    },
+    {
+      "id": "bXMtaGVsbS1yZWxlYXNlOjQzNDE2YWU0MTM2ZjBlYzM3YTdjNjlkM2EzYTQzYTUx",
+      "repository": "ms-helm-release",
+      "format": "helm",
+      "group": null,
+      "name": "productconfigurator-pioperations",
+      "version": "0.50.20",
+      "assets": [
+        {
+          "downloadUrl": "http://illin5589:28080/repository/ms-helm-release/productconfigurator-pioperations-0.50.20.tgz",
+          "path": "productconfigurator-pioperations-0.50.20.tgz",
+          "id": "bXMtaGVsbS1yZWxlYXNlOjlkNGU2NmQ3NmZkYjk1OTFjYTc2MzNiNzFlZjhjZjU1",
+          "repository": "ms-helm-release",
+          "format": "helm",
+          "checksum": {
+            "sha1": "b8ba776bda11f360a65d5f9c4f78dfda8b62199f",
+            "sha256": "24d9c51717f9e263e41e7c7c493f60433cd2d18c17197015b40f0b698da5c95f"
+          },
+          "contentType": "application/x-tgz",
+          "lastModified": "2023-10-16T03:34:34.124+00:00",
+          "lastDownloaded": null,
+          "uploader": "d1master",
+          "uploaderIp": "10.238.97.48",
+          "fileSize": 0
+        }
+      ],
+      "tags": []
+    },
+    {
+      "id": "bXMtaGVsbS1yZWxlYXNlOjQzNDE2YWU0MTM2ZjBlYzM0ZjdkYmU3ZjQ4YThlMzdl",
+      "repository": "ms-helm-release",
+      "format": "helm",
+      "group": null,
+      "name": "productconfigurator-pioperations",
+      "version": "0.50.21",
+      "assets": [
+        {
+          "downloadUrl": "http://illin5589:28080/repository/ms-helm-release/productconfigurator-pioperations-0.50.21.tgz",
+          "path": "productconfigurator-pioperations-0.50.21.tgz",
+          "id": "bXMtaGVsbS1yZWxlYXNlOjlkNGU2NmQ3NmZkYjk1OTFmMjA0MzA3Y2M4ZjhmNjA3",
+          "repository": "ms-helm-release",
+          "format": "helm",
+          "checksum": {
+            "sha1": "9335cb5308358b4376bdb5b71fbcdc9f10f7dadc",
+            "sha256": "89735568893b2635d0a81b99168ca96ed63302e71300dd3e0582380febc034c4"
+          },
+          "contentType": "application/x-tgz",
+          "lastModified": "2023-10-16T03:34:32.748+00:00",
+          "lastDownloaded": null,
+          "uploader": "d1master",
+          "uploaderIp": "10.238.97.48",
+          "fileSize": 0
+        }
+      ],
+      "tags": []
+    },
+    {
+      "id": "bXMtaGVsbS1yZWxlYXNlOjZlMjRiODA0YTgxOTlmYjliMDJhMTgxMmExYTQzYTQ1",
+      "repository": "ms-helm-release",
+      "format": "helm",
+      "group": null,
+      "name": "productconfigurator-pioperations",
+      "version": "0.50.22",
+      "assets": [
+        {
+          "downloadUrl": "http://illin5589:28080/repository/ms-helm-release/productconfigurator-pioperations-0.50.22.tgz",
+          "path": "productconfigurator-pioperations-0.50.22.tgz",
+          "id": "bXMtaGVsbS1yZWxlYXNlOjhmNzY5MmE4NzcyYmI5ZThkZjIwNjVmZGI5ODQyZjll",
+          "repository": "ms-helm-release",
+          "format": "helm",
+          "checksum": {
+            "sha1": "95009e653f801ac03144fef3a9747dad77356f5a",
+            "sha256": "e886cc3d6ccc268ca3c1910ba8f1c6af3a2fa1052154b0b98e12cd17bb930df1"
+          },
+          "contentType": "application/x-tgz",
+          "lastModified": "2023-10-16T03:34:31.220+00:00",
+          "lastDownloaded": null,
+          "uploader": "d1master",
+          "uploaderIp": "10.238.97.48",
+          "fileSize": 0
+        }
+      ],
+      "tags": []
+    },
+    {
+      "id": "bXMtaGVsbS1yZWxlYXNlOjZlMjRiODA0YTgxOTlmYjkxN2IyOTJhOTdmYTA0ODJl",
+      "repository": "ms-helm-release",
+      "format": "helm",
+      "group": null,
+      "name": "productconfigurator-pioperations",
+      "version": "0.50.23",
+      "assets": [
+        {
+          "downloadUrl": "http://illin5589:28080/repository/ms-helm-release/productconfigurator-pioperations-0.50.23.tgz",
+          "path": "productconfigurator-pioperations-0.50.23.tgz",
+          "id": "bXMtaGVsbS1yZWxlYXNlOjhmNzY5MmE4NzcyYmI5ZThlNzBhZWVmMDVhMWY3YmVh",
+          "repository": "ms-helm-release",
+          "format": "helm",
+          "checksum": {
+            "sha1": "1b3cbea0bb0a01e1bdab4df15b740cc8a6ecc705",
+            "sha256": "75e1ff90c0b8c868aaf625894dee94053757567d4854361a554853a589d5c9a4"
+          },
+          "contentType": "application/x-tgz",
+          "lastModified": "2023-10-16T03:34:29.691+00:00",
+          "lastDownloaded": null,
+          "uploader": "d1master",
+          "uploaderIp": "10.238.97.48",
+          "fileSize": 0
+        }
+      ],
+      "tags": []
+    },
+    {
+      "id": "bXMtaGVsbS1yZWxlYXNlOjBiNzkzNDc3ODQ0YTcyMjg1ZDg1MzlmNDExZTFhNWQ0",
+      "repository": "ms-helm-release",
+      "format": "helm",
+      "group": null,
+      "name": "productconfigurator-pioperations",
+      "version": "0.50.4",
+      "assets": [
+        {
+          "downloadUrl": "http://illin5589:28080/repository/ms-helm-release/productconfigurator-pioperations-0.50.4.tgz",
+          "path": "productconfigurator-pioperations-0.50.4.tgz",
+          "id": "bXMtaGVsbS1yZWxlYXNlOmRhNTEyMGU2NGYzYmU1NTAwYjcxY2E0ZDkzNzdmZTA0",
+          "repository": "ms-helm-release",
+          "format": "helm",
+          "checksum": {
+            "sha1": "0dcf645899fe06ebb34b889d53b00551fc9a12a7",
+            "sha256": "033ef64f9db380ff6e135450835fb0fedc616c79fe1776ad2a5562ff8bc4ed33"
+          },
+          "contentType": "application/x-tgz",
+          "lastModified": "2023-10-16T03:34:54.631+00:00",
+          "lastDownloaded": null,
+          "uploader": "d1master",
+          "uploaderIp": "10.238.97.48",
+          "fileSize": 0
+        }
+      ],
+      "tags": []
+    },
+    {
+      "id": "bXMtaGVsbS1yZWxlYXNlOjQzNDE2YWU0MTM2ZjBlYzM1NDc3ZDUzYzhmNmZhNjEy",
+      "repository": "ms-helm-release",
+      "format": "helm",
+      "group": null,
+      "name": "productconfigurator-pioperations",
+      "version": "0.50.5",
+      "assets": [
+        {
+          "downloadUrl": "http://illin5589:28080/repository/ms-helm-release/productconfigurator-pioperations-0.50.5.tgz",
+          "path": "productconfigurator-pioperations-0.50.5.tgz",
+          "id": "bXMtaGVsbS1yZWxlYXNlOjlkNGU2NmQ3NmZkYjk1OTEzMmY2YTA3NThlNzU3MmE0",
+          "repository": "ms-helm-release",
+          "format": "helm",
+          "checksum": {
+            "sha1": "53b936e5ba06655cc8a0b3af91d3a80b4e199941",
+            "sha256": "0b2096d427b4a7167aa332a128a1278bd2e49a876178873c5bd9d8cdae577165"
+          },
+          "contentType": "application/x-tgz",
+          "lastModified": "2023-10-16T03:34:53.066+00:00",
+          "lastDownloaded": null,
+          "uploader": "d1master",
+          "uploaderIp": "10.238.97.48",
+          "fileSize": 0
+        }
+      ],
+      "tags": []
+    },
+    {
+      "id": "bXMtaGVsbS1yZWxlYXNlOjQzNDE2YWU0MTM2ZjBlYzM1ZWZmOThmMWFiNmMyYzgy",
+      "repository": "ms-helm-release",
+      "format": "helm",
+      "group": null,
+      "name": "productconfigurator-pioperations",
+      "version": "0.50.6",
+      "assets": [
+        {
+          "downloadUrl": "http://illin5589:28080/repository/ms-helm-release/productconfigurator-pioperations-0.50.6.tgz",
+          "path": "productconfigurator-pioperations-0.50.6.tgz",
+          "id": "bXMtaGVsbS1yZWxlYXNlOjlkNGU2NmQ3NmZkYjk1OTFhYmI2NjI2OWE0NjJiOGI2",
+          "repository": "ms-helm-release",
+          "format": "helm",
+          "checksum": {
+            "sha1": "0742fd8d45731e8ac775887221d61a63a781a31f",
+            "sha256": "f56dd77f8f1217fbc6cb28e3f943981b6d416d1b051ce4c00aeeca06ffe0c63d"
+          },
+          "contentType": "application/x-tgz",
+          "lastModified": "2023-10-16T03:34:51.691+00:00",
+          "lastDownloaded": null,
+          "uploader": "d1master",
+          "uploaderIp": "10.238.97.48",
+          "fileSize": 0
+        }
+      ],
+      "tags": []
+    },
+    {
+      "id": "bXMtaGVsbS1yZWxlYXNlOjQzNDE2YWU0MTM2ZjBlYzMwY2RkMThhODU2ZWU2ZjJj",
+      "repository": "ms-helm-release",
+      "format": "helm",
+      "group": null,
+      "name": "productconfigurator-pioperations",
+      "version": "0.50.7",
+      "assets": [
+        {
+          "downloadUrl": "http://illin5589:28080/repository/ms-helm-release/productconfigurator-pioperations-0.50.7.tgz",
+          "path": "productconfigurator-pioperations-0.50.7.tgz",
+          "id": "bXMtaGVsbS1yZWxlYXNlOjlkNGU2NmQ3NmZkYjk1OTE1MGI1NWE2YThjOGVjNWFi",
+          "repository": "ms-helm-release",
+          "format": "helm",
+          "checksum": {
+            "sha1": "3fabe785e21d496bab1b28799d240aebfb71ac55",
+            "sha256": "cf1dc046cea2960ad0bbd4446de2f6d82daca593036acb2d58899c876fbcb194"
+          },
+          "contentType": "application/x-tgz",
+          "lastModified": "2023-10-16T03:34:50.106+00:00",
+          "lastDownloaded": null,
+          "uploader": "d1master",
+          "uploaderIp": "10.238.97.48",
+          "fileSize": 0
+        }
+      ],
+      "tags": []
+    },
+    {
+      "id": "bXMtaGVsbS1yZWxlYXNlOjQzNDE2YWU0MTM2ZjBlYzM2MjM1NDkzNjU1N2VlZDgy",
+      "repository": "ms-helm-release",
+      "format": "helm",
+      "group": null,
+      "name": "productconfigurator-pioperations",
+      "version": "0.50.8",
+      "assets": [
+        {
+          "downloadUrl": "http://illin5589:28080/repository/ms-helm-release/productconfigurator-pioperations-0.50.8.tgz",
+          "path": "productconfigurator-pioperations-0.50.8.tgz",
+          "id": "bXMtaGVsbS1yZWxlYXNlOjlkNGU2NmQ3NmZkYjk1OTE4OGI0Yjg1ZDlmOWYzMmI0",
+          "repository": "ms-helm-release",
+          "format": "helm",
+          "checksum": {
+            "sha1": "c0b3c11a24e64d16bebd15c07dacde6779e63783",
+            "sha256": "d37d0e5b313804ab590518cd0bff167aa50654fe402cee768a61023bfdfe76ce"
+          },
+          "contentType": "application/x-tgz",
+          "lastModified": "2023-10-16T03:34:48.706+00:00",
+          "lastDownloaded": null,
+          "uploader": "d1master",
+          "uploaderIp": "10.238.97.48",
+          "fileSize": 0
+        }
+      ],
+      "tags": []
+    },
+    {
+      "id": "bXMtaGVsbS1yZWxlYXNlOjZlMjRiODA0YTgxOTlmYjlhYzNiYThlMTljYWQ4ODQ2",
+      "repository": "ms-helm-release",
+      "format": "helm",
+      "group": null,
+      "name": "productconfigurator-pioperations",
+      "version": "0.50.9",
+      "assets": [
+        {
+          "downloadUrl": "http://illin5589:28080/repository/ms-helm-release/productconfigurator-pioperations-0.50.9.tgz",
+          "path": "productconfigurator-pioperations-0.50.9.tgz",
+          "id": "bXMtaGVsbS1yZWxlYXNlOjhmNzY5MmE4NzcyYmI5ZThmZGRhNzkzNmI0NmU4MGIy",
+          "repository": "ms-helm-release",
+          "format": "helm",
+          "checksum": {
+            "sha1": "d2f45c719e1444bd61b229dbc9f08c38034ec428",
+            "sha256": "5c7621435334c49b912be37d4a0986905b655685ce99c393c9aa325be33c7bac"
+          },
+          "contentType": "application/x-tgz",
+          "lastModified": "2023-10-16T03:34:47.327+00:00",
+          "lastDownloaded": null,
+          "uploader": "d1master",
+          "uploaderIp": "10.238.97.48",
+          "fileSize": 0
+        }
+      ],
+      "tags": []
+    },
+    {
+      "id": "bXMtaGVsbS1yZWxlYXNlOmYxMTBjYTg0YTNiNjRlYWI0NzBiNGE0OTk0NDY3ZTY0",
+      "repository": "ms-helm-release",
+      "format": "helm",
+      "group": null,
+      "name": "productconfigurator-pioperations",
+      "version": "0.51.53",
+      "assets": [
+        {
+          "downloadUrl": "http://illin5589:28080/repository/ms-helm-release/productconfigurator-pioperations-0.51.53.tgz",
+          "path": "productconfigurator-pioperations-0.51.53.tgz",
+          "id": "bXMtaGVsbS1yZWxlYXNlOjRjNjBlM2Q5ODk5ZDc4MGMwZGU1ZjA2MjU2MDFmNjU0",
+          "repository": "ms-helm-release",
+          "format": "helm",
+          "checksum": {
+            "sha1": "0b526e015ce0d5b774469b23eefd635d49df2bfb",
+            "sha256": "5479d4898abef259ae8960d9a4ca555ff6018252206dc5f560947cee3015f6c5"
+          },
+          "contentType": "application/x-tgz",
+          "lastModified": "2023-10-16T03:34:28.299+00:00",
+          "lastDownloaded": null,
+          "uploader": "d1master",
+          "uploaderIp": "10.238.97.48",
+          "fileSize": 0
+        }
+      ],
+      "tags": []
+    },
+    {
+      "id": "bXMtaGVsbS1yZWxlYXNlOjBiNzkzNDc3ODQ0YTcyMjg2M2MzOTBkODdiZDc3OTA3",
+      "repository": "ms-helm-release",
+      "format": "helm",
+      "group": null,
+      "name": "productconfigurator-pioperations",
+      "version": "0.51.56",
+      "assets": [
+        {
+          "downloadUrl": "http://illin5589:28080/repository/ms-helm-release/productconfigurator-pioperations-0.51.56.tgz",
+          "path": "productconfigurator-pioperations-0.51.56.tgz",
+          "id": "bXMtaGVsbS1yZWxlYXNlOmRhNTEyMGU2NGYzYmU1NTA4MTM5NDExODIwM2I1ZTZj",
+          "repository": "ms-helm-release",
+          "format": "helm",
+          "checksum": {
+            "sha1": "bf5f67fdf2c23c539415173440b553104c35adbb",
+            "sha256": "ff240e6c79a767b088d0cfba539166210af7864076811c9661a91d25bb4f0d80"
+          },
+          "contentType": "application/x-tgz",
+          "lastModified": "2023-10-16T03:34:26.875+00:00",
+          "lastDownloaded": null,
+          "uploader": "d1master",
+          "uploaderIp": "10.238.97.48",
+          "fileSize": 0
+        }
+      ],
+      "tags": []
+    },
+    {
+      "id": "bXMtaGVsbS1yZWxlYXNlOjBiNzkzNDc3ODQ0YTcyMjg3YTFmYjJjNDAzZDJmYmM1",
+      "repository": "ms-helm-release",
+      "format": "helm",
+      "group": null,
+      "name": "productconfigurator-pioperations",
+      "version": "0.51.57",
+      "assets": [
+        {
+          "downloadUrl": "http://illin5589:28080/repository/ms-helm-release/productconfigurator-pioperations-0.51.57.tgz",
+          "path": "productconfigurator-pioperations-0.51.57.tgz",
+          "id": "bXMtaGVsbS1yZWxlYXNlOmRhNTEyMGU2NGYzYmU1NTAzYzk2ZTVlZjk2NWEzNmEy",
+          "repository": "ms-helm-release",
+          "format": "helm",
+          "checksum": {
+            "sha1": "14984a68b8b030917400ba429d95aa9dec78ea86",
+            "sha256": "5c8f713e138a7e7ab51df565f7736b702aef9b023010e33f99cbd31a26765206"
+          },
+          "contentType": "application/x-tgz",
+          "lastModified": "2023-10-16T03:34:25.432+00:00",
+          "lastDownloaded": null,
+          "uploader": "d1master",
+          "uploaderIp": "10.238.97.48",
+          "fileSize": 0
+        }
+      ],
+      "tags": []
+    },
+    {
+      "id": "bXMtaGVsbS1yZWxlYXNlOjBiNzkzNDc3ODQ0YTcyMjg5NzlkZmRiM2JiNzZiNDcz",
+      "repository": "ms-helm-release",
+      "format": "helm",
+      "group": null,
+      "name": "productconfigurator-pioperations",
+      "version": "0.51.58",
+      "assets": [
+        {
+          "downloadUrl": "http://illin5589:28080/repository/ms-helm-release/productconfigurator-pioperations-0.51.58.tgz",
+          "path": "productconfigurator-pioperations-0.51.58.tgz",
+          "id": "bXMtaGVsbS1yZWxlYXNlOmRhNTEyMGU2NGYzYmU1NTA1NDliZDhiMjBhYzA0NjVh",
+          "repository": "ms-helm-release",
+          "format": "helm",
+          "checksum": {
+            "sha1": "c2c5d7016bb48a351f0a4d2a569ca488e717ac0e",
+            "sha256": "c82326c2c60c1f910811151c3eed707cb59c92b8fadec0f7b7d1531d37322d4c"
+          },
+          "contentType": "application/x-tgz",
+          "lastModified": "2023-10-16T03:34:23.848+00:00",
+          "lastDownloaded": null,
+          "uploader": "d1master",
+          "uploaderIp": "10.238.97.48",
+          "fileSize": 0
+        }
+      ],
+      "tags": []
+    },
+    {
+      "id": "bXMtaGVsbS1yZWxlYXNlOjBiNzkzNDc3ODQ0YTcyMjhlYzg1Nzk0YTVlOGE1MjMw",
+      "repository": "ms-helm-release",
+      "format": "helm",
+      "group": null,
+      "name": "productconfigurator-pioperations",
+      "version": "0.51.59",
+      "assets": [
+        {
+          "downloadUrl": "http://illin5589:28080/repository/ms-helm-release/productconfigurator-pioperations-0.51.59.tgz",
+          "path": "productconfigurator-pioperations-0.51.59.tgz",
+          "id": "bXMtaGVsbS1yZWxlYXNlOmRhNTEyMGU2NGYzYmU1NTAxNjA5ZWE5NDEwM2U3MTQy",
+          "repository": "ms-helm-release",
+          "format": "helm",
+          "checksum": {
+            "sha1": "80d02665495e0576e97d8c2f40a3191d80a20b19",
+            "sha256": "86e84f85350ea11dd2c12e6239b50deb73403aa5ebb38bffc04389e36484de8c"
+          },
+          "contentType": "application/x-tgz",
+          "lastModified": "2023-10-16T03:34:22.437+00:00",
+          "lastDownloaded": null,
+          "uploader": "d1master",
+          "uploaderIp": "10.238.97.48",
+          "fileSize": 0
+        }
+      ],
+      "tags": []
+    },
+    {
+      "id": "bXMtaGVsbS1yZWxlYXNlOjQzNDE2YWU0MTM2ZjBlYzMwNTViMzgwMDFjNmIyNGU1",
+      "repository": "ms-helm-release",
+      "format": "helm",
+      "group": null,
+      "name": "productconfigurator-pioperations",
+      "version": "0.51.60",
+      "assets": [
+        {
+          "downloadUrl": "http://illin5589:28080/repository/ms-helm-release/productconfigurator-pioperations-0.51.60.tgz",
+          "path": "productconfigurator-pioperations-0.51.60.tgz",
+          "id": "bXMtaGVsbS1yZWxlYXNlOjlkNGU2NmQ3NmZkYjk1OTE2NjM3OWUyNjM2OGU1ZDk1",
+          "repository": "ms-helm-release",
+          "format": "helm",
+          "checksum": {
+            "sha1": "9ae4fc7d36e42de8d932aed24dc055956c8e243a",
+            "sha256": "07e57420c928b224513439b3c1b5552def3674fb8775e5685de7803bbdd860c5"
+          },
+          "contentType": "application/x-tgz",
+          "lastModified": "2023-10-16T03:34:21.023+00:00",
+          "lastDownloaded": null,
+          "uploader": "d1master",
+          "uploaderIp": "10.238.97.48",
+          "fileSize": 0
+        }
+      ],
+      "tags": []
+    },
+    {
+      "id": "bXMtaGVsbS1yZWxlYXNlOjBiNzkzNDc3ODQ0YTcyMjgwNjYyMzZmYjE4YzU0NTIx",
+      "repository": "ms-helm-release",
+      "format": "helm",
+      "group": null,
+      "name": "productconfigurator-pioperations",
+      "version": "0.51.62",
+      "assets": [
+        {
+          "downloadUrl": "http://illin5589:28080/repository/ms-helm-release/productconfigurator-pioperations-0.51.62.tgz",
+          "path": "productconfigurator-pioperations-0.51.62.tgz",
+          "id": "bXMtaGVsbS1yZWxlYXNlOmRhNTEyMGU2NGYzYmU1NTAyYjlhYTJlZDk3MDY1MDc1",
+          "repository": "ms-helm-release",
+          "format": "helm",
+          "checksum": {
+            "sha1": "8580bcf474020aa61fe49f0050fdaa4bc4a903bf",
+            "sha256": "293510e7bc558091b5d9de35aa8dfd87e9d66fff204a8a7671ddf97921bfdf28"
+          },
+          "contentType": "application/x-tgz",
+          "lastModified": "2023-10-16T03:34:19.574+00:00",
+          "lastDownloaded": null,
+          "uploader": "d1master",
+          "uploaderIp": "10.238.97.48",
+          "fileSize": 0
+        }
+      ],
+      "tags": []
+    },
+    {
+      "id": "bXMtaGVsbS1yZWxlYXNlOjBiNzkzNDc3ODQ0YTcyMjg0YjU2NzA3OTYzMDBlZTgz",
+      "repository": "ms-helm-release",
+      "format": "helm",
+      "group": null,
+      "name": "productconfigurator-pioperations",
+      "version": "0.67.13",
+      "assets": [
+        {
+          "downloadUrl": "http://illin5589:28080/repository/ms-helm-release/productconfigurator-pioperations-0.67.13.tgz",
+          "path": "productconfigurator-pioperations-0.67.13.tgz",
+          "id": "bXMtaGVsbS1yZWxlYXNlOmRhNTEyMGU2NGYzYmU1NTA3ZDk3NGY1NGQ5OTEzNzc3",
+          "repository": "ms-helm-release",
+          "format": "helm",
+          "checksum": {
+            "sha1": "3951a9058142330697ae50ea72c65c65b876f83b",
+            "sha256": "74720f498e2a17b432dec2cc508c375ae8fbe17cd2d62b247e10e41754ea7d53"
+          },
+          "contentType": "application/x-tgz",
+          "lastModified": "2023-10-16T03:34:18.165+00:00",
+          "lastDownloaded": null,
+          "uploader": "d1master",
+          "uploaderIp": "10.238.97.48",
+          "fileSize": 0
+        }
+      ],
+      "tags": []
+    }
+  ],
+  "continuationToken": null
+}
