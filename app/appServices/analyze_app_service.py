@@ -45,5 +45,4 @@ class AnalyzeAppService:
         # prepare response
         socket_handler.send_message("[INFO] Preparing response.", self.session_id)
 
-        socket_handler.send_message("[INFO] END analyze.", self.session_id)
         return self.prepare_response_step.prepare_response(self.data_manager.groups_data)
