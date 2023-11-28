@@ -24,8 +24,6 @@ class AnalyzeAppService:
         self.session_id = parameters.session_id
 
     def analyze(self) -> SmartAnalyzeResponse:
-        socket_handler.send_message("[INFO] Starting analyze.", self.session_id)
-
         # load version from nexus
         socket_handler.send_message("[INFO] Loading services version from nexus.", self.session_id)
         repository = self.config_manager.get_index_data_repository()
@@ -46,4 +44,6 @@ class AnalyzeAppService:
 
         # prepare response
         socket_handler.send_message("[INFO] Preparing response.", self.session_id)
+
+        socket_handler.send_message("[INFO] END analyze.", self.session_id)
         return self.prepare_response_step.prepare_response(self.data_manager.groups_data)
