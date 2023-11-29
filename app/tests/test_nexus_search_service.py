@@ -49,7 +49,7 @@ class TestNexusSearchService(TestUnitBase):
         self.assert_exception(lambda: self.nexus_search_service.get_services_master_version(None,
                                                                                             self.config.get_filtered_ms_list()),
                               EmptyInputError,
-                              "Provided to 'get_services_master_version' None repository")
+                              "Provided to 'get_services_master_version' repository=None")
 
         self.mock_nexus_search.assert_not_called()
 
@@ -66,6 +66,4 @@ class TestNexusSearchService(TestUnitBase):
         services_map = self.nexus_search_service.get_services_master_version(self._repo,
                                                                              ["productconfigurator-missing_version"])
         self.mock_nexus_search.assert_called()
-        self.assertEqual(len(services_map), 1)
-        self.assertEqual(None, services_map.get("productconfigurator-missing_version").new_version)
-        self.assertEqual(None, services_map.get("productconfigurator-missing_version").old_version)
+        self.assertEqual(len(services_map), 0)
