@@ -12,9 +12,9 @@ class TestEndpointsUnit(TestUnitBase):
     def test_supported_groups_endpoint_success(self):
         res = self.client_fixture.get("/supported-groups", query_string={"api_key": self.config.get_user_api_token()})
         self.assertEqual(res.status_code, 200)
-        self.assertEqual(b'{"oc-cd-group4-coc-include-ed":{"cluster":"ilocpde456",'
-                         b'"group_name":"oc-cd-group4-coc-include-ed",'
-                         b'"url":"http://illin5565:18080/job/oc-cd-group4/job/oc-cd-group4-include-ed/"}}\n',
+        self.assertEqual(b'{"oc-cd-group4":{"cluster":"ilocpde456",'
+                         b'"group_name":"oc-cd-group4",'
+                         b'"url":"http://illin5565:18080/job/oc-cd-group4/job/oc-cd-group4/"}}\n',
                          res.data)
 
     def test_supported_groups_endpoint_missing_api_key(self):
@@ -25,9 +25,9 @@ class TestEndpointsUnit(TestUnitBase):
     def test_smart_tests_analyze_endpoint_success(self):
         # parameters
         data = {
-            "buildURL": "http://illin5565:18080/job/oc-cd-group4/job/oc-cd-group4-include-ed/lastSuccessfulBuild"
+            "buildURL": "http://illin5565:18080/job/oc-cd-group4/job/oc-cd-group4/lastSuccessfulBuild"
                         "/BuildReport/*zip*/BuildReport.zip",
-            "groupName": "oc-cd-group4-coc-include-ed",
+            "groupName": "oc-cd-group4",
             "sessionID": "session_id",
         }
 
@@ -61,7 +61,7 @@ class TestEndpointsUnit(TestUnitBase):
         self.assertEqual(body['mat_APIGW_testng.xml']['test_xml_path'], 'com/amdocs/core/oc/testng')
 
         self.assertEqual(10, self.mock_nexus_search.call_count)
-        self.mock_get_html.assert_called_once_with("http://illin5565:18080/job/oc-cd-group4/job/oc-cd-group4-include-ed"
+        self.mock_get_html.assert_called_once_with("http://illin5565:18080/job/oc-cd-group4/job/oc-cd-group4"
                                                    "/lastSuccessfulBuild/BuildReport/*zip*/BuildReport.zip")
         self.mock_get_all_flows.assert_called_once_with(".*group4_integration_tests_testng.*|.*mat_APIGW_testng"
                                                         ".*|.*extended_mat_7a_APIGW_testng.*|"
@@ -95,7 +95,7 @@ class TestEndpointsUnit(TestUnitBase):
         # parameters
         data = {
             "buildURL": "http://test_html_same_version/zipfile.zip",
-            "groupName": "oc-cd-group4-coc-include-ed",
+            "groupName": "oc-cd-group4",
             "sessionID": "session_id",
         }
 
@@ -176,9 +176,9 @@ class TestEndpointsUnit(TestUnitBase):
     def test_smart_tests_analyze_endpoint_missing_api_key(self):
         # parameters
         data = {
-            "buildURL": "http://illin5565:18080/job/oc-cd-group4/job/oc-cd-group4-include-ed/lastSuccessfulBuild"
+            "buildURL": "http://illin5565:18080/job/oc-cd-group4/job/oc-cd-group4/lastSuccessfulBuild"
                         "/BuildReport/*zip*/BuildReport.zip",
-            "groupName": "oc-cd-group4-coc-include-ed",
+            "groupName": "oc-cd-group4",
         }
 
         # execute

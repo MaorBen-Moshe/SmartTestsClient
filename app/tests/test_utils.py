@@ -25,7 +25,7 @@ class TestUtils(TestBase):
         self.assertEqual(result, expected)
 
     @parameterized.expand([
-        ("http://illin5565:18080/job/oc-cd-group4/job/oc-cd-group4-include-ed/lastSuccessfulBuild/BuildReport"
+        ("http://illin5565:18080/job/oc-cd-group4/job/oc-cd-group4/lastSuccessfulBuild/BuildReport"
          "/*zip*/BuildReport.zip", True),
         ("https://www.python.org/", False),
         ("https://realpython.com/pytest-python-testing/", False),

@@ -8,7 +8,7 @@ class TestCheckAnalyzeInputUnit(TestUnitBase):
 
         req_data = {
             "buildURL": "build_url",
-            "groupName": "oc-cd-group4-coc-include-ed",
+            "groupName": "oc-cd-group4",
             "sessionID": "session_id"
         }
 
@@ -31,7 +31,7 @@ class TestCheckAnalyzeInputUnit(TestUnitBase):
 
     def test_check_input_input_is_build_url_none(self):
         data = {
-            "groupName": "oc-cd-group4-coc-include-ed",
+            "groupName": "oc-cd-group4",
         }
 
         self.assert_exception(lambda: CheckAnalyzeClientInputStep.check_input(data,
@@ -42,7 +42,7 @@ class TestCheckAnalyzeInputUnit(TestUnitBase):
     def test_check_input_input_is_build_url_empty(self):
         data = {
             "buildURL": "",
-            "groupName": "oc-cd-group4-coc-include-ed",
+            "groupName": "oc-cd-group4",
         }
 
         self.assert_exception(lambda: CheckAnalyzeClientInputStep.check_input(data,
@@ -63,18 +63,18 @@ class TestCheckAnalyzeInputUnit(TestUnitBase):
     def test_check_input_input_is_group_name_not_supported(self):
         data = {
             "buildURL": "build_url",
-            "groupName": "oc-cd-group4-coc-include-ed_NotSupported"
+            "groupName": "oc-cd-group4_NotSupported"
         }
 
         self.assert_exception(lambda: CheckAnalyzeClientInputStep.check_input(data, self.config.get_supported_groups()),
                               BadRequest,
-                              (f"Group Name: 'oc-cd-group4-coc-include-ed_NotSupported' is not supported. supported "
+                              (f"Group Name: 'oc-cd-group4_NotSupported' is not supported. supported "
                               f"groups: {self.config.get_supported_groups()}"))
 
     def test_check_input_input_is_session_id_none(self):
         data = {
             "buildURL": "build_url",
-            "groupName": "oc-cd-group4-coc-include-ed",
+            "groupName": "oc-cd-group4",
         }
 
         self.assert_exception(lambda: CheckAnalyzeClientInputStep.check_input(data, self.config.get_supported_groups()),

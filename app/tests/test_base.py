@@ -91,7 +91,7 @@ class TestUnitBase(TestBase):
             file_to_open = "resources/html_parse/build_report.html"
         elif args[0] == "http://test_html_same_version/zipfile.zip":
             file_to_open = "resources/endpoints/build_report_same_versions.html"
-        elif args[0] == ("http://illin5565:18080/job/oc-cd-group4/job/oc-cd-group4-include-ed/lastSuccessfulBuild"
+        elif args[0] == ("http://illin5565:18080/job/oc-cd-group4/job/oc-cd-group4/lastSuccessfulBuild"
                          "/BuildReport/*zip*/BuildReport.zip"):
             file_to_open = "resources/endpoints/build_report.html"
         elif args[0] == "http://example.com/missing_table_file.zip":
