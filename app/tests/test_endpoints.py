@@ -72,7 +72,13 @@ class TestEndpointsUnit(TestUnitBase):
                                                         ".*|.*ContratedOffer_Pack_testng"
                                                         ".*|.*Everest_Configurator_Pack_testng"
                                                         ".*|.*Everest_Qualification_Pack_testng"
-                                                        ".*|.*Everest_validator_pack.*|.*Olympus_pack_testng.*")
+                                                        ".*|.*Everest_validator_pack"
+                                                        ".*|.*Olympus_pack_testng"
+                                                        ".*|.*Everest_Validator_Dependency_Rules_Pack_testng"
+                                                        ".*|.*Fuji_Price_Pack_testng"
+                                                        ".*|.*Fuji_Promotion_Pack_testng"
+                                                        ".*|.*Fuji_Replace_Pack_testng"
+                                                        ".*|.*mat_oc_product_configurator_hooks_APIGW_testng.*")
 
         self.mock_analyze_flows.assert_called_once()
         args, kwargs = self.mock_analyze_flows.call_args
@@ -89,7 +95,13 @@ class TestEndpointsUnit(TestUnitBase):
                                   ".*|.*ContratedOffer_Pack_testng"
                                   ".*|.*Everest_Configurator_Pack_testng"
                                   ".*|.*Everest_Qualification_Pack_testng"
-                                  ".*|.*Everest_validator_pack.*|.*Olympus_pack_testng.*")
+                                  ".*|.*Everest_validator_pack"
+                                  ".*|.*Olympus_pack_testng"
+                                  ".*|.*Everest_Validator_Dependency_Rules_Pack_testng"
+                                  ".*|.*Fuji_Price_Pack_testng"
+                                  ".*|.*Fuji_Promotion_Pack_testng"
+                                  ".*|.*Fuji_Replace_Pack_testng"
+                                  ".*|.*mat_oc_product_configurator_hooks_APIGW_testng.*")
 
     def test_smart_tests_analyze_endpoint_success_same_versions(self):
         # parameters
@@ -137,7 +149,13 @@ class TestEndpointsUnit(TestUnitBase):
                                                         ".*|.*ContratedOffer_Pack_testng"
                                                         ".*|.*Everest_Configurator_Pack_testng"
                                                         ".*|.*Everest_Qualification_Pack_testng"
-                                                        ".*|.*Everest_validator_pack.*|.*Olympus_pack_testng.*")
+                                                        ".*|.*Everest_validator_pack"
+                                                        ".*|.*Olympus_pack_testng"
+                                                        ".*|.*Everest_Validator_Dependency_Rules_Pack_testng"
+                                                        ".*|.*Fuji_Price_Pack_testng"
+                                                        ".*|.*Fuji_Promotion_Pack_testng"
+                                                        ".*|.*Fuji_Replace_Pack_testng"
+                                                        ".*|.*mat_oc_product_configurator_hooks_APIGW_testng.*")
 
         self.mock_analyze_flows.assert_not_called()
 
