@@ -10,8 +10,10 @@ from werkzeug.exceptions import HTTPException
 
 from app import app, login_manager, config, socket_handler
 from app.appServices.analyze_app_service import AnalyzeAppService
+from app.appServices.analyze_dev_app_service import AnalyzeDevAppService
 from app.exceptions.excpetions import SmartClientBaseException
 from app.models.analyze_app_params import AnalyzeAppServiceParameters
+from app.models.analyze_dev_app_params import AnalyzeDevAppServiceParameters
 from app.models.user import User
 
 
@@ -52,6 +54,23 @@ def analyze():
     service = AnalyzeAppService(parameters)
 
     res = service.analyze()
+
+    return make_response(jsonify(res.serialize()), 200)
+
+
+@app.route("/smart-tests-analyze-dev", methods=["POST"])
+@login_required
+def analyze_dev():
+    req_data = request.get_json()
+
+    parameters = (AnalyzeDevAppServiceParameters.create()
+                  .services_input(req_data.get("services"))
+                  .session_id(req_data.get("sessionID") if req_data.get("sessionID") else uuid.uuid4())
+                  .build())
+
+    service = AnalyzeDevAppService(parameters)
+
+    res = service.analyze_dev()
 
     return make_response(jsonify(res.serialize()), 200)
 

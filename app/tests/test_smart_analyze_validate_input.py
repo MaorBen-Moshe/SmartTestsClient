@@ -2,15 +2,15 @@ from parameterized import parameterized
 
 from app.exceptions.excpetions import BadRequest
 from app.models.analyze_app_params import AnalyzeAppServiceParameters
-from app.steps.smartAnalyze.check_analyze_input import CheckAnalyzeClientInputStep
+from app.steps.smartAnalyze.smart_analyze_validate_input import SmartAnalyzeValidateInputStep
 from test_base import TestUnitBase
 
 
-class TestCheckAnalyzeInputUnit(TestUnitBase):
+class TestSmartAnalyzeValidateInputUnit(TestUnitBase):
 
     def setUp(self) -> None:
         super().setUp()
-        self.step = CheckAnalyzeClientInputStep()
+        self.step = SmartAnalyzeValidateInputStep()
 
     def test_check_input_success(self):
         parameters = (AnalyzeAppServiceParameters.create()

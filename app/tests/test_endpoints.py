@@ -1,3 +1,5 @@
+from parameterized import parameterized
+from unittest.mock import call
 from test_base import TestUnitBase
 
 
@@ -159,48 +161,130 @@ class TestEndpointsUnit(TestUnitBase):
 
         self.mock_analyze_flows.assert_not_called()
 
-    def test_smart_tests_analyze_endpoint_missing_payload(self):
+    @parameterized.expand([
+        ({
+             "buildURL": "http://illin5565:18080/job/oc-cd-group4/job/oc-cd-group4/lastSuccessfulBuild"
+                         "/BuildReport/*zip*/BuildReport.zip",
+             "groupName": "oc-cd-group4",
+         }, False, 401, (b'[ERROR] 401 Unauthorized: The server could not verify that you are authorize'
+                         b'd to access the URL requested. You either supplied the wrong credentials (e.'
+                         b"g. a bad password), or your browser doesn't understand how to supply the cre"
+                         b'dentials required.')),
+        ({
+             "buildURL": "build_url",
+         }, True, 400, b"[ERROR] 400: Group Name: 'None' is not supported."),
+        ({
+             "groupName": "group_name",
+         }, True, 400, b"[ERROR] 400: No build url provided."),
+        (None, True, 400, b'[ERROR] 400 Bad Request: The browser (or proxy) sent a request that this server could not '
+                          b'understand.')
+    ])
+    def test_smart_analyze_endpoint_missing_data(self, payload, with_query_param, error_code, error_msg):
+        query_params = {"api_key": self.config.get_user_api_token()} if with_query_param else {}
         res = self.client_fixture.post("/smart-tests-analyze",
+                                       json=payload,
                                        content_type='application/json',
-                                       query_string={"api_key": self.config.get_user_api_token()})
-        self.assertEqual(res.status_code, 400)
-        self.assertEqual((b'[ERROR] 400 Bad Request: The browser (or proxy) sent a request that this server could not '
-                          b'understand.'), res.data)
+                                       query_string=query_params)
+        self.assertEqual(error_code, res.status_code)
+        self.assertEqual(error_msg, res.data)
 
-    def test_smart_tests_analyze_endpoint_missing_buildUrl(self):
-        data = {
-            "groupName": "group_name",
-        }
-
-        res = self.client_fixture.post("/smart-tests-analyze",
-                                       json=data,
-                                       content_type='application/json',
-                                       query_string={"api_key": self.config.get_user_api_token()})
-        self.assertEqual(res.status_code, 400)
-        self.assertEqual(b'[ERROR] 400: No build url provided.', res.data)
-
-    def test_smart_tests_analyze_endpoint_missing_groupName(self):
-        data = {
-            "buildURL": "build_url",
-        }
-
-        res = self.client_fixture.post("/smart-tests-analyze",
-                                       json=data,
-                                       content_type='application/json',
-                                       query_string={"api_key": self.config.get_user_api_token()})
-        self.assertEqual(res.status_code, 400)
-        self.assertEqual(b"[ERROR] 400: Group Name: 'None' is not supported.", res.data)
-
-    def test_smart_tests_analyze_endpoint_missing_api_key(self):
+    def test_smart_analyze_dev_endpoint_success(self):
         # parameters
         data = {
-            "buildURL": "http://illin5565:18080/job/oc-cd-group4/job/oc-cd-group4/lastSuccessfulBuild"
-                        "/BuildReport/*zip*/BuildReport.zip",
-            "groupName": "oc-cd-group4",
+            "services": [
+                {
+                    "name": "productconfigurator",
+                    "from": "0.67.20",
+                },
+                {
+                    "name": "productconfigurator-pioperations",
+                    "from": "0.67.13",
+                    "to": "0.67.11",
+                },
+            ]
         }
 
         # execute
-        res = self.client_fixture.post("/smart-tests-analyze", json=data, content_type='application/json')
+        res = self.client_fixture.post("/smart-tests-analyze-dev",
+                                       json=data,
+                                       content_type='application/json',
+                                       query_string={"api_key": self.config.get_user_api_token()})
 
         # asserts
-        self.assertEqual(res.status_code, 401)
+        self.assertEqual(res.status_code, 200)
+        self.assertIsNotNone(res.json)
+        self.assertEqual(712, res.json['total_flows_count'])
+        self.assertEqual(2, res.json['curr_flows_count'])
+        body = res.json['groups']
+        self.assertIsNotNone(body)
+        self.assertEqual(len(body), 3)
+        self.assertIn('extended_mat_7b_APIGW_testng.xml', body)
+        self.assertEqual(body['extended_mat_7b_APIGW_testng.xml']['curr_flows_count'], 0)
+        self.assertEqual(body['extended_mat_7b_APIGW_testng.xml']['total_flows_count'], 45)
+        self.assertListEqual(body['extended_mat_7b_APIGW_testng.xml']['flows'], [])
+        self.assertEqual(body['extended_mat_7b_APIGW_testng.xml']['test_xml_name'], 'extended_mat_7b_APIGW_testng.xml')
+        self.assertEqual(body['extended_mat_7b_APIGW_testng.xml']['test_xml_path'], 'com/amdocs/core/oc/testng')
+        self.assertIn('mat_APIGW_testng.xml', body)
+        self.assertEqual(body['mat_APIGW_testng.xml']['curr_flows_count'], 2)
+        self.assertEqual(body['mat_APIGW_testng.xml']['total_flows_count'], 12)
+        self.assertListEqual(body['mat_APIGW_testng.xml']['flows'],
+                             ['com.amdocs.core.oc.test.flows.schedulerTask.RetrieveSchedulerTaskFlow',
+                              'com.amdocs.core.oc.test.flows.discovery.categories.BrowsingCategoriesSelfServiceFlows'])
+        self.assertEqual(body['mat_APIGW_testng.xml']['test_xml_name'], 'mat_APIGW_testng.xml')
+        self.assertEqual(body['mat_APIGW_testng.xml']['test_xml_path'], 'com/amdocs/core/oc/testng')
+        self.assertIn('unknown-group', body)
+        self.assertEqual(body['unknown-group']['curr_flows_count'], 0)
+        self.assertEqual(body['unknown-group']['total_flows_count'], 655)
+        self.assertListEqual(body['unknown-group']['flows'], [])
+        self.assertEqual(body['unknown-group']['test_xml_name'], 'unknown-group')
+        self.assertEqual(body['unknown-group']['test_xml_path'], '')
+
+        self.mock_nexus_search.assert_called_once_with({'repository': self.config.get_index_data_repository(),
+                                                        'name': 'productconfigurator'})
+        self.mock_get_all_flows.assert_called_once_with('')
+        self.assertEqual(2, self.mock_analyze_flows.call_count)
+        self.mock_analyze_flows.assert_has_calls([call("productconfigurator", "0.67.19", "0.67.20", ''),
+                                                 call("productconfigurator-pioperations", "0.67.11", "0.67.13", '')],
+                                                 any_order=False)
+
+    @parameterized.expand([
+        (None, True, 400, b'[ERROR] 400 Bad Request: The browser (or proxy) sent a request that this server could not '
+                          b'understand.'),
+        ({
+             "services": []
+         }, False, 401, (b'[ERROR] 401 Unauthorized: The server could not verify that you are authorize'
+                         b'd to access the URL requested. You either supplied the wrong credentials (e.'
+                         b"g. a bad password), or your browser doesn't understand how to supply the cre"
+                         b'dentials required.')),
+        ({
+            "services": None
+        }, True, 400, b"[ERROR] 400: No services input provided."),
+        ({
+            "services": "No list type"
+        }, True, 400, b"[ERROR] 400: Services input should be a list."),
+        ({
+             "services": ["No dict type"]
+         }, True, 400, b"[ERROR] 400: Each Service in services should be a dictionary."),
+        ({
+                "services": [
+                    {
+                        "name": "service_name",
+                    }
+                ]
+            }, True, 400, b"[ERROR] 400: Service is missing mandatory field: 'from'."),
+        ({
+                "services": [
+                    {
+                        "from": "from_version",
+                    }
+                ]
+            }, True, 400, b"[ERROR] 400: Service is missing mandatory field: 'name'."),
+    ])
+    def test_smart_analyze_dev_endpoint_missing_data(self, payload, with_query_param, error_code, error_msg):
+        query_params = {"api_key": self.config.get_user_api_token()} if with_query_param else {}
+        res = self.client_fixture.post("/smart-tests-analyze-dev",
+                                       json=payload,
+                                       content_type='application/json',
+                                       query_string=query_params)
+        self.assertEqual(error_code, res.status_code)
+        self.assertEqual(error_msg, res.data)

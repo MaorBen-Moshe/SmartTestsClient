@@ -5,7 +5,7 @@ from app.models.analyze_app_params import AnalyzeAppServiceParameters
 from app.steps.smartAnalyze.smart_analyze_step_interface import SmartAnalyzeStepInterface
 
 
-class CheckAnalyzeClientInputStep(SmartAnalyzeStepInterface):
+class SmartAnalyzeValidateInputStep(SmartAnalyzeStepInterface):
 
     def execute(self, parameters: AnalyzeAppServiceParameters):
         if parameters is None:

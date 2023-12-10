@@ -54,10 +54,10 @@ class TestUnitBase(TestBase):
         self.get_all_flows_patcher.stop()
         self.analyze_flows_patcher.stop()
 
-    def assert_services_map_entry(self, entry, old_version: str, new_version: str):
+    def assert_services_map_entry(self, entry, to_version: str, from_version: str):
         self.assertIsInstance(entry, ServiceData)
-        self.assertEqual(entry.to_version, old_version)
-        self.assertEqual(entry.from_version, new_version)
+        self.assertEqual(entry.to_version, to_version)
+        self.assertEqual(entry.from_version, from_version)
 
     def assert_group_data(self, group_data: GroupData, name: str, path: str, total_count: int):
         self.assertIsNotNone(group_data)

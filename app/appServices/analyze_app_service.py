@@ -3,26 +3,25 @@ from __future__ import annotations
 from app import config, socket_handler
 from app.models.analyze_app_params import AnalyzeAppServiceParameters
 from app.models.smart_analyze_response import SmartAnalyzeResponse
-from app.steps.smartAnalyze.check_analyze_input import CheckAnalyzeClientInputStep
-from app.steps.smartAnalyze.handle_groups_data_step import InitGroupsDataStep, AnalyzeFlowsStep
-from app.steps.smartAnalyze.html_parser_step import HtmlParserStep
-from app.steps.smartAnalyze.init_services_data_step import InitServiceMapStep
-from app.steps.smartAnalyze.prepare_response_step import PrepareResponseStep
+from app.steps.smartAnalyze.smart_analyze_validate_input import SmartAnalyzeValidateInputStep
+from app.steps.smartAnalyze.smart_analyze_handle_groups_data_step import InitGroupsDataStep, AnalyzeFlowsStep
+from app.steps.smartAnalyze.smart_analyze_html_parser_step import HtmlParserStep
+from app.steps.smartAnalyze.smart_analyze_init_services_data_step import InitServiceMapStep
+from app.steps.smartAnalyze.smart_analyze_prepare_response_step import PrepareResponseStep
 
 
 class AnalyzeAppService:
     def __init__(self, parameters: AnalyzeAppServiceParameters):
         self.parameters = parameters
-        self.config_manager = config
         self.parameters.data_manager.curr_group = parameters.group_name
-        self.validate_input_step = CheckAnalyzeClientInputStep()
-        self.init_services_map_step = InitServiceMapStep(self.config_manager.get_index_data_repository())
+        self.validate_input_step = SmartAnalyzeValidateInputStep()
+        self.init_services_map_step = InitServiceMapStep(config.get_index_data_repository())
         self.init_groups_data_step = InitGroupsDataStep()
         self.analyze_flows_step = AnalyzeFlowsStep()
         self.html_parser = HtmlParserStep()
         self.prepare_response_step = PrepareResponseStep()
 
-    def analyze(self) -> SmartAnalyzeResponse:
+    def analyze(self) -> SmartAnalyzeResponse | None:
         # check input
         socket_handler.send_message("[INFO] Processing payload data.", self.parameters.session_id)
         self.validate_input_step.execute(self.parameters)
