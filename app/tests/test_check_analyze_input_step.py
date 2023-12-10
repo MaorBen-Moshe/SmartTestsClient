@@ -1,63 +1,39 @@
 from parameterized import parameterized
 
 from app.exceptions.excpetions import BadRequest
-from app.models.analyze_app_params import AnalyzeAppServiceParameters, AnalyzeAppServiceParametersBuilder
-from app.steps.check_analyze_input import CheckAnalyzeClientInputStep
+from app.models.analyze_app_params import AnalyzeAppServiceParameters
+from app.steps.smartAnalyze.check_analyze_input import CheckAnalyzeClientInputStep
 from test_base import TestUnitBase
 
 
 class TestCheckAnalyzeInputUnit(TestUnitBase):
+
+    def setUp(self) -> None:
+        super().setUp()
+        self.step = CheckAnalyzeClientInputStep()
+
     def test_check_input_success(self):
-        parameters = (AnalyzeAppServiceParametersBuilder()
+        parameters = (AnalyzeAppServiceParameters.create()
                       .build_url("build_url")
                       .group_name("oc-cd-group4")
+                      .supported_groups(self.config.get_supported_groups())
                       .build())
 
         try:
-            CheckAnalyzeClientInputStep.check_input(parameters, self.config.get_supported_groups())
+            self.step.execute(parameters)
         except Exception as ex:
             self.fail(f"Error: {ex}")
 
-    def test_check_input_input_is_none(self):
-        self.assert_exception(lambda: CheckAnalyzeClientInputStep.check_input(None,
-                                                                              self.config.get_supported_groups()),
-                              BadRequest,
-                              "No payload provided.")
-
-    def test_check_input_input_is_empty_dict(self):
-        self.assert_exception(
-            lambda: CheckAnalyzeClientInputStep.check_input(AnalyzeAppServiceParametersBuilder().build(),
-                                                            self.config.get_supported_groups()),
-            BadRequest,
-            "No payload provided.")
-
     @parameterized.expand([
-        None,
-        ""
+        (None, "No payload provided."),
+        (AnalyzeAppServiceParameters.create().build(), "No payload provided."),
+        (AnalyzeAppServiceParameters.create().group_name("oc-cd-group4").build(), "No build url provided."),
+        (AnalyzeAppServiceParameters.create().build_url("").group_name("oc-cd-group4").build(), "No build url provided."),
+        (AnalyzeAppServiceParameters.create().build_url("build_url").build(), f"Group Name: 'None' is not supported."),
+        (AnalyzeAppServiceParameters.create().build_url("build_url").group_name("oc-cd-group4_NotSupported").build(),
+         f"Group Name: 'oc-cd-group4_NotSupported' is not supported."),
     ])
-    def test_check_input_input_is_build_url_empty(self, build_url):
-        parameters = (AnalyzeAppServiceParametersBuilder()
-                      .build_url(build_url)
-                      .group_name("oc-cd-group4")
-                      .build())
-
-        self.assert_exception(lambda: CheckAnalyzeClientInputStep.check_input(parameters,
-                                                                              self.config.get_supported_groups()),
+    def test_check_input_wrong_input(self, parameters, error_msg):
+        self.assert_exception(lambda: self.step.execute(parameters),
                               BadRequest,
-                              "No build url provided.")
-
-    @parameterized.expand([
-        None,
-        "oc-cd-group4_NotSupported"
-    ])
-    def test_check_input_input_wrong_group_name(self, group_name):
-        parameters = (AnalyzeAppServiceParametersBuilder()
-                      .build_url("build_url")
-                      .group_name(group_name)
-                      .build())
-
-        self.assert_exception(lambda: CheckAnalyzeClientInputStep.check_input(parameters,
-                                                                              self.config.get_supported_groups()),
-                              BadRequest,
-                              f"Group Name: '{group_name}' is not supported. supported groups:"
-                              f" {self.config.get_supported_groups()}")
+                              error_msg)

@@ -19,12 +19,12 @@ class SmartTestsAnalyzeService:
         if services_map is not None and groups_data is not None:
             include_groups_filter = Utils.create_filter_by_list(filter_group)
             for service_key in services_map:
-                if services_map[service_key].old_version == services_map[service_key].new_version:
+                if services_map[service_key].to_version == services_map[service_key].from_version:
                     continue
 
                 res_json = self.client.analyze_flows(service_key,
-                                                     services_map.get(service_key).old_version,
-                                                     services_map.get(service_key).new_version,
+                                                     services_map.get(service_key).to_version,
+                                                     services_map.get(service_key).from_version,
                                                      include_groups_filter)
 
                 if res_json is not None and int(res_json.get("flowsCount")) > 0:

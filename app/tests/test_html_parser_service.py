@@ -45,8 +45,8 @@ class TestHtmlParserServiceUnit(TestUnitBase):
     def test_load_html_services_map_contains_common_entry(self):
         service = HtmlParserService()
         services_map = {
-            "productconfigurator-action": ServiceData.create().old_version("0.67.6").new_version("0.67.9").build(),
-            "productconfigurator-commitmentterm": ServiceData.create().old_version("0.67.1").new_version(
+            "productconfigurator-action": ServiceData.create().to_version("0.67.6").from_version("0.67.9").build(),
+            "productconfigurator-commitmentterm": ServiceData.create().to_version("0.67.1").from_version(
                 "0.67.10").build(),
         }
 
@@ -68,5 +68,5 @@ class TestHtmlParserServiceUnit(TestUnitBase):
     def __assert_entry(self, services_map: dict[str, ServiceData], key_name: str, old_version: str, new_version: str):
         self.assertIn(key_name, services_map)
         self.assertIsInstance(services_map[key_name], ServiceData)
-        self.assertEqual(services_map[key_name].old_version, old_version)
-        self.assertEqual(services_map[key_name].new_version, new_version)
+        self.assertEqual(services_map[key_name].to_version, old_version)
+        self.assertEqual(services_map[key_name].from_version, new_version)

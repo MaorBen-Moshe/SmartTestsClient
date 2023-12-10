@@ -62,8 +62,8 @@ class TestHandleGroupsDataStepUnit(TestUnitBase):
 
     def test_analyze_flows_success(self):
         services_map = {
-            "service1": ServiceData.create().old_version("1.0").new_version("2.0").build(),
-            "service2": ServiceData.create().old_version("3.0").new_version("4.0").build()
+            "service1": ServiceData.create().to_version("1.0").from_version("2.0").build(),
+            "service2": ServiceData.create().to_version("3.0").from_version("4.0").build()
         }
         filter_group = ["group1", "group2"]
         groups_data = {

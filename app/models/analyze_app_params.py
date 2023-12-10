@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 from app.models.builder import Builder
+from app.models.data_manager import DataManager
+from app.models.smart_analyze_response import SmartAnalyzeResponse
 from app.models.supported_group import SupportedGroup
 
 
@@ -11,6 +13,12 @@ class AnalyzeAppServiceParameters:
         self.build_url: str | None = None
         self.group_name: str | None = None
         self.session_id: str | None = None
+        self.__data_manager: DataManager = DataManager()
+        self.smart_app_service_response: SmartAnalyzeResponse | None = None
+
+    @property
+    def data_manager(self) -> DataManager:
+        return self.__data_manager
 
     @property
     def build_url(self) -> str | None:
@@ -52,8 +60,16 @@ class AnalyzeAppServiceParameters:
     def session_id(self, session_id: str | None) -> None:
         self._session_id = session_id
 
+    @property
+    def smart_app_service_response(self) -> SmartAnalyzeResponse | None:
+        return self._smart_app_service_response
+
+    @smart_app_service_response.setter
+    def smart_app_service_response(self, smart_app_service_response: SmartAnalyzeResponse | None):
+        self._smart_app_service_response = smart_app_service_response
+
     @staticmethod
-    def create():
+    def create() -> AnalyzeAppServiceParametersBuilder:
         return AnalyzeAppServiceParametersBuilder()
 
 

@@ -5,24 +5,24 @@ from app.models.builder import Builder
 
 class ServiceData:
     def __init__(self):
-        self.old_version = None
-        self.new_version = None
+        self.from_version = None
+        self.to_version = None
 
     @property
-    def old_version(self) -> str | None:
-        return self._old_version
+    def from_version(self) -> str | None:
+        return self._from_version
 
-    @old_version.setter
-    def old_version(self, old_version: str | None) -> None:
-        self._old_version = old_version
+    @from_version.setter
+    def from_version(self, from_version: str | None) -> None:
+        self._from_version = from_version
 
     @property
-    def new_version(self) -> str | None:
-        return self._new_version
+    def to_version(self) -> str | None:
+        return self._to_version
 
-    @new_version.setter
-    def new_version(self, new_version: str | None) -> None:
-        self._new_version = new_version
+    @to_version.setter
+    def to_version(self, to_version: str | None) -> None:
+        self._to_version = to_version
 
     @staticmethod
     def create():
@@ -34,10 +34,10 @@ class ServiceDataBuilder(Builder[ServiceData]):
         service_data = service_data if service_data is not None else ServiceData()
         super().__init__(service_data)
 
-    def old_version(self, old_version: str | None) -> ServiceDataBuilder:
-        self.item.old_version = old_version
+    def from_version(self, from_version: str | None) -> ServiceDataBuilder:
+        self.item.from_version = from_version
         return self
 
-    def new_version(self, new_version: str | None) -> ServiceDataBuilder:
-        self.item.new_version = new_version
+    def to_version(self, to_version: str | None) -> ServiceDataBuilder:
+        self.item.to_version = to_version
         return self

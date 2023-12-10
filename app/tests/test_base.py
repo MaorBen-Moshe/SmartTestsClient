@@ -56,8 +56,8 @@ class TestUnitBase(TestBase):
 
     def assert_services_map_entry(self, entry, old_version: str, new_version: str):
         self.assertIsInstance(entry, ServiceData)
-        self.assertEqual(entry.old_version, old_version)
-        self.assertEqual(entry.new_version, new_version)
+        self.assertEqual(entry.to_version, old_version)
+        self.assertEqual(entry.from_version, new_version)
 
     def assert_group_data(self, group_data: GroupData, name: str, path: str, total_count: int):
         self.assertIsNotNone(group_data)

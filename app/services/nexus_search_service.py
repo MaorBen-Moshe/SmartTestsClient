@@ -33,8 +33,8 @@ class NexusSearchService:
                 if len(versions) > 0:
                     sorted_list = sorted(versions, key=LooseVersion, reverse=True)
                     self.services_map[entry] = (ServiceData.create()
-                                                .new_version(sorted_list[0])
-                                                .old_version(sorted_list[0])
+                                                .from_version(sorted_list[0])
+                                                .to_version(sorted_list[0])
                                                 .build())
 
         return self.services_map
