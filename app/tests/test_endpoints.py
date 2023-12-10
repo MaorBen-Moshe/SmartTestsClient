@@ -296,7 +296,7 @@ class TestEndpointsUnit(TestUnitBase):
                         "name": "service_name",
                     }
                 ]
-            }, True, 400, b"[ERROR] 400: Service is missing mandatory field: 'from'."),
+            }, True, 400, b"[ERROR] 400: Service 'service_name' is missing mandatory field: 'from'."),
         ({
                 "services": [
                     {

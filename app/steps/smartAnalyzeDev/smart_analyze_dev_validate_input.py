@@ -28,7 +28,7 @@ class SmartAnalyzeDevValidateInputStep(SmartAnalyzeDevStepInterface):
                     raise BadRequest("Service is missing mandatory field: 'name'.")
 
                 if "from" not in service:
-                    raise BadRequest("Service is missing mandatory field: 'from'.")
+                    raise BadRequest(f"Service '{service.get('name')}' is missing mandatory field: 'from'.")
 
                 services[service.get("name")] = (ServiceData.create()
                                                  .from_version(service.get("from"))
