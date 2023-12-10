@@ -38,4 +38,5 @@ class DataManager:
 
     @property
     def filter_for_curr_group(self) -> list[str]:
-        return config.get_supported_groups().get(self.curr_group).testng_xml
+        supported_groups = config.get_supported_groups()
+        return supported_groups.get(self.curr_group).testng_xml if self.curr_group in supported_groups else []

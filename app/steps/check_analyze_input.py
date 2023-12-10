@@ -1,20 +1,18 @@
+from __future__ import annotations
+
 from app.exceptions.excpetions import BadRequest
+from app.models.analyze_app_params import AnalyzeAppServiceParameters
 from app.models.supported_group import SupportedGroup
 
 
 class CheckAnalyzeClientInputStep:
 
     @staticmethod
-    def check_input(req_data, supported_groups: dict[str, SupportedGroup]):
-        if req_data is None or len(req_data) == 0:
+    def check_input(parameters: AnalyzeAppServiceParameters | None, supported_groups: dict[str, SupportedGroup]):
+        if parameters is None:
             raise BadRequest("No payload provided.")
 
-        build_url = req_data.get("buildURL")
-        if build_url is None or build_url == "":
+        if parameters.build_url is None or parameters.build_url == "":
             raise BadRequest("No build url provided.")
-        group_name = req_data.get("groupName")
-        if group_name not in supported_groups:
-            raise BadRequest(f"Group Name: '{group_name}' is not supported.")
-        session_id = req_data.get("sessionID")
-        if session_id is None:
-            raise BadRequest("No session id provided.")
+        if parameters.group_name not in supported_groups:
+            raise BadRequest(f"Group Name: '{parameters.group_name}' is not supported.")

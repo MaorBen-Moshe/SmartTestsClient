@@ -1,4 +1,5 @@
 import time
+import uuid
 from http import HTTPStatus
 
 import flask
@@ -39,12 +40,12 @@ def supported_groups():
 def analyze():
     groups = config.get_supported_groups()
     req_data = request.get_json()
-    CheckAnalyzeClientInputStep.check_input(req_data, groups)
+
     parameters = (AnalyzeAppServiceParameters
                   .create()
                   .group_name(req_data.get("groupName"))
                   .build_url(req_data.get("buildURL"))
-                  .session_id(req_data.get("sessionID"))
+                  .session_id(req_data.get("sessionID") if req_data.get("sessionID") else uuid.uuid4())
                   .supported_groups(groups)
                   .filtered_ms_list(config.get_filtered_ms_list())
                   .build())
@@ -53,7 +54,7 @@ def analyze():
 
     res = service.analyze()
 
-    return jsonify(res.serialize()), 200
+    return make_response(jsonify(res.serialize()), 200)
 
 
 @login_manager.request_loader
