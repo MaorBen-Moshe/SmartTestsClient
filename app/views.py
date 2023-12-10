@@ -13,7 +13,6 @@ from app.appServices.analyze_app_service import AnalyzeAppService
 from app.exceptions.excpetions import SmartClientBaseException
 from app.models.analyze_app_params import AnalyzeAppServiceParameters
 from app.models.user import User
-from app.steps.check_analyze_input import CheckAnalyzeClientInputStep
 
 
 @app.route("/health")
