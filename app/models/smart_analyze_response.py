@@ -3,6 +3,7 @@ from __future__ import annotations
 from typing import Any
 
 from app.models.builder import Builder
+from app.models.service_data import ServiceData
 from app.utils import utils
 
 
@@ -11,6 +12,7 @@ class SmartAnalyzeResponse:
         self.total_flows_count = 0
         self.curr_flows_count = 0
         self.groups = None
+        self.services = None
 
     @property
     def total_flows_count(self) -> int:
@@ -36,6 +38,14 @@ class SmartAnalyzeResponse:
     def groups(self, groups: dict[str, Any] | None):
         self._groups = groups
 
+    @property
+    def services(self) -> dict[str, ServiceData] | None:
+        return self._services
+
+    @services.setter
+    def services(self, services: dict[str, ServiceData] | None):
+        self._services = services
+
     def serialize(self) -> dict[str, Any]:
         return utils.Utils.serialize_class(self, [])
 
@@ -59,4 +69,8 @@ class SmartAnalyzeResponseBuilder(Builder[SmartAnalyzeResponse]):
 
     def groups(self, groups: dict[str, Any] | None) -> SmartAnalyzeResponseBuilder:
         self.item.groups = groups
+        return self
+
+    def services(self, services: dict[str, ServiceData] | None) -> SmartAnalyzeResponseBuilder:
+        self.item.services = services
         return self

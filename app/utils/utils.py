@@ -32,3 +32,11 @@ class Utils:
             for i, value in cls.__dict__.items()
             if i.replace(cls.__class__.__name__, '').lstrip("_") not in ignored_fields
         ))
+
+    @staticmethod
+    def add_flows_without_duplications(flows: list[str], curr_flows: list[str] | None) -> list[str]:
+        if curr_flows is None or len(curr_flows) == 0:
+            return flows
+
+        filtered_flows = [curr_flow for curr_flow in curr_flows if curr_flow not in flows]
+        flows.extend(filtered_flows)

@@ -44,6 +44,13 @@ class TestEndpointsUnit(TestUnitBase):
         self.assertIsNotNone(res.json)
         self.assertEqual(57, res.json['total_flows_count'])
         self.assertEqual(2, res.json['curr_flows_count'])
+        services = res.json['services']
+        self.assertIsNotNone(services)
+        self.assertEqual(len(services), 10)
+        self.assertIn('productconfigurator', services)
+        self.assertEqual(services['productconfigurator']['from_version'], '0.67.19')
+        self.assertEqual(services['productconfigurator']['to_version'], '0.67.18')
+        self.assertEqual(len(services['productconfigurator']['flows']), 2)
         body = res.json['groups']
         self.assertIsNotNone(body)
         self.assertEqual(len(body), 2)
@@ -124,6 +131,13 @@ class TestEndpointsUnit(TestUnitBase):
         self.assertIsNotNone(res.json)
         self.assertEqual(57, res.json['total_flows_count'])
         self.assertEqual(0, res.json['curr_flows_count'])
+        services = res.json['services']
+        self.assertIsNotNone(services)
+        self.assertEqual(len(services), 10)
+        self.assertIn('productconfigurator', services)
+        self.assertEqual(services['productconfigurator']['from_version'], '0.67.19')
+        self.assertEqual(services['productconfigurator']['to_version'], '0.67.19')
+        self.assertEqual(len(services['productconfigurator']['flows']), 0)
         body = res.json['groups']
         self.assertIsNotNone(body)
         self.assertEqual(len(body), 2)
@@ -215,6 +229,17 @@ class TestEndpointsUnit(TestUnitBase):
         self.assertIsNotNone(res.json)
         self.assertEqual(712, res.json['total_flows_count'])
         self.assertEqual(2, res.json['curr_flows_count'])
+        services = res.json['services']
+        self.assertIsNotNone(services)
+        self.assertEqual(len(services), 2)
+        self.assertIn('productconfigurator', services)
+        self.assertEqual(services['productconfigurator']['from_version'], '0.67.20')
+        self.assertEqual(services['productconfigurator']['to_version'], '0.67.19')
+        self.assertEqual(len(services['productconfigurator']['flows']), 2)
+        self.assertIn('productconfigurator-pioperations', services)
+        self.assertEqual(services['productconfigurator-pioperations']['from_version'], '0.67.13')
+        self.assertEqual(services['productconfigurator-pioperations']['to_version'], '0.67.11')
+        self.assertEqual(len(services['productconfigurator-pioperations']['flows']), 0)
         body = res.json['groups']
         self.assertIsNotNone(body)
         self.assertEqual(len(body), 3)

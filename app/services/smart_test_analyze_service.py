@@ -53,6 +53,7 @@ class SmartTestsAnalyzeService:
                 if group_name in groups_data:
                     with self._lock:
                         groups_data.get(group_name).add_flows(group.get("flows"))
+                        services_map.get(service_key).add_flows(group.get("flows"))
 
     def get_all_flows_by_filter(self, include_filter_list: list[str] | None) -> dict[str, GroupData]:
         groups_data = {}

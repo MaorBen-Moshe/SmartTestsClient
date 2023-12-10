@@ -8,7 +8,8 @@ class PrepareResponseStep(SmartAnalyzeStepInterface):
         if parameters is None:
             return
 
-        groups_data = parameters.data_manager.groups_data
+        groups_data = parameters.data_manager.groups_data if parameters.data_manager.groups_data else {}
+        service_data = parameters.data_manager.services_map if parameters.data_manager.services_map else {}
         if groups_data is None or len(groups_data) == 0:
             return
 
@@ -27,4 +28,8 @@ class PrepareResponseStep(SmartAnalyzeStepInterface):
                                                                       groups_data.get(key).serialize()
                                                                       for key in groups_data
                                                                       })
+                                                             .services({key:
+                                                                        service_data.get(key).serialize()
+                                                                        for key in service_data
+                                                                        })
                                                              .build())

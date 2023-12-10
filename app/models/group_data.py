@@ -3,7 +3,7 @@ from __future__ import annotations
 from typing import Any
 
 from app.models.builder import Builder
-from app.utils import utils
+from app.utils.utils import Utils
 
 
 class GroupData:
@@ -55,15 +55,11 @@ class GroupData:
         self._flows = flows
 
     def add_flows(self, curr_flows: list[str] | None):
-        if curr_flows is None:
-            return
-
-        filtered_flows = [curr_flow for curr_flow in curr_flows if curr_flow not in self.flows]
-        self.flows.extend(filtered_flows)
-        self.curr_flows_count += len(filtered_flows)
+        Utils.add_flows_without_duplications(self.flows, curr_flows)
+        self.curr_flows_count = len(self.flows)
 
     def serialize(self) -> dict[str, Any]:
-        return utils.Utils.serialize_class(self, [])
+        return Utils.serialize_class(self, [])
 
     @staticmethod
     def create():

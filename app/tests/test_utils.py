@@ -43,10 +43,10 @@ class TestUtils(TestBase):
     @parameterized.expand([
         (ServiceData.create().to_version("to_version").from_version("from_version").build(),
          [],
-         {"to_version": "to_version", "from_version": "from_version"}),
+         {"to_version": "to_version", "from_version": "from_version", "flows": []}),
         (ServiceData.create().to_version("to_version").from_version("from_version").build(),
          ['to_version'],
-         {"from_version": "from_version"}),
+         {"from_version": "from_version", "flows": []}),
         (WithoutProperties("Alice", 25, "female"),
          [],
          {"name": "Alice", "age": 25, "gender": "female"}),
@@ -56,3 +56,16 @@ class TestUtils(TestBase):
         res = Utils.serialize_class(cls, ignore_fields)
 
         self.assertEqual(res, expected)
+
+    @parameterized.expand([
+        (["flow1", "flow2"], None, ["flow1", "flow2"]),
+        (["flow1", "flow2"], [], ["flow1", "flow2"]),
+        (["flow1", "flow2"], ["flow3", "flow4"], ["flow1", "flow2", "flow3", "flow4"]),
+        (["flow1", "flow2"], ["flow1", "flow2"], ["flow1", "flow2"]),
+        (["flow1", "flow2"], ["flow1", "flow3"], ["flow1", "flow2", "flow3"]),
+        ([], ["flow1", "flow2"], ["flow1", "flow2"])
+    ])
+    def test_add_flows_without_duplications(self, flows, curr_flows, expected):
+        Utils.add_flows_without_duplications(flows, curr_flows)
+
+        self.assertEqual(flows, expected)
