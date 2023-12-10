@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import threading
+
 from app.clients.smart_tests_client import SmartTestsClient
 from app.exceptions.excpetions import EmptyInputError
 from app.models.group_data import GroupData
@@ -11,6 +13,7 @@ class SmartTestsAnalyzeService:
 
     def __init__(self):
         self.client = SmartTestsClient()
+        self._lock = threading.Lock()
 
     def analyze_flows(self,
                       services_map: dict[str, ServiceData] | None,
@@ -18,23 +21,38 @@ class SmartTestsAnalyzeService:
                       groups_data: dict[str, GroupData] | None):
         if services_map is not None and groups_data is not None:
             include_groups_filter = Utils.create_filter_by_list(filter_group)
+            threads = []
             for service_key in services_map:
                 if services_map[service_key].to_version == services_map[service_key].from_version:
                     continue
 
-                res_json = self.client.analyze_flows(service_key,
-                                                     services_map.get(service_key).to_version,
-                                                     services_map.get(service_key).from_version,
-                                                     include_groups_filter)
+                t = threading.Thread(target=self._analyze_flow_per_service,
+                                     args=(service_key, services_map, groups_data, include_groups_filter))
 
-                if res_json is not None and int(res_json.get("flowsCount")) > 0:
-                    groups = res_json.get("flowsByGroupName")
-                    for group in groups:
-                        group_name = group.get("name").split("/")[-1]
-                        if group_name in groups_data:
-                            groups_data.get(group_name).add_flows(group.get("flows"))
+                threads.append(t)
+                t.start()
+
+            for t in threads:
+                t.join()
         else:
             raise EmptyInputError("failed to fetch flows to analyze. no services or groups data found.")
+
+    def _analyze_flow_per_service(self, service_key: str,
+                                  services_map: dict[str, ServiceData],
+                                  groups_data: dict[str, GroupData],
+                                  include_groups_filter: str):
+        res_json = self.client.analyze_flows(service_key,
+                                             services_map.get(service_key).to_version,
+                                             services_map.get(service_key).from_version,
+                                             include_groups_filter)
+
+        if res_json is not None and int(res_json.get("flowsCount")) > 0:
+            groups = res_json.get("flowsByGroupName")
+            for group in groups:
+                group_name = group.get("name").split("/")[-1]
+                if group_name in groups_data:
+                    with self._lock:
+                        groups_data.get(group_name).add_flows(group.get("flows"))
 
     def get_all_flows_by_filter(self, include_filter_list: list[str] | None) -> dict[str, GroupData]:
         groups_data = {}
