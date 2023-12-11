@@ -15,7 +15,7 @@ class AppLogger(metaclass=SingletonMeta):
 
     @classmethod
     def init_logger(cls, logger, log_level, log_file_path, log_file_name):
-        log_level = logging.getLevelNamesMapping()[log_level]
+        log_level = logging.getLevelName(log_level)
         logger.setLevel(log_level)
 
         file_handler = logging.FileHandler(cls.__init_file_handler_path(log_file_path, log_file_name))
