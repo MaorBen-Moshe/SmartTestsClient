@@ -1,6 +1,6 @@
 import time
 
-from flask_socketio import SocketIO, emit
+from flask_socketio import SocketIO
 
 from app.models.singleton_meta import SingletonMeta
 
@@ -24,11 +24,11 @@ class SocketHandler(metaclass=SingletonMeta):
         return self._namespace
 
     def send_message(self, message, session_id):
-        emit(self._internal_event_name,
-             {
-                 "message": message,
-                 "time": time.strftime("%Y/%m/%d %H:%M:$S", time.localtime()),
-                 "session_id": session_id
-             },
-             broadcast=True,
-             namespace=self._namespace)
+        self._socketio.emit(self._internal_event_name,
+                            {
+                                "message": message,
+                                "time": time.strftime("%Y/%m/%d %H:%M:$S", time.localtime()),
+                                "session_id": session_id
+                            },
+                            broadcast=True,
+                            namespace=self._namespace)
