@@ -4,18 +4,21 @@ import unittest.mock as mock
 
 import pytest
 
-from app import config
+from app import config, app_main_logger
+from app.appLogging.app_logger_manager import AppLogger
 from app.models.group_data import GroupData
 from app.models.service_data import ServiceData
 
 
 class TestBase(unittest.TestCase):
     config = None
+    logger = None
 
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
         cls.config = config
+        cls.logger = app_main_logger
 
     @pytest.fixture(autouse=True)
     def prepare_client_fixture(self, client):
