@@ -53,6 +53,15 @@ class ConfigManager(metaclass=SingletonMeta):
     def get_user_api_token(self) -> str:
         return self._config["API"]["user_token"]
 
+    def get_log_level(self) -> str:
+        return self._config["LOGGING"]["log_level"] if "log_level" in self._config["LOGGING"] else "INFO"
+
+    def get_log_file(self) -> str:
+        return self._config["LOGGING"]["log_file"]
+
+    def get_log_level_by_name(self, name: str) -> str:
+        return self._config["LOGGING"][name] if name in self._config["LOGGING"] else self.get_log_level()
+
     def __get_supported_groups_helper(self, supported_groups_str_format: str) -> dict[str, SupportedGroup]:
         groups = {}
         testng_xml_per_group = self.__get_testng_xml_per_group_helper(self._config["DEFAULT"]["testng_xml_per_group"])

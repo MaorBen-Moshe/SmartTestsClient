@@ -1,4 +1,3 @@
-import time
 import uuid
 from http import HTTPStatus
 
@@ -8,7 +7,7 @@ from flask_login import login_required, current_user
 from flask_socketio import emit
 from werkzeug.exceptions import HTTPException
 
-from app import app, login_manager, config, socket_handler
+from app import app, login_manager, config, socket_handler, app_main_logger
 from app.appServices.analyze_app_service import AnalyzeAppService
 from app.appServices.analyze_dev_app_service import AnalyzeDevAppService
 from app.exceptions.excpetions import SmartClientBaseException
@@ -29,9 +28,13 @@ def health():
 @app.route("/supported-groups", methods=["GET"])
 @login_required
 def supported_groups():
+    app_main_logger.debug("Supported groups request.")
+
     groups = config.get_supported_groups()
 
     serialized_groups = {group_name: groups[group_name].serialize() for group_name in groups}
+
+    app_main_logger.debug(f"Supported groups response. response={serialized_groups}")
 
     return jsonify(serialized_groups), 200
 
@@ -51,9 +54,13 @@ def analyze():
                   .filtered_ms_list(config.get_filtered_ms_list())
                   .build())
 
+    app_main_logger.debug(f"Smart tests analyze request. parameters={parameters}")
+
     service = AnalyzeAppService(parameters)
 
     res = service.analyze()
+
+    app_main_logger.debug(f"Smart tests analyze response. response={res}")
 
     return make_response(jsonify(res.serialize()), 200)
 
@@ -68,9 +75,13 @@ def analyze_dev():
                   .session_id(req_data.get("sessionID") if req_data.get("sessionID") else uuid.uuid4())
                   .build())
 
+    app_main_logger.debug(f"Smart tests analyze dev request. parameters={parameters}")
+
     service = AnalyzeDevAppService(parameters)
 
     res = service.analyze_dev()
+
+    app_main_logger.debug(f"Smart tests analyze dev response. response={res}")
 
     return make_response(jsonify(res.serialize()), 200)
 
@@ -84,8 +95,10 @@ def load_user_from_request(req):
         elif config.get_user_api_token() == api_key:
             return User.create().is_admin(False).build()
         else:
+            app_main_logger.warning(f"Invalid api key. api_key={api_key}")
             return None
 
+    app_main_logger.warning(f"Invalid api key. api_key=None")
     return None
 
 
@@ -112,4 +125,4 @@ def handle_socket_event(data):
 
 @socket_handler.socketio.on_error_default
 def error_handler(e):
-    print(f'[ERROR] [{time.localtime().strftime("%Y/%m/%d %H:%M:$S")}] An error has occurred: {e}')
+    app_main_logger.error(f'SocketErrorHandler: An error has occurred: {e}')

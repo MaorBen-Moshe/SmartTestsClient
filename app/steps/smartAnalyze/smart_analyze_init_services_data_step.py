@@ -1,8 +1,9 @@
 from __future__ import annotations
 
+from app import app_main_logger
 from app.models.analyze_app_params import AnalyzeAppServiceParameters
 from app.services.nexus_search_service import NexusSearchService
-from app.steps.smartAnalyze.smart_analyze_step_interface import SmartAnalyzeStepInterface
+from app.steps.smartAnalyze.interfaces.smart_analyze_step_interface import SmartAnalyzeStepInterface
 
 
 class InitServiceMapStep(SmartAnalyzeStepInterface):
@@ -15,8 +16,12 @@ class InitServiceMapStep(SmartAnalyzeStepInterface):
         if parameters is None or parameters.filtered_ms_list is None:
             return
 
+        app_main_logger.debug(f"InitServiceMapStep.execute() parameters={parameters}")
+
         services_map = self.nexus_search_service.get_services_master_version(self.repository,
                                                                              parameters.filtered_ms_list)
+
+        app_main_logger.debug(f"InitServiceMapStep.execute() services_map={services_map}")
 
         parameters.data_manager.services_map = services_map
 

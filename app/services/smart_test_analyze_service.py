@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import threading
 
+from app import app_main_logger
 from app.clients.smart_tests_client import SmartTestsClient
 from app.exceptions.excpetions import EmptyInputError
 from app.models.group_data import GroupData
@@ -54,8 +55,14 @@ class SmartTestsAnalyzeService:
                     with self._lock:
                         groups_data.get(group_name).add_flows(group.get("flows"))
                         services_map.get(service_key).add_flows(group.get("flows"))
+                else:
+                    app_main_logger.warning(f"SmartTestsAnalyzeService._analyze_flow_per_service(): "
+                                            f"Group {group_name} not found in groups data.")
 
     def get_all_flows_by_filter(self, include_filter_list: list[str] | None) -> dict[str, GroupData]:
+        app_main_logger.debug(f"SmartTestsAnalyzeService.get_all_flows_by_filter(): "
+                              f"Get all flows by filter. include_filter_list={include_filter_list}")
+
         groups_data = {}
         include_groups_filter = Utils.create_filter_by_list(include_filter_list)
 
@@ -80,5 +87,11 @@ class SmartTestsAnalyzeService:
                                          .test_xml_path(path)
                                          .total_flows_count(total_count)
                                          .build())
+        else:
+            app_main_logger.warning(f"SmartTestsAnalyzeService.get_all_flows_by_filter(): "
+                                    f"Failed to get all flows by filter. data={data}")
+
+        app_main_logger.debug(f"SmartTestsAnalyzeService.get_all_flows_by_filter(): "
+                              f"Get all flows by filter. groups_data={groups_data}")
 
         return groups_data

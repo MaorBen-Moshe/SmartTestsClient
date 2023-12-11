@@ -3,3 +3,5 @@
 *BuildReport/
 /app/tests/.pytest_cache/
 *.ini
+/app/logs/
+*.log

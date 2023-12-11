@@ -11,8 +11,8 @@ class SmartAnalyzeResponse:
     def __init__(self):
         self.total_flows_count = 0
         self.curr_flows_count = 0
-        self.groups = None
-        self.services = None
+        self.groups = {}
+        self.services = {}
 
     @property
     def total_flows_count(self) -> int:

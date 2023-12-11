@@ -2,9 +2,8 @@ from __future__ import annotations
 
 import requests
 
-from app import config
+from app import config, app_main_logger
 from app.constants.constants import MS_POSTFIX
-from app.models.config_manager import ConfigManager
 
 
 class SmartTestsClient:
@@ -35,6 +34,8 @@ class SmartTestsClient:
             }
         ]
 
+        app_main_logger.debug(f"SmartTestsClient.analyze_flows(): Analyze flows. body={body}")
+
         with requests.post(
                 url=self.smart_tests_statistics_url,
                 params={"queryType": "repo"},
@@ -42,6 +43,8 @@ class SmartTestsClient:
                 verify=False) as res:
             res.raise_for_status()
             res_json = res.json()
+
+        app_main_logger.debug(f"SmartTestsClient.analyze_flows(): Analyze flows. res_json={res_json}")
 
         return res_json
 
@@ -52,10 +55,14 @@ class SmartTestsClient:
                 "includeFileGroupNamePattern": include_groups_filter
             })
 
+        app_main_logger.debug(f"SmartTestsClient.get_all_flows_stats(): Get all flows stats. body={body}")
+
         with requests.post(url=self.smart_tests_all_url,
                            json=body,
                            verify=False) as res:
             res.raise_for_status()
             data = res.json()
+
+        app_main_logger.debug(f"SmartTestsClient.get_all_flows_stats(): Get all flows stats. data={data}")
 
         return data

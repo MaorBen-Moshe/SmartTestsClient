@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from app import app_main_logger
 from app.models.service_data import ServiceData
 from app.services.nexus_search_service import NexusSearchService
 
@@ -12,7 +13,10 @@ class UpdateServiceDataService:
     def update_services_data(self,
                              repository: str | None,
                              services_data: dict[str, ServiceData] | None) -> dict[str, ServiceData] | None:
+        app_main_logger.debug("UpdateServiceDataService.update_services_data(): Executing UpdateServiceDataStep.")
+
         if services_data is None or len(services_data) == 0:
+            app_main_logger.warning("UpdateServiceDataService.update_services_data(): No services data to update.")
             return None
 
         ms_list = [service for service in services_data
@@ -25,6 +29,8 @@ class UpdateServiceDataService:
         for service in services_data:
             service_data = services_data[service]
             if services_data is None:
+                app_main_logger.warning(f"UpdateServiceDataService.update_services_data(): "
+                                        f"Service {service} does not exist in services data.")
                 continue
 
             to_version = None
@@ -37,5 +43,8 @@ class UpdateServiceDataService:
                                                   .from_version(service_data.from_version)
                                                   .to_version(to_version if to_version else service_data.to_version)
                                                   .build())
+
+        app_main_logger.debug(f"UpdateServiceDataService.update_services_data()"
+                              f": Response services={updated_services_data_map}")
 
         return updated_services_data_map

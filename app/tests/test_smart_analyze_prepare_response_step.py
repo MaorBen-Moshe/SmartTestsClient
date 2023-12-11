@@ -15,7 +15,11 @@ class TestSmartAnalyzePrepareResponseStep(TestBase):
         parameters.data_manager.groups_data = {}
         parameters.data_manager.services_map = {}
         self.step.execute(parameters)
-        self.assertIsNone(parameters.smart_app_service_response)
+        self.assertIsNotNone(parameters.smart_app_service_response)
+        self.assertEqual(0, parameters.smart_app_service_response.total_flows_count)
+        self.assertEqual(0, parameters.smart_app_service_response.curr_flows_count)
+        self.assertEqual({}, parameters.smart_app_service_response.groups)
+        self.assertEqual({}, parameters.smart_app_service_response.services)
 
     def test_execute_with_valid_parameters(self):
         parameters = AnalyzeAppServiceParameters()

@@ -3,6 +3,7 @@ from __future__ import annotations
 import threading
 from typing import Any
 from distutils.version import LooseVersion
+from app import app_main_logger
 from app.clients.nexus_client import NexusClient
 from app.constants.constants import CONTINUATION_TOKEN, VERSION_KEY, ITEMS_KEY
 from app.exceptions.excpetions import EmptyInputError
@@ -51,12 +52,17 @@ class NexusSearchService:
                                             .from_version(sorted_list[0])
                                             .to_version(sorted_list[0])
                                             .build())
+        else:
+            app_main_logger.warning(f"NexusSearchService._get_service_data_for_each_entry():"
+                                    f" Failed to get version for {entry}")
 
     @staticmethod
     def _get_service_versions(data: dict[str, Any]) -> list[str]:
         if data is not None and ITEMS_KEY in data and len(data[ITEMS_KEY]) > 0:
             return [item[VERSION_KEY] for item in data[ITEMS_KEY] if VERSION_KEY in item and item[VERSION_KEY] is not None]
         else:
+            app_main_logger.warning(f"NexusSearchService._get_service_versions(): "
+                                    f"Failed to get version from data={data}")
             return []
 
     @staticmethod
