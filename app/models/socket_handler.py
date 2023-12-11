@@ -2,7 +2,6 @@ import time
 
 from flask_socketio import SocketIO, emit
 
-from app import app_main_logger
 from app.models.singleton_meta import SingletonMeta
 
 
@@ -32,5 +31,4 @@ class SocketHandler(metaclass=SingletonMeta):
                  "session_id": session_id
              },
              broadcast=True,
-             callback=lambda x: app_main_logger.info(f"Send {message}"),
              namespace=self._namespace)
