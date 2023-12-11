@@ -61,8 +61,6 @@ class NexusSearchService:
         if data is not None and ITEMS_KEY in data and len(data[ITEMS_KEY]) > 0:
             return [item[VERSION_KEY] for item in data[ITEMS_KEY] if VERSION_KEY in item and item[VERSION_KEY] is not None]
         else:
-            app_main_logger.warning(f"NexusSearchService._get_service_versions(): "
-                                    f"Failed to get version from data={data}")
             return []
 
     @staticmethod
