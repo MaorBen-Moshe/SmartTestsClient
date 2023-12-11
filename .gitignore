@@ -5,5 +5,5 @@
 *.ini
 /app/logs/
 *.log
-__pycache__/
+*__pycache__/
 ```
