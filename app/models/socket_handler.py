@@ -30,5 +30,4 @@ class SocketHandler(metaclass=SingletonMeta):
                                 "time": time.strftime("%Y/%m/%d %H:%M:$S", time.localtime()),
                                 "session_id": session_id
                             },
-                            broadcast=True,
                             namespace=self._namespace)
