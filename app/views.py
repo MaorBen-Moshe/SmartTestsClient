@@ -119,7 +119,7 @@ def handle_socket_event(data):
     emit(socket_handler.internal_event_name,
          data,
          broadcast=True,
-         callback=lambda x: app_main_logger.debug(f"Send {x}"),
+         callback=lambda x: app_main_logger.info(f"Send {x}"),
          namespace=socket_handler.namespace)
 
 
