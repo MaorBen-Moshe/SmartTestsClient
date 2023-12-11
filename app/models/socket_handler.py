@@ -26,10 +26,10 @@ class SocketHandler(metaclass=SingletonMeta):
 
     def send_message(self, message, session_id):
         with self._app.app_context():
-            self._socketio.emit(self._internal_event_name,
-                                {
-                                    "message": message,
-                                    "time": time.strftime("%Y/%m/%d %H:%M:$S", time.localtime()),
-                                    "session_id": session_id
-                                },
-                                namespace=self._namespace)
+            self.socketio.emit(self._internal_event_name,
+                               {
+                                   "message": message,
+                                   "time": time.strftime("%Y/%m/%d %H:%M:$S", time.localtime()),
+                                   "session_id": session_id
+                               },
+                               namespace=self._namespace)
