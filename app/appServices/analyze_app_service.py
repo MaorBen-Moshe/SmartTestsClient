@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from app import config, socket_handler
+from app import config, socket_handler, app_main_logger
 from app.models.analyze_app_params import AnalyzeAppServiceParameters
 from app.models.smart_analyze_response import SmartAnalyzeResponse
 from app.steps.smartAnalyze.smart_analyze_validate_input import SmartAnalyzeValidateInputStep
@@ -23,26 +23,32 @@ class AnalyzeAppService:
 
     def analyze(self) -> SmartAnalyzeResponse | None:
         # check input
+        app_main_logger.info("AnalyzeAppService.analyze(): Processing payload data.")
         socket_handler.send_message("[INFO] Processing payload data.", self.parameters.session_id)
         self.validate_input_step.execute(self.parameters)
 
         # load version from nexus
+        app_main_logger.info("AnalyzeAppService.analyze(): Loading services version from nexus.")
         socket_handler.send_message("[INFO] Loading services version from nexus.", self.parameters.session_id)
         self.init_services_map_step.execute(self.parameters)
 
         # load build report data
+        app_main_logger.info("AnalyzeAppService.analyze(): Loading build report data.")
         socket_handler.send_message("[INFO] Loading build report data.", self.parameters.session_id)
         self.html_parser.execute(self.parameters)
 
         # update data per group
+        app_main_logger.info("AnalyzeAppService.analyze(): Updating data per group.")
         socket_handler.send_message("[INFO] Updating data per group.", self.parameters.session_id)
         self.init_groups_data_step.execute(self.parameters)
 
         # analyze flows to run
+        app_main_logger.info("AnalyzeAppService.analyze(): Analyzing flows to run.")
         socket_handler.send_message("[INFO] Analyzing flows to run.", self.parameters.session_id)
         self.analyze_flows_step.execute(self.parameters)
 
         # prepare response
+        app_main_logger.info("AnalyzeAppService.analyze(): Preparing response.")
         socket_handler.send_message("[INFO] Preparing response.", self.parameters.session_id)
         self.prepare_response_step.execute(self.parameters)
         return self.parameters.smart_app_service_response

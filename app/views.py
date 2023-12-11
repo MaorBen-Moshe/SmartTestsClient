@@ -114,15 +114,6 @@ def handle_exception(ex):
     return make_response(error_msg, error_code)
 
 
-@socket_handler.socketio.on(socket_handler.internal_event_name, namespace=socket_handler.namespace)
-def handle_socket_event(data):
-    emit(socket_handler.event_name,
-         data,
-         broadcast=True,
-         callback=lambda x: print(f"Sent {data}."),
-         namespace=socket_handler.namespace)
-
-
 @socket_handler.socketio.on_error_default
 def error_handler(e):
     app_main_logger.error(f'SocketErrorHandler: An error has occurred: {e}')
