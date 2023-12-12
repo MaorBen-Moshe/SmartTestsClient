@@ -8,35 +8,34 @@ from app.models.singleton_meta import SingletonMeta
 
 
 class AppLoggerManager(metaclass=SingletonMeta):
-    _loggers: dict[str, AppLogger] = {}
-    _formatter = logging.Formatter('[%(levelname)s] [%(asctime)s] %(message)s')
+    def __init__(self):
+        self._loggers: dict[str, AppLogger] = {}
+        self._formatter = logging.Formatter('[%(levelname)s] [%(asctime)s] %(message)s')
 
-    @classmethod
-    def init_logger(cls, logger, log_level, log_file_path, log_file_name):
+    def init_logger(self, logger, log_level, log_file_path, log_file_name):
         log_level = logging.getLevelName(log_level)
         logger.setLevel(log_level)
 
-        file_handler = logging.FileHandler(cls.__init_file_handler_path(log_file_path, log_file_name))
+        file_handler = logging.FileHandler(self.__init_file_handler_path(log_file_path, log_file_name))
         file_handler.setLevel(log_level)
 
         console_handler = logging.StreamHandler()
         console_handler.setLevel(log_level)
 
-        file_handler.setFormatter(cls._formatter)
-        console_handler.setFormatter(cls._formatter)
+        file_handler.setFormatter(self._formatter)
+        console_handler.setFormatter(self._formatter)
 
         # Add the file and console handlers to the logger
         logger.addHandler(file_handler)
         logger.addHandler(console_handler)
 
         _logger = AppLogger(logger)
-        cls._loggers[logger.name] = _logger
+        self._loggers[logger.name] = _logger
 
-    @classmethod
-    def get_logger(cls, logger_name: str) -> AppLogger:
-        if logger_name not in cls._loggers:
+    def get_logger(self, logger_name: str) -> AppLogger:
+        if logger_name not in self._loggers:
             raise ValueError(f"Logger {logger_name} does not exist, please init it first.")
-        app_logger = cls._loggers[logger_name]
+        app_logger = self._loggers[logger_name]
         return app_logger
 
     @staticmethod

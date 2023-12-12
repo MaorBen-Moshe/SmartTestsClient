@@ -20,19 +20,20 @@ config.init_configs(os.path.join(os.path.dirname(__file__), "config.ini"))
 
 socket_handler = socket_handler.SocketHandler(app)
 
-from app.appLogging import app_logger_manager
+from app.appLogging import app_logger_manager as alm
 
 app.logger.removeHandler(default_handler)
-app_logger_manager.AppLoggerManager.init_logger(app.logger,
-                                                config.get_log_level(),
-                                                os.path.join(os.path.dirname(__file__), "logs"),
-                                                config.get_log_file())
+app_logger_manager = alm.AppLoggerManager()
+app_logger_manager.init_logger(app.logger,
+                               config.get_log_level(),
+                               os.path.join(os.path.dirname(__file__), "logs"),
+                               config.get_log_file())
 
-app_logger_manager.AppLoggerManager.init_logger(logging.getLogger('werkzeug'),
-                                                config.get_log_level(),
-                                                os.path.join(os.path.dirname(__file__), "logs"),
-                                                config.get_log_file())
+app_logger_manager.init_logger(logging.getLogger('werkzeug'),
+                               config.get_log_level(),
+                               os.path.join(os.path.dirname(__file__), "logs"),
+                               config.get_log_file())
 
-app_main_logger = app_logger_manager.AppLoggerManager.get_logger(app.logger.name)
+app_main_logger = app_logger_manager.get_logger(app.logger.name)
 
 from app import views
