@@ -9,6 +9,7 @@ class SocketHandler(metaclass=SingletonMeta):
     def __init__(self, app):
         self._socketio = SocketIO(app, cors_allowed_origins="*", logger=True, engineio_logger=True)
         self._internal_event_name = "internal_smart-analyze-progress"
+        self._namespace = "/smart-analyze-progress"
         self._app = app
 
     @property
@@ -19,10 +20,15 @@ class SocketHandler(metaclass=SingletonMeta):
     def internal_event_name(self):
         return self._internal_event_name
 
+    @property
+    def namespace(self):
+        return self._namespace
+
     def send_message(self, message, session_id):
         self.socketio.emit(self.internal_event_name,
                            {
                                "message": message,
                                "time": time.strftime("%Y/%m/%d %H:%M:$S", time.localtime()),
                                "session_id": session_id
-                           })
+                           },
+                           namespace=self.namespace)

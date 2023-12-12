@@ -120,12 +120,12 @@ def handle_exception(ex):
 #                                  callback=lambda x: app_main_logger.info(f"Send {x}"))
 
 
-@socket_handler.socketio.on('connect')
+@socket_handler.socketio.on('connect', namespace=socket_handler.namespace)
 def handle_socket_connection():
     app_main_logger.info("Socket connection established.")
 
 
-@socket_handler.socketio.on('disconnect')
+@socket_handler.socketio.on('disconnect', namespace=socket_handler.namespace)
 def handle_socket_disconnection():
     app_main_logger.info("Socket connection disconnected.")
 
