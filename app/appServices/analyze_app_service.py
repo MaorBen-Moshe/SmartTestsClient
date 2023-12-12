@@ -13,7 +13,6 @@ from app.steps.smartAnalyze.smart_analyze_prepare_response_step import PrepareRe
 class AnalyzeAppService:
     def __init__(self, parameters: AnalyzeAppServiceParameters):
         self.parameters = parameters
-        self.parameters.data_manager.curr_group = parameters.group_name
         self.validate_input_step = SmartAnalyzeValidateInputStep()
         self.init_services_map_step = InitServiceMapStep(config.get_index_data_repository())
         self.init_groups_data_step = InitGroupsDataStep()

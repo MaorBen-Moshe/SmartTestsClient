@@ -13,7 +13,9 @@ class TestHtmlParserServiceUnit(TestUnitBase):
         service = HtmlParserService()
         services_map = {}
 
-        service.load_html("http://example.com/file.zip", services_map, self.config.get_filtered_ms_list())
+        service.load_html("http://example.com/file.zip", 
+                          services_map,
+                          self.config.get_supported_groups()['oc-cd-group4'].filtered_ms_list)
 
         self.mock_get_html.assert_called()
         self.assertEqual(len(services_map), 10)
@@ -35,7 +37,8 @@ class TestHtmlParserServiceUnit(TestUnitBase):
         services_map = {}
 
         self.assert_exception(lambda: service.load_html("http://example.com/missing_table_file.zip",
-                                                        services_map, self.config.get_filtered_ms_list()),
+                                                        services_map,
+                                                        self.config.get_supported_groups()['oc-cd-group4'].filtered_ms_list),
                               NotFoundError,
                               'error with build report structure. not found main deployment table')
 
@@ -50,7 +53,9 @@ class TestHtmlParserServiceUnit(TestUnitBase):
                 "0.67.10").build(),
         }
 
-        service.load_html("http://example.com/file.zip", services_map, self.config.get_filtered_ms_list())
+        service.load_html("http://example.com/file.zip",
+                          services_map,
+                          self.config.get_supported_groups()['oc-cd-group4'].filtered_ms_list)
 
         self.mock_get_html.assert_called()
         self.assertEqual(len(services_map), 10)

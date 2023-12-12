@@ -12,9 +12,10 @@ class SupportedGroup:
         self.cluster: str | None = None
         self.testng_xml: list[str] = []
         self.url: str | None = None
+        self.filtered_ms_list: list[str] = []
 
     def serialize(self) -> dict[str, Any]:
-        return utils.Utils.serialize_class(self, ['testng_xml'])
+        return utils.Utils.serialize_class(self, ['testng_xml', 'filtered_ms_list'])
 
     @property
     def group_name(self) -> str | None:
@@ -48,6 +49,14 @@ class SupportedGroup:
     def testng_xml(self, testng_xml: list[str]):
         self._testng_xml = testng_xml
 
+    @property
+    def filtered_ms_list(self) -> list[str]:
+        return self._filtered_ms_list
+
+    @filtered_ms_list.setter
+    def filtered_ms_list(self, filtered_ms_list: list[str]):
+        self._filtered_ms_list = filtered_ms_list
+
     @staticmethod
     def create():
         return SupportedGroupBuilder()
@@ -72,4 +81,8 @@ class SupportedGroupBuilder(Builder[SupportedGroup]):
 
     def testng_xml(self, testng_xml: list[str]) -> SupportedGroupBuilder:
         self.item.testng_xml = testng_xml
+        return self
+
+    def filtered_ms_list(self, filtered_ms_list: list[str]) -> SupportedGroupBuilder:
+        self.item.filtered_ms_list = filtered_ms_list
         return self

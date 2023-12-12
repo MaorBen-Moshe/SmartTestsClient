@@ -1,7 +1,8 @@
 from __future__ import annotations
 
-from configparser import ConfigParser
+from typing import Any
 
+import yaml
 from cryptography.fernet import Fernet
 
 from app.exceptions.excpetions import ConfigurationError
@@ -12,83 +13,69 @@ from app.models.supported_group import SupportedGroup
 class ConfigManager(metaclass=SingletonMeta):
     def __init__(self):
         self._fernet: Fernet | None = None
-        self._config = ConfigParser()
+        self._config = None
 
     def init_configs(self, config_path: str | None):
         if config_path is None:
             raise ConfigurationError("Failed to create configs file. path is None.")
 
-        self._config.read(config_path)
-        self._fernet = Fernet(self._config["DEFAULT"]["key"])
+        with open(config_path, "r") as config_file:
+            self._config = yaml.safe_load(config_file)
+            self._fernet = Fernet(self._config["default"]["encrypt_key"])
+
+    def get_server_port(self) -> int:
+        return self._config["server"]["port"]
+
+    def get_server_host(self) -> str | None:
+        return self._config["server"]["host"]
 
     def get_supported_groups(self) -> dict[str, SupportedGroup]:
-        supported_groups_str = self._config["DEFAULT"]["supported_groups"]
-        return self.__get_supported_groups_helper(supported_groups_str)
-
-    def get_filtered_ms_list(self) -> list[str]:
-        filtered_ms_list_str = self._config["DEFAULT"]["filtered_ms_list"]
-        return filtered_ms_list_str.split(",") if filtered_ms_list_str is not None else []
+        supported_groups_dict = self._config["default"]["supported_groups"]
+        return self.__get_supported_groups_helper(supported_groups_dict)
 
     def get_nexus_cred(self) -> (str, str):
-        return (self._config["NEXUS"]["nexus_user"],
-                self._fernet.decrypt(self._config["NEXUS"]["nexus_password"]).decode("utf-8"))
+        return (self._config["nexus"]["nexus_user"],
+                self._fernet.decrypt(self._config["nexus"]["nexus_password"]).decode("utf-8"))
 
     def get_jenkins_cred(self) -> (str, str):
-        return (self._config["JENKINS"]["jenkins_user"],
-                self._fernet.decrypt(self._config["JENKINS"]["jenkins_password"]).decode("utf-8"))
+        return (self._config["jenkins"]["jenkins_user"],
+                self._fernet.decrypt(self._config["jenkins"]["jenkins_password"]).decode("utf-8"))
 
     def get_index_data_repository(self) -> str | None:
-        data = self._config["NEXUS"]["index_data_repository"]
+        data = self._config["nexus"]["index_data_repository"]
         return data
 
     def get_smart_tests_all_url(self) -> str:
-        return self._config["SMART_CLIENT"]["smart_tests_all"]
+        return f'{self._config["smart_client"]["base_url"]}{self._config["smart_client"]["smart_tests_all_endpoint"]}'
 
     def get_smart_tests_statistics_url(self) -> str:
-        return self._config["SMART_CLIENT"]["smart_tests_statistics"]
+        return f'{self._config["smart_client"]["base_url"]}{self._config["smart_client"]["smart_tests_statistics_endpoint"]}'
 
     def get_admin_api_token(self) -> str:
-        return self._config["API"]["admin_token"]
+        return self._config["default"]["admin_token"]
 
     def get_user_api_token(self) -> str:
-        return self._config["API"]["user_token"]
+        return self._config["default"]["user_token"]
 
     def get_log_level(self) -> str:
-        return self._config["LOGGING"]["log_level"] if "log_level" in self._config["LOGGING"] else "INFO"
+        return self._config["logging"]["log_level"] if "log_level" in self._config["logging"] else "INFO"
 
     def get_log_file(self) -> str:
-        return self._config["LOGGING"]["log_file"]
+        return self._config["logging"]["log_file_name"]
 
     def get_log_level_by_name(self, name: str) -> str:
-        return self._config["LOGGING"][name] if name in self._config["LOGGING"] else self.get_log_level()
-
-    def __get_supported_groups_helper(self, supported_groups_str_format: str) -> dict[str, SupportedGroup]:
-        groups = {}
-        testng_xml_per_group = self.__get_testng_xml_per_group_helper(self._config["DEFAULT"]["testng_xml_per_group"])
-        if supported_groups_str_format:
-            split_supported_groups = supported_groups_str_format.split(",")
-            for supported_group in split_supported_groups:
-                group_name, cluster, url = supported_group.strip().split("|")
-                if group_name is not None:
-                    testng_xml = testng_xml_per_group.get(group_name, [])
-                    groups[group_name] = (SupportedGroup.create().group_name(group_name)
-                                          .url(url)
-                                          .cluster(cluster)
-                                          .testng_xml(testng_xml)
-                                          .build())
-
-        return groups
+        return self._config["logging"][name] if name in self._config["logging"] else self.get_log_level()
 
     @staticmethod
-    def __get_testng_xml_per_group_helper(testng_xml_per_group_str: str) -> dict[str, list[str]]:
-        testng_xml_per_group = {}
-        if testng_xml_per_group_str:
-            split_testng_xml_per_group = testng_xml_per_group_str.split(",")
-            for testng_xml in split_testng_xml_per_group:
-                group_name, testng_xml_str_format = testng_xml.strip().split(":")
-                if group_name is not None:
-                    testng_xml = testng_xml_str_format.split("|")
-                    if testng_xml is not None:
-                        testng_xml_per_group[group_name] = testng_xml
+    def __get_supported_groups_helper(supported_groups_str_format: dict[str, Any]) -> dict[str, SupportedGroup]:
+        groups = {}
+        for group_name, group in supported_groups_str_format.items():
+            if group_name is not None:
+                groups[group_name] = (SupportedGroup.create().group_name(group_name)
+                                      .url(group["url"])
+                                      .cluster(group["cluster"])
+                                      .testng_xml(group["testng_xml"])
+                                      .filtered_ms_list(group["filtered_ms_list"])
+                                      .build())
 
-        return testng_xml_per_group
+        return groups

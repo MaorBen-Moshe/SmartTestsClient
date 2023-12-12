@@ -10,7 +10,6 @@ from app.models.supported_group import SupportedGroup
 class AnalyzeAppServiceParameters:
     def __init__(self):
         self._supported_groups: dict[str, SupportedGroup] = {}
-        self._filtered_ms_list: list[str] = []
         self.build_url: str | None = None
         self.group_name: str | None = None
         self.session_id: str | None = None
@@ -47,14 +46,6 @@ class AnalyzeAppServiceParameters:
         self._supported_groups = supported_groups
 
     @property
-    def filtered_ms_list(self) -> list[str]:
-        return self._filtered_ms_list
-
-    @filtered_ms_list.setter
-    def filtered_ms_list(self, filtered_ms_list: list[str]) -> None:
-        self._filtered_ms_list = filtered_ms_list
-
-    @property
     def session_id(self) -> str | None:
         return self._session_id
 
@@ -78,6 +69,10 @@ class AnalyzeAppServiceParameters:
     def res_info_level(self, res_info_level: ResInfoLevelEnum) -> None:
         self._res_info_level = res_info_level
 
+    @property
+    def curr_group_data(self) -> SupportedGroup | None:
+        return self.supported_groups[self.group_name] if self.group_name in self.supported_groups else None
+
     @staticmethod
     def create() -> AnalyzeAppServiceParametersBuilder:
         return AnalyzeAppServiceParametersBuilder()
@@ -98,10 +93,6 @@ class AnalyzeAppServiceParametersBuilder(Builder[AnalyzeAppServiceParameters]):
 
     def supported_groups(self, supported_groups: dict[str, SupportedGroup]) -> AnalyzeAppServiceParametersBuilder:
         self.item.supported_groups = supported_groups
-        return self
-
-    def filtered_ms_list(self, filtered_ms_list: list[str]) -> AnalyzeAppServiceParametersBuilder:
-        self.item.filtered_ms_list = filtered_ms_list
         return self
 
     def session_id(self, session_id: str | None) -> AnalyzeAppServiceParametersBuilder:

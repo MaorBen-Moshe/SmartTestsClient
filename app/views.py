@@ -56,7 +56,6 @@ def analyze():
                   .build_url(req_data.get("buildURL"))
                   .session_id(Utils.get_session_id_or_default(req_data))
                   .supported_groups(groups)
-                  .filtered_ms_list(config.get_filtered_ms_list())
                   .res_info_level(ResInfoLevelEnum.get_level(req_data.get("infoLevel")))
                   .build())
 
