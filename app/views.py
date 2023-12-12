@@ -4,7 +4,6 @@ from http import HTTPStatus
 import flask
 from flask import request, jsonify, make_response
 from flask_login import login_required, current_user
-from flask_socketio import emit
 from werkzeug.exceptions import HTTPException
 
 from app import app, login_manager, config, socket_handler, app_main_logger
@@ -114,12 +113,21 @@ def handle_exception(ex):
     return make_response(error_msg, error_code)
 
 
-@socket_handler.socketio.on(socket_handler.internal_event_name, namespace=socket_handler.namespace)
-def handle_socket_event(data):
-    socket_handler.socketio.emit(socket_handler.internal_event_name,
-                                 data,
-                                 callback=lambda x: app_main_logger.info(f"Send {x}"),
-                                 namespace=socket_handler.namespace)
+# @socket_handler.socketio.on(socket_handler.internal_event_name)
+# def handle_socket_event(data):
+#     socket_handler.socketio.emit(socket_handler.internal_event_name,
+#                                  data,
+#                                  callback=lambda x: app_main_logger.info(f"Send {x}"))
+
+
+@socket_handler.socketio.on('connect')
+def handle_socket_connection():
+    app_main_logger.info("Socket connection established.")
+
+
+@socket_handler.socketio.on('disconnect')
+def handle_socket_disconnection():
+    app_main_logger.info("Socket connection disconnected.")
 
 
 @socket_handler.socketio.on_error_default
