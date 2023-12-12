@@ -1,4 +1,5 @@
 import uuid
+from datetime import datetime
 from http import HTTPStatus
 
 import flask
@@ -9,10 +10,12 @@ from werkzeug.exceptions import HTTPException
 from app import app, login_manager, config, socket_handler, app_main_logger
 from app.appServices.analyze_app_service import AnalyzeAppService
 from app.appServices.analyze_dev_app_service import AnalyzeDevAppService
+from app.constants.constants import TRACE_ID_HEADER
 from app.exceptions.excpetions import SmartClientBaseException
 from app.models.analyze_app_params import AnalyzeAppServiceParameters
 from app.models.analyze_dev_app_params import AnalyzeDevAppServiceParameters
 from app.models.user import User
+from app.utils.utils import Utils
 
 
 @app.route("/health")
@@ -35,7 +38,9 @@ def supported_groups():
 
     app_main_logger.debug(f"Supported groups response. response={serialized_groups}")
 
-    return jsonify(serialized_groups), 200
+    resp = make_response(jsonify(serialized_groups), 200)
+    resp.headers[TRACE_ID_HEADER] = Utils.get_request_id()
+    return resp
 
 
 @app.route("/smart-tests-analyze", methods=["POST"])
@@ -61,7 +66,9 @@ def analyze():
 
     app_main_logger.debug(f"Smart tests analyze response. response={res}")
 
-    return make_response(jsonify(res.serialize()), 200)
+    resp = make_response(jsonify(res.serialize()), 200)
+    resp.headers[TRACE_ID_HEADER] = Utils.get_request_id()
+    return resp
 
 
 @app.route("/smart-tests-analyze-dev", methods=["POST"])
@@ -82,7 +89,9 @@ def analyze_dev():
 
     app_main_logger.debug(f"Smart tests analyze dev response. response={res}")
 
-    return make_response(jsonify(res.serialize()), 200)
+    resp = make_response(jsonify(res.serialize()), 200)
+    resp.headers[TRACE_ID_HEADER] = Utils.get_request_id()
+    return resp
 
 
 @login_manager.request_loader
@@ -94,10 +103,10 @@ def load_user_from_request(req):
         elif config.get_user_api_token() == api_key:
             return User.create().is_admin(False).build()
         else:
-            app_main_logger.warning(f"Invalid api key. api_key={api_key}")
+            app_main_logger.error(f"Invalid api key. api_key={api_key}")
             return None
 
-    app_main_logger.warning(f"Invalid api key. api_key=None")
+    app_main_logger.error(f"Invalid api key. api_key=None")
     return None
 
 
@@ -110,7 +119,11 @@ def handle_exception(ex):
     elif isinstance(ex, HTTPException):
         error_code = ex.code
 
-    return make_response(error_msg, error_code)
+    return make_response({
+        "message": error_msg,
+        "timestamp": datetime.now().strftime("%d/%m/%Y %H:%M:%S"),
+        "trace_id": Utils.get_request_id()
+    }, error_code)
 
 
 @socket_handler.socketio.on('connect', namespace=socket_handler.namespace)

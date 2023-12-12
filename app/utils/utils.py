@@ -2,6 +2,9 @@ from __future__ import annotations
 
 import os
 import urllib
+import uuid
+
+import flask
 
 
 class Utils:
@@ -40,3 +43,13 @@ class Utils:
 
         filtered_flows = [curr_flow for curr_flow in curr_flows if curr_flow not in flows]
         flows.extend(filtered_flows)
+
+    @staticmethod
+    def get_request_id():
+        if getattr(flask.g, 'request_id', None):
+            return flask.g.request_id
+
+        new_uuid = uuid.uuid4().hex[:10]
+        flask.g.request_id = new_uuid
+
+        return new_uuid
