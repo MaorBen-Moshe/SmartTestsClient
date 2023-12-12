@@ -216,18 +216,18 @@ class TestEndpointsUnit(TestUnitBase):
              "buildURL": "http://illin5565:18080/job/oc-cd-group4/job/oc-cd-group4/lastSuccessfulBuild"
                          "/BuildReport/*zip*/BuildReport.zip",
              "groupName": "oc-cd-group4",
-         }, False, 401, (b'[ERROR] 401 Unauthorized: The server could not verify that you are authorize'
-                         b'd to access the URL requested. You either supplied the wrong credentials (e.'
-                         b"g. a bad password), or your browser doesn't understand how to supply the cre"
-                         b'dentials required.')),
+         }, False, 401, ('[ERROR] 401 Unauthorized: The server could not verify that you are authorize'
+                         'd to access the URL requested. You either supplied the wrong credentials (e.'
+                         "g. a bad password), or your browser doesn't understand how to supply the cre"
+                         'dentials required.')),
         ({
              "buildURL": "build_url",
-         }, True, 400, b"[ERROR] 400: Group Name: 'None' is not supported."),
+         }, True, 400, "[ERROR] 400: Group Name: 'None' is not supported."),
         ({
              "groupName": "group_name",
-         }, True, 400, b"[ERROR] 400: No build url provided."),
-        (None, True, 400, b'[ERROR] 400 Bad Request: The browser (or proxy) sent a request that this server could not '
-                          b'understand.')
+         }, True, 400, "[ERROR] 400: No build url provided."),
+        (None, True, 400, '[ERROR] 400 Bad Request: The browser (or proxy) sent a request that this server could not '
+                          'understand.')
     ])
     def test_smart_analyze_endpoint_missing_data(self, payload, with_query_param, error_code, error_msg):
         query_params = {"api_key": self.config.get_user_api_token()} if with_query_param else {}
@@ -236,7 +236,7 @@ class TestEndpointsUnit(TestUnitBase):
                                        content_type='application/json',
                                        query_string=query_params)
         self.assertEqual(error_code, res.status_code)
-        self.assertEqual(error_msg, res.data)
+        self.assertEqual(error_msg, res.json['message'])
 
     def test_smart_analyze_dev_endpoint_success(self):
         # parameters
@@ -309,37 +309,37 @@ class TestEndpointsUnit(TestUnitBase):
                                                  any_order=False)
 
     @parameterized.expand([
-        (None, True, 400, b'[ERROR] 400 Bad Request: The browser (or proxy) sent a request that this server could not '
-                          b'understand.'),
+        (None, True, 400, '[ERROR] 400 Bad Request: The browser (or proxy) sent a request that this server could not '
+                          'understand.'),
         ({
              "services": []
-         }, False, 401, (b'[ERROR] 401 Unauthorized: The server could not verify that you are authorize'
-                         b'd to access the URL requested. You either supplied the wrong credentials (e.'
-                         b"g. a bad password), or your browser doesn't understand how to supply the cre"
-                         b'dentials required.')),
+         }, False, 401, ('[ERROR] 401 Unauthorized: The server could not verify that you are authorize'
+                         'd to access the URL requested. You either supplied the wrong credentials (e.'
+                         "g. a bad password), or your browser doesn't understand how to supply the cre"
+                         'dentials required.')),
         ({
              "services": None
-         }, True, 400, b"[ERROR] 400: No services input provided."),
+         }, True, 400, "[ERROR] 400: No services input provided."),
         ({
              "services": "No list type"
-         }, True, 400, b"[ERROR] 400: Services input should be a list."),
+         }, True, 400, "[ERROR] 400: Services input should be a list."),
         ({
              "services": ["No dict type"]
-         }, True, 400, b"[ERROR] 400: Each Service in services should be a dictionary."),
+         }, True, 400, "[ERROR] 400: Each Service in services should be a dictionary."),
         ({
              "services": [
                  {
                      "name": "service_name",
                  }
              ]
-         }, True, 400, b"[ERROR] 400: Service 'service_name' is missing mandatory field: 'from'."),
+         }, True, 400, "[ERROR] 400: Service 'service_name' is missing mandatory field: 'from'."),
         ({
              "services": [
                  {
                      "from": "from_version",
                  }
              ]
-         }, True, 400, b"[ERROR] 400: Service is missing mandatory field: 'name'."),
+         }, True, 400, "[ERROR] 400: Service is missing mandatory field: 'name'."),
     ])
     def test_smart_analyze_dev_endpoint_missing_data(self, payload, with_query_param, error_code, error_msg):
         query_params = {"api_key": self.config.get_user_api_token()} if with_query_param else {}
@@ -348,4 +348,4 @@ class TestEndpointsUnit(TestUnitBase):
                                        content_type='application/json',
                                        query_string=query_params)
         self.assertEqual(error_code, res.status_code)
-        self.assertEqual(error_msg, res.data)
+        self.assertEqual(res.json['message'], error_msg)

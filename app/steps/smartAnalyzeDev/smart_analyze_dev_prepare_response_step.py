@@ -20,14 +20,12 @@ class PrepareResponseStep(SmartAnalyzeStepInterface):
         total_count = sum([groups_data[key].total_flows_count for key in groups_data
                            if groups_data[key].total_flows_count > 0])
 
-        flows_set = set()
-        for key in groups_data:
-            if groups_data[key].curr_flows_count > 0:
-                flows_set.update(groups_data[key].flows if groups_data[key].flows else [])
+        curr_flows_count = sum([groups_data[key].curr_flows_count for key in groups_data
+                                if groups_data[key].curr_flows_count > 0])
 
         parameters.smart_analyze_dev_app_service_response = (SmartAnalyzeResponse.create()
                                                              .total_flows_count(total_count)
-                                                             .curr_flows_count(len(flows_set))
+                                                             .curr_flows_count(curr_flows_count)
                                                              .groups({key:
                                                                       groups_data.get(key).serialize()
                                                                       for key in groups_data
