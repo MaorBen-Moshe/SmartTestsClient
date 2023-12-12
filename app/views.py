@@ -113,13 +113,6 @@ def handle_exception(ex):
     return make_response(error_msg, error_code)
 
 
-# @socket_handler.socketio.on(socket_handler.internal_event_name)
-# def handle_socket_event(data):
-#     socket_handler.socketio.emit(socket_handler.internal_event_name,
-#                                  data,
-#                                  callback=lambda x: app_main_logger.info(f"Send {x}"))
-
-
 @socket_handler.socketio.on('connect', namespace=socket_handler.namespace)
 def handle_socket_connection():
     app_main_logger.info("Socket connection established.")
