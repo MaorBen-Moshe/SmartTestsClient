@@ -6,6 +6,7 @@ import requests
 from requests.auth import HTTPBasicAuth
 
 from app import config, app_main_logger
+from app.constants.constants import NEXUS_REPOSITORY_KEY
 from app.exceptions.excpetions import URLError
 
 
@@ -14,10 +15,10 @@ class NexusClient:
         user, password = config.get_nexus_cred()
         self.user_cred = user
         self.password_cred = password
-        self._url = "http://illin5589:28080/service/rest/v1/search"
+        self._url = config.get_nexus_search_url()
 
     def search_data(self, params: dict[str, str] | None) -> Any:
-        if params is None or 'repository' not in params or params['repository'] is None:
+        if params is None or NEXUS_REPOSITORY_KEY not in params or params[NEXUS_REPOSITORY_KEY] is None:
             raise URLError("Provided to 'search_data' None repository query parameter.")
 
         app_main_logger.debug(f"NexusClient.search_data() params={params}")

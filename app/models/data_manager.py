@@ -5,7 +5,6 @@ from app.models.service_data import ServiceData
 
 
 class DataManager:
-
     def __init__(self):
         self.services_map: dict[str, ServiceData] | None = {}
         self.groups_data: dict[str, GroupData] = {}

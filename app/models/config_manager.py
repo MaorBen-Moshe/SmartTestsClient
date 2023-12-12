@@ -21,7 +21,7 @@ class ConfigManager(metaclass=SingletonMeta):
 
         with open(config_path, "r") as config_file:
             self._config = yaml.safe_load(config_file)
-            self._fernet = Fernet(self._config["default"]["encrypt_key"])
+            self._fernet = Fernet(self._config["app"]["encrypt_key"])
 
     def get_server_port(self) -> int:
         return self._config["server"]["port"]
@@ -30,7 +30,7 @@ class ConfigManager(metaclass=SingletonMeta):
         return self._config["server"]["host"]
 
     def get_supported_groups(self) -> dict[str, SupportedGroup]:
-        supported_groups_dict = self._config["default"]["supported_groups"]
+        supported_groups_dict = self._config["app"]["supported_groups"]
         return self.__get_supported_groups_helper(supported_groups_dict)
 
     def get_nexus_cred(self) -> (str, str):
@@ -45,6 +45,9 @@ class ConfigManager(metaclass=SingletonMeta):
         data = self._config["nexus"]["index_data_repository"]
         return data
 
+    def get_nexus_search_url(self) -> str | None:
+        return self._config["nexus"]["nexus_search_endpoint"]
+
     def get_smart_tests_all_url(self) -> str:
         return f'{self._config["smart_client"]["base_url"]}{self._config["smart_client"]["smart_tests_all_endpoint"]}'
 
@@ -52,10 +55,10 @@ class ConfigManager(metaclass=SingletonMeta):
         return f'{self._config["smart_client"]["base_url"]}{self._config["smart_client"]["smart_tests_statistics_endpoint"]}'
 
     def get_admin_api_token(self) -> str:
-        return self._config["default"]["admin_token"]
+        return self._config["app"]["admin_token"]
 
     def get_user_api_token(self) -> str:
-        return self._config["default"]["user_token"]
+        return self._config["app"]["user_token"]
 
     def get_log_level(self) -> str:
         return self._config["logging"]["log_level"] if "log_level" in self._config["logging"] else "INFO"

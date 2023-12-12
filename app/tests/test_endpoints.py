@@ -238,7 +238,7 @@ class TestEndpointsUnit(TestUnitBase):
                                        content_type='application/json',
                                        query_string=query_params)
         self.assertEqual(error_code, res.status_code)
-        self.assertEqual(error_msg, res.json['message'])
+        self.assertEqual(error_msg, res.json['error_message'])
 
     def test_smart_analyze_dev_endpoint_success(self):
         # parameters
@@ -351,4 +351,4 @@ class TestEndpointsUnit(TestUnitBase):
                                        content_type='application/json',
                                        query_string=query_params)
         self.assertEqual(error_code, res.status_code)
-        self.assertEqual(res.json['message'], error_msg)
+        self.assertEqual(res.json['error_message'], error_msg)

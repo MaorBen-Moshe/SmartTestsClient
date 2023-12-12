@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from app import app_main_logger
+from app.constants.constants import SERVICE_NAME_KEY, SERVICE_FROM_KEY, SERVICE_TO_KEY
 from app.exceptions.excpetions import BadRequest
 from app.models.analyze_dev_app_params import AnalyzeDevAppServiceParameters
 from app.models.service_data import ServiceData
@@ -27,15 +28,16 @@ class SmartAnalyzeDevValidateInputStep(SmartAnalyzeDevStepInterface):
                 if type(service) != dict:
                     raise BadRequest("Each Service in services should be a dictionary.")
 
-                if "name" not in service:
-                    raise BadRequest("Service is missing mandatory field: 'name'.")
+                if SERVICE_NAME_KEY not in service:
+                    raise BadRequest(f"Service is missing mandatory field: '{SERVICE_NAME_KEY}'.")
 
-                if "from" not in service:
-                    raise BadRequest(f"Service '{service.get('name')}' is missing mandatory field: 'from'.")
+                if SERVICE_FROM_KEY not in service:
+                    raise BadRequest(f"Service '{service.get(SERVICE_NAME_KEY)}' is missing mandatory field: "
+                                     f"'{SERVICE_FROM_KEY}'.")
 
-                services[service.get("name")] = (ServiceData.create()
-                                                 .from_version(service.get("from"))
-                                                 .to_version(service.get("to"))
+                services[service.get(SERVICE_NAME_KEY)] = (ServiceData.create()
+                                                 .from_version(service.get(SERVICE_FROM_KEY))
+                                                 .to_version(service.get(SERVICE_TO_KEY, None))
                                                  .build())
         else:
             app_main_logger.warning("SmartAnalyzeDevValidateInputStep.execute(): No services provided.")

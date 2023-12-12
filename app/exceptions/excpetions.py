@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from http import HTTPStatus
+
 
 class SmartClientBaseException(Exception):
     def __init__(self, message: str | None, code: int):
@@ -9,24 +11,24 @@ class SmartClientBaseException(Exception):
 
 class BadRequest(SmartClientBaseException):
     def __init__(self, message: str | None):
-        super().__init__(message, 400)
+        super().__init__(message, HTTPStatus.BAD_REQUEST.value)
 
 
 class NotFoundError(SmartClientBaseException):
     def __init__(self, message: str | None):
-        super().__init__(message, 404)
+        super().__init__(message, HTTPStatus.NOT_FOUND.value)
 
 
 class EmptyInputError(SmartClientBaseException):
     def __init__(self, message: str | None):
-        super().__init__(message, 500)
+        super().__init__(message, HTTPStatus.INTERNAL_SERVER_ERROR.value)
 
 
 class ConfigurationError(SmartClientBaseException):
     def __init__(self, message: str | None):
-        super().__init__(message, 500)
+        super().__init__(message, HTTPStatus.INTERNAL_SERVER_ERROR.value)
 
 
 class URLError(SmartClientBaseException):
     def __init__(self, message: str | None):
-        super().__init__(message, 500)
+        super().__init__(message, HTTPStatus.INTERNAL_SERVER_ERROR.value)

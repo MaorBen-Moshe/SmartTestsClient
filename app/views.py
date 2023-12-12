@@ -1,4 +1,3 @@
-import uuid
 from datetime import datetime
 from http import HTTPStatus
 
@@ -10,11 +9,13 @@ from werkzeug.exceptions import HTTPException
 from app import app, login_manager, config, socket_handler, app_main_logger
 from app.appServices.analyze_app_service import AnalyzeAppService
 from app.appServices.analyze_dev_app_service import AnalyzeDevAppService
-from app.constants.constants import TRACE_ID_HEADER
+from app.constants.constants import TRACE_ID_HEADER, GROUP_NAME_KEY, BUILD_URL_KEY, INFO_LEVEL_KEY, SERVICES_KEY, \
+    API_KEY_QUERY_PARAM
 from app.enums.res_info_level import ResInfoLevelEnum
 from app.exceptions.excpetions import SmartClientBaseException
 from app.models.analyze_app_params import AnalyzeAppServiceParameters
 from app.models.analyze_dev_app_params import AnalyzeDevAppServiceParameters
+from app.models.error_model import Error
 from app.models.user import User
 from app.utils.utils import Utils
 
@@ -23,7 +24,9 @@ from app.utils.utils import Utils
 @login_required
 def health():
     if current_user.is_admin:
-        return jsonify({"status": "I'm fine."}), 200
+        resp = make_response(jsonify({"status": "I'm fine."}), 200)
+        resp.headers[TRACE_ID_HEADER] = Utils.get_request_id()
+        return resp
     else:
         flask.abort(HTTPStatus.UNAUTHORIZED)
 
@@ -52,11 +55,11 @@ def analyze():
 
     parameters = (AnalyzeAppServiceParameters
                   .create()
-                  .group_name(req_data.get("groupName"))
-                  .build_url(req_data.get("buildURL"))
+                  .group_name(req_data.get(GROUP_NAME_KEY))
+                  .build_url(req_data.get(BUILD_URL_KEY))
                   .session_id(Utils.get_session_id_or_default(req_data))
                   .supported_groups(groups)
-                  .res_info_level(ResInfoLevelEnum.get_level(req_data.get("infoLevel")))
+                  .res_info_level(ResInfoLevelEnum.get_level(req_data.get(INFO_LEVEL_KEY)))
                   .build())
 
     app_main_logger.debug(f"Smart tests analyze request. parameters={parameters}")
@@ -78,9 +81,9 @@ def analyze_dev():
     req_data = request.get_json()
 
     parameters = (AnalyzeDevAppServiceParameters.create()
-                  .services_input(req_data.get("services"))
+                  .services_input(req_data.get(SERVICES_KEY))
                   .session_id(Utils.get_session_id_or_default(req_data))
-                  .res_info_level(ResInfoLevelEnum.get_level(req_data.get("infoLevel")))
+                  .res_info_level(ResInfoLevelEnum.get_level(req_data.get(INFO_LEVEL_KEY)))
                   .build())
 
     app_main_logger.debug(f"Smart tests analyze dev request. parameters={parameters}")
@@ -98,7 +101,7 @@ def analyze_dev():
 
 @login_manager.request_loader
 def load_user_from_request(req):
-    api_key = req.args.get('api_key')
+    api_key = req.args.get(API_KEY_QUERY_PARAM)
     if api_key:
         if config.get_admin_api_token() == api_key:
             return User.create().is_admin(True).build()
@@ -121,11 +124,12 @@ def handle_exception(ex):
     elif isinstance(ex, HTTPException):
         error_code = ex.code
 
-    return make_response({
-        "message": error_msg,
-        "timestamp": datetime.now().strftime("%d/%m/%Y %H:%M:%S"),
-        "trace_id": Utils.get_request_id()
-    }, error_code)
+    return make_response((Error.create()
+                          .error_message(error_msg)
+                          .error_code(error_code)
+                          .timestamp(datetime.now().strftime("%d/%m/%Y %H:%M:%S"))
+                          .build()
+                          .serialize()), error_code)
 
 
 @socket_handler.socketio.on('connect', namespace=socket_handler.namespace)

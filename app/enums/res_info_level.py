@@ -7,4 +7,4 @@ class ResInfoLevelEnum(Enum):
 
     @classmethod
     def get_level(cls, level: str):
-        return cls[level.upper() if level else 'INFO']
+        return cls[level.upper() if level and level.upper() in cls.__members__ else 'INFO']

@@ -5,7 +5,7 @@ from typing import Any
 from distutils.version import LooseVersion
 from app import app_main_logger
 from app.clients.nexus_client import NexusClient
-from app.constants.constants import CONTINUATION_TOKEN, VERSION_KEY, ITEMS_KEY
+from app.constants.constants import CONTINUATION_TOKEN, VERSION_KEY, ITEMS_KEY, NEXUS_REPOSITORY_KEY, NEXUS_NAME_KEY
 from app.exceptions.excpetions import EmptyInputError
 from app.models.service_data import ServiceData
 
@@ -37,7 +37,7 @@ class NexusSearchService:
 
     def _get_service_data_for_each_entry(self, repository: str | None, entry: str | None):
         versions = []
-        params = {'repository': repository, 'name': entry}
+        params = {NEXUS_REPOSITORY_KEY: repository, NEXUS_NAME_KEY: entry}
         data = self.nexus_client.search_data(params)
         versions = self._merge_list(versions, self._get_service_versions(data))
         while data is not None and CONTINUATION_TOKEN in data and data[CONTINUATION_TOKEN] is not None:

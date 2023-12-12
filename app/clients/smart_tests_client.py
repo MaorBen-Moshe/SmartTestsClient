@@ -13,8 +13,8 @@ class SmartTestsClient:
 
     def analyze_flows(self,
                       service_key: str | None,
-                      old_version: str | None,
-                      new_version: str | None,
+                      from_version: str | None,
+                      to_version: str | None,
                       include_groups_filter: str | None):
 
         if include_groups_filter is None:
@@ -28,8 +28,8 @@ class SmartTestsClient:
                 ],
                 "project": "DIGOC",
                 "repo": f"{service_key}{MS_POSTFIX}",
-                "to": old_version,
-                "from": new_version,
+                "from": from_version,
+                "to": to_version,
                 "includeFileGroupNamePattern": include_groups_filter
             }
         ]

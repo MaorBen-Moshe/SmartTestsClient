@@ -7,24 +7,20 @@ from typing import Any
 
 import flask
 
+from app.constants.constants import SESSION_ID_KEY, FLASK_REQUEST_ID_KEY
+
 
 class Utils:
     @staticmethod
     def create_filter_by_list(values: list[str] | None) -> str:
-        if values is None or len(values) == 0:
-            return ""
-
-        values = [f".*{value}.*" for value in values]
-        return "|".join(values)
+        values = values if values is not None else []
+        return "|".join([f".*{value}.*" for value in values])
 
     @staticmethod
     def is_valid_url(url):
         parsed = urllib.parse.urlparse(url)
         ext = os.path.splitext(parsed.path)[1]
-        if ext in [".zip", ".html"]:
-            return True
-
-        return False
+        return ext in [".zip", ".html"]
 
     @staticmethod
     def serialize_class(cls, ignored_fields: list[str]):
@@ -38,16 +34,13 @@ class Utils:
         ))
 
     @staticmethod
-    def add_flows_without_duplications(flows: list[str], curr_flows: list[str] | None) -> list[str]:
-        if curr_flows is None or len(curr_flows) == 0:
-            return flows
-
-        filtered_flows = [curr_flow for curr_flow in curr_flows if curr_flow not in flows]
-        flows.extend(filtered_flows)
+    def add_flows_without_duplications(flows: list[str], curr_flows: list[str] | None) -> None:
+        curr_flows = curr_flows if curr_flows is not None else []
+        flows.extend([curr_flow for curr_flow in curr_flows if curr_flow not in flows])
 
     @staticmethod
     def get_request_id():
-        if getattr(flask.g, 'request_id', None):
+        if getattr(flask.g, FLASK_REQUEST_ID_KEY, None):
             return flask.g.request_id
 
         new_uuid = uuid.uuid4().hex[:10]
@@ -57,4 +50,4 @@ class Utils:
 
     @staticmethod
     def get_session_id_or_default(data: dict[str, Any]):
-        return data.get("sessionID") if data.get("sessionID") else uuid.uuid4()
+        return data.get(SESSION_ID_KEY) if data.get(SESSION_ID_KEY) else uuid.uuid4()

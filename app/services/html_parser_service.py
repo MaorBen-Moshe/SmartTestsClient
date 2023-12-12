@@ -4,7 +4,8 @@ from bs4 import BeautifulSoup
 
 from app import app_main_logger
 from app.clients.html_parser_client import HtmlParserClient
-from app.constants.constants import TR, TD, B
+from app.constants.constants import TR, TD, B, TABLE, TABLE_NAME, TABLE_INDEX_NAME_KEY, TABLE_INDEX_VERSION_KEY, \
+    TABLE_INDEX_MICROSERVICE_PREFIX
 from app.exceptions.excpetions import NotFoundError
 from app.models.service_data import ServiceData
 
@@ -28,13 +29,13 @@ class HtmlParserService:
             name_index, version_index = self.__find_indexes()
             self.__update_map(services_map, name_index, version_index, filtered_ms_list)
         else:
-            raise NotFoundError("error with build report structure. not found main deployment table")
+            raise NotFoundError(f"error with build report structure. not found '{TABLE_NAME}' table")
 
     def __find_table(self):
-        tables = self.soup.find_all("table")
+        tables = self.soup.find_all(TABLE)
         for table in tables:
             b_element = table.find(TR).find(TD).find(B)
-            if b_element is not None and b_element.string == "Main Deployment Steps":
+            if b_element is not None and b_element.string == TABLE_NAME:
                 return table
         return None
 
@@ -44,9 +45,9 @@ class HtmlParserService:
         name_index = None
         version_index = None
         for i, cell in enumerate(cells):
-            if cell.text == "Name":
+            if cell.text == TABLE_INDEX_NAME_KEY:
                 name_index = i
-            elif cell.text == "Current Version":
+            elif cell.text == TABLE_INDEX_VERSION_KEY:
                 version_index = i
         return name_index, version_index
 
@@ -59,7 +60,7 @@ class HtmlParserService:
         for row in rows:
             cells = row.find_all(TD)
             if cells[name_index] is not None:
-                name = cells[name_index].text.split(" ")[0].replace("(Microservice)", "").strip()
+                name = cells[name_index].text.split(" ")[0].replace(TABLE_INDEX_MICROSERVICE_PREFIX, "").strip()
                 version = cells[version_index].text.strip()
                 if len(name) > 0 and len(version) > 0 and name in filtered_ms_list:
                     if name in services_map:

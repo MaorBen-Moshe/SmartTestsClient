@@ -4,6 +4,8 @@ import threading
 
 from app import app_main_logger
 from app.clients.smart_tests_client import SmartTestsClient
+from app.constants.constants import SMART_SERVICE_GROUP_FLOWS_COUNT_KEY, SMART_SERVICE_GROUP_FLOWS_BY_GROUP_KEY, \
+    SMART_SERVICE_GROUP_NAME_KEY, SMART_SERVICE_GROUP_TESTS_ALL_KEY, SMART_SERVICE_GROUP_FLOWS_KEY
 from app.exceptions.excpetions import EmptyInputError
 from app.models.group_data import GroupData
 from app.models.service_data import ServiceData
@@ -47,14 +49,14 @@ class SmartTestsAnalyzeService:
                                              services_map.get(service_key).from_version,
                                              include_groups_filter)
 
-        if res_json is not None and int(res_json.get("flowsCount")) > 0:
-            groups = res_json.get("flowsByGroupName")
+        if res_json is not None and int(res_json.get(SMART_SERVICE_GROUP_FLOWS_COUNT_KEY)) > 0:
+            groups = res_json.get(SMART_SERVICE_GROUP_FLOWS_BY_GROUP_KEY)
             for group in groups:
-                group_name = group.get("name").split("/")[-1]
+                group_name = group.get(SMART_SERVICE_GROUP_NAME_KEY).split("/")[-1]
                 if group_name in groups_data:
                     with self._lock:
-                        groups_data.get(group_name).add_flows(group.get("flows"))
-                        services_map.get(service_key).add_flows(group.get("flows"))
+                        groups_data.get(group_name).add_flows(group.get(SMART_SERVICE_GROUP_FLOWS_KEY))
+                        services_map.get(service_key).add_flows(group.get(SMART_SERVICE_GROUP_FLOWS_KEY))
                 else:
                     app_main_logger.warning(f"SmartTestsAnalyzeService._analyze_flow_per_service(): "
                                             f"Group {group_name} not found in groups data.")
@@ -68,9 +70,11 @@ class SmartTestsAnalyzeService:
 
         data = self.client.get_all_flows_stats(include_groups_filter)
 
-        if data is not None and type(data.get("flowsCount") is int) and data.get("flowsCount") > 0:
-            for curr_xml in data.get("smartTestsAllItem"):
-                split_name = curr_xml.get("name", "").rsplit('/', 1)
+        if (data is not None
+                and type(data.get(SMART_SERVICE_GROUP_FLOWS_COUNT_KEY) is int)
+                and data.get(SMART_SERVICE_GROUP_FLOWS_COUNT_KEY) > 0):
+            for curr_xml in data.get(SMART_SERVICE_GROUP_TESTS_ALL_KEY):
+                split_name = curr_xml.get(SMART_SERVICE_GROUP_NAME_KEY, "").rsplit('/', 1)
                 if len(split_name) == 2:
                     path = split_name[0]
                     name = split_name[1]
@@ -78,7 +82,7 @@ class SmartTestsAnalyzeService:
                     name = split_name[0]
                     path = ""
 
-                total_count = curr_xml.get("flowsCount")
+                total_count = curr_xml.get(SMART_SERVICE_GROUP_FLOWS_COUNT_KEY)
 
                 if len(include_filter_list) == 0 or name.replace(".xml", "") in include_filter_list:
                     groups_data[name] = (GroupData
