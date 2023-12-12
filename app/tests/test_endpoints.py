@@ -36,6 +36,7 @@ class TestEndpointsUnit(TestUnitBase):
         with self.assertLogs(self.logger.get_logger_name(), level='INFO') as cm:
             # parameters
             data = {
+                "infoLevel": "debug",
                 "buildURL": "http://illin5565:18080/job/oc-cd-group4/job/oc-cd-group4/lastSuccessfulBuild"
                             "/BuildReport/*zip*/BuildReport.zip",
                 "groupName": "oc-cd-group4",
@@ -151,6 +152,7 @@ class TestEndpointsUnit(TestUnitBase):
     def test_smart_tests_analyze_endpoint_success_same_versions(self):
         # parameters
         data = {
+            "infoLevel": "debug",
             "buildURL": "http://test_html_same_version/zipfile.zip",
             "groupName": "oc-cd-group4",
             "sessionID": "session_id",
@@ -241,6 +243,7 @@ class TestEndpointsUnit(TestUnitBase):
     def test_smart_analyze_dev_endpoint_success(self):
         # parameters
         data = {
+            "infoLevel": "debug",
             "services": [
                 {
                     "name": "productconfigurator",

@@ -3,6 +3,7 @@ from __future__ import annotations
 import os
 import urllib
 import uuid
+from typing import Any
 
 import flask
 
@@ -53,3 +54,7 @@ class Utils:
         flask.g.request_id = new_uuid
 
         return new_uuid
+
+    @staticmethod
+    def get_session_id_or_default(data: dict[str, Any]):
+        return data.get("sessionID") if data.get("sessionID") else uuid.uuid4()

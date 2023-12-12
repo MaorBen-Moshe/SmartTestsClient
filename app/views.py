@@ -11,6 +11,7 @@ from app import app, login_manager, config, socket_handler, app_main_logger
 from app.appServices.analyze_app_service import AnalyzeAppService
 from app.appServices.analyze_dev_app_service import AnalyzeDevAppService
 from app.constants.constants import TRACE_ID_HEADER
+from app.enums.res_info_level import ResInfoLevelEnum
 from app.exceptions.excpetions import SmartClientBaseException
 from app.models.analyze_app_params import AnalyzeAppServiceParameters
 from app.models.analyze_dev_app_params import AnalyzeDevAppServiceParameters
@@ -53,9 +54,10 @@ def analyze():
                   .create()
                   .group_name(req_data.get("groupName"))
                   .build_url(req_data.get("buildURL"))
-                  .session_id(req_data.get("sessionID") if req_data.get("sessionID") else uuid.uuid4())
+                  .session_id(Utils.get_session_id_or_default(req_data))
                   .supported_groups(groups)
                   .filtered_ms_list(config.get_filtered_ms_list())
+                  .res_info_level(ResInfoLevelEnum.get_level(req_data.get("infoLevel")))
                   .build())
 
     app_main_logger.debug(f"Smart tests analyze request. parameters={parameters}")
@@ -78,7 +80,8 @@ def analyze_dev():
 
     parameters = (AnalyzeDevAppServiceParameters.create()
                   .services_input(req_data.get("services"))
-                  .session_id(req_data.get("sessionID") if req_data.get("sessionID") else uuid.uuid4())
+                  .session_id(Utils.get_session_id_or_default(req_data))
+                  .res_info_level(ResInfoLevelEnum.get_level(req_data.get("infoLevel")))
                   .build())
 
     app_main_logger.debug(f"Smart tests analyze dev request. parameters={parameters}")

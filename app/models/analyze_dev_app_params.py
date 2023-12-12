@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from typing import Any
 
+from app.enums.res_info_level import ResInfoLevelEnum
 from app.models.builder import Builder
 from app.models.data_manager import DataManager
 from app.models.service_data import ServiceData
@@ -14,6 +15,7 @@ class AnalyzeDevAppServiceParameters:
         self.services_input = None
         self.__data_manager = DataManager()
         self.session_id: str | None = None
+        self.res_info_level: ResInfoLevelEnum | None = None
 
     @property
     def services_input(self) -> Any:
@@ -43,6 +45,14 @@ class AnalyzeDevAppServiceParameters:
     def smart_analyze_dev_app_service_response(self, smart_app_service_response: SmartAnalyzeResponse | None):
         self._smart_app_service_response = smart_app_service_response
 
+    @property
+    def res_info_level(self) -> ResInfoLevelEnum:
+        return self._res_info_level
+
+    @res_info_level.setter
+    def res_info_level(self, res_info_level: ResInfoLevelEnum) -> None:
+        self._res_info_level = res_info_level
+
     @staticmethod
     def create():
         return AnalyzeDevAppServiceParametersBuilder()
@@ -63,4 +73,8 @@ class AnalyzeDevAppServiceParametersBuilder(Builder[AnalyzeDevAppServiceParamete
 
     def session_id(self, session_id: str | None) -> AnalyzeDevAppServiceParametersBuilder:
         self.item.session_id = session_id
+        return self
+
+    def res_info_level(self, res_info_level: ResInfoLevelEnum) -> AnalyzeDevAppServiceParametersBuilder:
+        self.item.res_info_level = res_info_level
         return self
