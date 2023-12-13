@@ -6,23 +6,23 @@ T = TypeVar("T")
 
 class DictWrapperObject(Generic[T]):
     def __init__(self):
-        self.map: dict[str, T] = {}
+        self._map: dict[str, T] = {}
 
     def add_item(self, key: str, value: T):
         if key:
-            self.map[key] = value
+            self._map[key] = value
 
     def get_item(self, key: str) -> T:
-        return self.map.get(key)
+        return self._map.get(key)
 
     def contains_key(self, key: str) -> bool:
-        return key in self.map
+        return key in self._map
 
     def merge(self, other: DictWrapperObject[T]):
-        self.map.update(other.map)
+        self._map.update(other._map)
 
     def __iter__(self):
-        return iter(self.map)
+        return iter(self._map)
 
     def __len__(self):
-        return len(self.map)
+        return len(self._map)
