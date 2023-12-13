@@ -1,12 +1,12 @@
 from app import app_main_logger
 from app.models.group_data import GroupData
-from app.models.service_data import ServiceData
+from app.models.services_data import ServicesData
 from app.models.smart_analyze_response import SmartAnalyzeResponse
 from app.services.interfaces.smart_prepare_response_interface import IPrepareResponseStrategy
 
 
 class InfoPrepareResponseStrategy(IPrepareResponseStrategy):
-    def get(self, groups_data: dict[str, GroupData], services_data: dict[str, ServiceData]) -> SmartAnalyzeResponse:
+    def get(self, groups_data: dict[str, GroupData], services_data: ServicesData) -> SmartAnalyzeResponse:
         app_main_logger.debug("InfoPrepareResponseStrategy.get(): Preparing response.")
 
         if groups_data is None or len(groups_data) == 0:

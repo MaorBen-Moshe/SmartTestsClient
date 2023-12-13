@@ -1,6 +1,7 @@
 from app.exceptions.excpetions import EmptyInputError
 from app.models.group_data import GroupData
 from app.models.service_data import ServiceData
+from app.models.services_data import ServicesData
 from app.services.smart_test_analyze_service import SmartTestsAnalyzeService
 from test_base import TestUnitBase
 
@@ -61,10 +62,12 @@ class TestHandleGroupsDataStepUnit(TestUnitBase):
                                655)
 
     def test_analyze_flows_success(self):
-        services_map = {
-            "service1": ServiceData.create().to_version("1.0").from_version("2.0").build(),
-            "service2": ServiceData.create().to_version("3.0").from_version("4.0").build()
-        }
+        services_map = ServicesData()
+        services_map.add_service("service1",
+                                 ServiceData.create().to_version("1.0").from_version("2.0").build())
+        services_map.add_service("service2",
+                                 ServiceData.create().to_version("3.0").from_version("4.0").build())
+
         filter_group = ["group1", "group2"]
         groups_data = {
             "group1": GroupData.create().test_xml_name("group1").test_xml_path("").total_flows_count(10).build(),

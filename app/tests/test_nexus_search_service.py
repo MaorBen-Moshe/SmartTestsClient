@@ -22,10 +22,10 @@ class TestNexusSearchService(TestUnitBase):
 
         self.mock_nexus_search.assert_called()
         self.assertEqual(len(services_map), 2)
-        self.assert_services_map_entry(services_map.get("productconfigurator-pioperations"),
+        self.assert_services_map_entry(services_map.get_service("productconfigurator-pioperations"),
                                        '0.67.13',
                                        '0.67.13')
-        self.assert_services_map_entry(services_map.get("productconfigurator"),
+        self.assert_services_map_entry(services_map.get_service("productconfigurator"),
                                        '0.67.19',
                                        '0.67.19')
 
@@ -60,7 +60,7 @@ class TestNexusSearchService(TestUnitBase):
                                                                              ["productconfigurator",
                                                                               "productconfigurator"])
         self.assertEqual(len(services_map), 1)
-        self.assert_services_map_entry(services_map.get("productconfigurator"),
+        self.assert_services_map_entry(services_map.get_service("productconfigurator"),
                                        '0.67.19',
                                        '0.67.19')
 

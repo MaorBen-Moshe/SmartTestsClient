@@ -1,20 +1,20 @@
 from __future__ import annotations
 
 from app.models.group_data import GroupData
-from app.models.service_data import ServiceData
+from app.models.services_data import ServicesData
 
 
 class DataManager:
     def __init__(self):
-        self.services_map: dict[str, ServiceData] | None = {}
+        self.services_map: ServicesData | None = ServicesData()
         self.groups_data: dict[str, GroupData] = {}
 
     @property
-    def services_map(self) -> dict[str, ServiceData] | None:
+    def services_map(self) -> ServicesData | None:
         return self._services_map
 
     @services_map.setter
-    def services_map(self, services_map: dict[str, ServiceData] | None):
+    def services_map(self, services_map: ServicesData):
         self._services_map = services_map
 
     @property

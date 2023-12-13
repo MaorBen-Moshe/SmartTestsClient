@@ -5,7 +5,6 @@ from typing import Any
 from app.enums.res_info_level import ResInfoLevelEnum
 from app.models.builder import Builder
 from app.models.data_manager import DataManager
-from app.models.service_data import ServiceData
 from app.models.smart_analyze_response import SmartAnalyzeResponse
 
 
@@ -65,10 +64,6 @@ class AnalyzeDevAppServiceParametersBuilder(Builder[AnalyzeDevAppServiceParamete
 
     def services_input(self, services_input: Any) -> AnalyzeDevAppServiceParametersBuilder:
         self.item.services_input = services_input
-        return self
-
-    def services(self, services: dict[str, ServiceData]) -> AnalyzeDevAppServiceParametersBuilder:
-        self.item.services = services
         return self
 
     def session_id(self, session_id: str | None) -> AnalyzeDevAppServiceParametersBuilder:

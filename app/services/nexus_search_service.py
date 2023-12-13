@@ -8,18 +8,19 @@ from app.clients.nexus_client import NexusClient
 from app.constants.constants import CONTINUATION_TOKEN, VERSION_KEY, ITEMS_KEY, NEXUS_REPOSITORY_KEY, NEXUS_NAME_KEY
 from app.exceptions.excpetions import EmptyInputError
 from app.models.service_data import ServiceData
+from app.models.services_data import ServicesData
 from app.utils.utils import Utils
 
 
 class NexusSearchService:
     def __init__(self):
-        self.services_map: dict[str, ServiceData] = {}
+        self.services_map: ServicesData = ServicesData()
         self.nexus_client = NexusClient()
         self._lock = threading.Lock()
 
     def get_services_master_version(self,
                                     repository: str | None,
-                                    ms_list: list[str] | None) -> dict[str, ServiceData]:
+                                    ms_list: list[str] | None) -> ServicesData:
         if repository is None:
             raise EmptyInputError("Provided to 'get_services_master_version' repository=None")
 
@@ -48,11 +49,13 @@ class NexusSearchService:
 
         if len(versions) > 0:
             sorted_list = sorted(versions, key=LooseVersion, reverse=True)
-            with self._lock:
-                self.services_map[entry] = (ServiceData.create()
-                                            .from_version(sorted_list[0])
-                                            .to_version(sorted_list[0])
-                                            .build())
+            with (self._lock):
+                data = (ServiceData.create()
+                        .from_version(sorted_list[0])
+                        .to_version(sorted_list[0])
+                        .build())
+
+                self.services_map.add_service(entry, data)
         else:
             app_main_logger.warning(f"NexusSearchService._get_service_data_for_each_entry():"
                                     f" Failed to get version for {entry}")
@@ -60,6 +63,7 @@ class NexusSearchService:
     @classmethod
     def _get_service_versions(cls, data: dict[str, Any]) -> list[str]:
         if data is not None and ITEMS_KEY in data and len(data[ITEMS_KEY]) > 0:
-            return [item[VERSION_KEY] for item in data[ITEMS_KEY] if VERSION_KEY in item and item[VERSION_KEY] is not None]
+            return [item[VERSION_KEY] for item in data[ITEMS_KEY] if
+                    VERSION_KEY in item and item[VERSION_KEY] is not None]
         else:
             return []

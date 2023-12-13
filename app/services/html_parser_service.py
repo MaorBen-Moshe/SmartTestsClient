@@ -8,6 +8,7 @@ from app.constants.constants import TR, TD, B, TABLE, TABLE_NAME, TABLE_INDEX_NA
     TABLE_INDEX_MICROSERVICE_PREFIX
 from app.exceptions.excpetions import NotFoundError
 from app.models.service_data import ServiceData
+from app.models.services_data import ServicesData
 
 
 class HtmlParserService:
@@ -18,7 +19,7 @@ class HtmlParserService:
 
     def load_html(self,
                   html_zip_url: str | None,
-                  services_map: dict[str, ServiceData] | None,
+                  services_map: ServicesData | None,
                   filtered_ms_list: list[str]):
         app_main_logger.debug(f"HtmlParserService.load_html(): Loading build report data. build_url={html_zip_url}")
 
@@ -52,7 +53,7 @@ class HtmlParserService:
         return name_index, version_index
 
     def __update_map(self,
-                     services_map: dict[str, ServiceData] | None,
+                     services_map: ServicesData | None,
                      name_index: int,
                      version_index: int,
                      filtered_ms_list: list[str]):
@@ -64,6 +65,7 @@ class HtmlParserService:
                 version = cells[version_index].text.strip()
                 if len(name) > 0 and len(version) > 0 and name in filtered_ms_list:
                     if name in services_map:
-                        services_map[name].to_version = version
+                        services_map.get_service(name).to_version = version
                     else:
-                        services_map[name] = ServiceData.create().to_version(version).from_version(version).build()
+                        services_map.add_service(name,
+                                                 ServiceData.create().to_version(version).from_version(version).build())

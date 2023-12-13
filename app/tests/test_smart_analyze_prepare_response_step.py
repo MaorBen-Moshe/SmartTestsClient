@@ -2,6 +2,7 @@ from app.enums.res_info_level import ResInfoLevelEnum
 from app.models.analyze_app_params import AnalyzeAppServiceParameters
 from app.models.group_data import GroupData
 from app.models.service_data import ServiceData
+from app.models.services_data import ServicesData
 from app.steps.smartAnalyze.smart_analyze_prepare_response_step import PrepareResponseStep
 from app.tests.test_base import TestBase
 
@@ -53,9 +54,11 @@ class TestSmartAnalyzePrepareResponseStep(TestBase):
             'group2': GroupData.create().total_flows_count(20).flows(['flow3', 'flow4', 'flow5']).build(),
             'group3': GroupData.create().total_flows_count(30).build(),
         }
-        parameters.data_manager.services_map = {
-            'service1': ServiceData.create().flows(['flow1']).from_version("0.67.110").to_version("0.67.109").build(),
-        }
+
+        parameters.data_manager.services_map = ServicesData()
+        parameters.data_manager.services_map.add_service("service1",
+                                                         ServiceData.create().flows(['flow1']).from_version(
+                                                             "0.67.110").to_version("0.67.109").build())
 
         self.step.execute(parameters)
 
@@ -68,5 +71,5 @@ class TestSmartAnalyzePrepareResponseStep(TestBase):
             'group3': parameters.data_manager.groups_data['group3'].serialize(),
         })
         self.assertEqual(parameters.smart_app_service_response.services, {
-            'service1': parameters.data_manager.services_map['service1'].serialize(),
+            'service1': parameters.data_manager.services_map.get_service('service1').serialize(),
         })

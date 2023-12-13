@@ -5,7 +5,6 @@ import unittest.mock as mock
 import pytest
 
 from app import config, app_main_logger
-from app.appLogging.app_logger_manager import AppLogger
 from app.models.group_data import GroupData
 from app.models.service_data import ServiceData
 

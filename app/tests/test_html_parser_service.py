@@ -1,5 +1,6 @@
 from app.exceptions.excpetions import NotFoundError
 from app.models.service_data import ServiceData
+from app.models.services_data import ServicesData
 from app.services.html_parser_service import HtmlParserService
 from test_base import TestUnitBase
 
@@ -11,7 +12,7 @@ class TestHtmlParserServiceUnit(TestUnitBase):
 
     def test_load_html_success(self):
         service = HtmlParserService()
-        services_map = {}
+        services_map = ServicesData()
 
         service.load_html("http://example.com/file.zip", 
                           services_map,
@@ -34,11 +35,12 @@ class TestHtmlParserServiceUnit(TestUnitBase):
         self.mock_get_html.return_value = "<HTML></HTML>"
 
         service = HtmlParserService()
-        services_map = {}
+        services_map = ServicesData()
 
         self.assert_exception(lambda: service.load_html("http://example.com/missing_table_file.zip",
                                                         services_map,
-                                                        self.config.get_supported_groups()['oc-cd-group4'].filtered_ms_list),
+                                                        self.config.get_supported_groups()['oc-cd-group4']
+                                                        .filtered_ms_list),
                               NotFoundError,
                               'error with build report structure. not found main deployment table')
 
@@ -47,11 +49,12 @@ class TestHtmlParserServiceUnit(TestUnitBase):
 
     def test_load_html_services_map_contains_common_entry(self):
         service = HtmlParserService()
-        services_map = {
-            "productconfigurator-action": ServiceData.create().to_version("0.67.6").from_version("0.67.9").build(),
-            "productconfigurator-commitmentterm": ServiceData.create().to_version("0.67.1").from_version(
-                "0.67.10").build(),
-        }
+        services_map = ServicesData()
+        services_map.add_service("productconfigurator-action",
+                                 ServiceData.create().to_version("0.67.6").from_version("0.67.9").build())
+
+        services_map.add_service("productconfigurator-commitmentterm",
+                                 ServiceData.create().to_version("0.67.1").from_version("0.67.10").build())
 
         service.load_html("http://example.com/file.zip",
                           services_map,
@@ -70,8 +73,8 @@ class TestHtmlParserServiceUnit(TestUnitBase):
         self.__assert_entry(services_map, "productconfigurator-replace", '0.67.19', '0.67.19')
         self.__assert_entry(services_map, "productconfigurator-mergeentities", '1.67.13', '1.67.13')
 
-    def __assert_entry(self, services_map: dict[str, ServiceData], key_name: str, old_version: str, new_version: str):
+    def __assert_entry(self, services_map: ServicesData, key_name: str, old_version: str, new_version: str):
         self.assertIn(key_name, services_map)
-        self.assertIsInstance(services_map[key_name], ServiceData)
-        self.assertEqual(services_map[key_name].to_version, old_version)
-        self.assertEqual(services_map[key_name].from_version, new_version)
+        self.assertIsInstance(services_map.get_service(key_name), ServiceData)
+        self.assertEqual(services_map.get_service(key_name).to_version, old_version)
+        self.assertEqual(services_map.get_service(key_name).from_version, new_version)

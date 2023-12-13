@@ -1,6 +1,7 @@
 from parameterized import parameterized
 
 from app.models.service_data import ServiceData
+from app.models.services_data import ServicesData
 from app.services.smart_analyze_dev_update_services_data_service import UpdateServiceDataService
 from app.tests.test_base import TestUnitBase
 
@@ -12,15 +13,15 @@ class TestUpdateServiceDataService(TestUnitBase):
         self._repo = self.config.get_index_data_repository()
 
     def test_update_services_data_success(self):
-        services_data = {
-            "productconfigurator": ServiceData.create().from_version("0.67.21").build(),
-        }
+        services_data = ServicesData()
+        services_data.add_service("productconfigurator",
+                                  ServiceData.create().from_version("0.67.21").build())
 
         res = self.update_service_data_service.update_services_data(self._repo, services_data)
 
         self.assertIsNotNone(res)
         self.assertEqual(len(res), 1)
-        self.assert_services_map_entry(res.get("productconfigurator"), "0.67.19", "0.67.21")
+        self.assert_services_map_entry(res.get_service("productconfigurator"), "0.67.19", "0.67.21")
 
     def test_update_services_data_one_item_with_missing_to_version(self):
         services_data = {
@@ -33,13 +34,19 @@ class TestUpdateServiceDataService(TestUnitBase):
             .build(),
         }
 
+        services_data = ServicesData()
+        services_data.add_service("productconfigurator",
+                                  ServiceData.create().from_version("0.67.21").build())
+        services_data.add_service("productconfigurator-pioperations",
+                                  ServiceData.create().from_version("0.67.13").to_version("0.67.9").build())
+
         res = self.update_service_data_service.update_services_data(self._repo, services_data)
 
         self.mock_nexus_search.assert_called_once()
         self.assertIsNotNone(res)
         self.assertEqual(len(res), 2)
-        self.assert_services_map_entry(res.get("productconfigurator"), "0.67.19", "0.67.21")
-        self.assert_services_map_entry(res.get("productconfigurator-pioperations"),
+        self.assert_services_map_entry(res.get_service("productconfigurator"), "0.67.19", "0.67.21")
+        self.assert_services_map_entry(res.get_service("productconfigurator-pioperations"),
                                        "0.67.9",
                                        "0.67.13")
 

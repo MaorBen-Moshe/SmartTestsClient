@@ -3,7 +3,7 @@ from __future__ import annotations
 from typing import Any
 
 from app.models.builder import Builder
-from app.models.service_data import ServiceData
+from app.models.services_data import ServicesData
 from app.utils import utils
 
 
@@ -39,11 +39,11 @@ class SmartAnalyzeResponse:
         self._groups = groups
 
     @property
-    def services(self) -> dict[str, ServiceData] | None:
+    def services(self) -> ServicesData | None:
         return self._services
 
     @services.setter
-    def services(self, services: dict[str, ServiceData] | None):
+    def services(self, services: ServicesData | None):
         self._services = services
 
     def serialize(self) -> dict[str, Any]:
@@ -71,6 +71,6 @@ class SmartAnalyzeResponseBuilder(Builder[SmartAnalyzeResponse]):
         self.item.groups = groups
         return self
 
-    def services(self, services: dict[str, ServiceData] | None) -> SmartAnalyzeResponseBuilder:
+    def services(self, services: ServicesData | None) -> SmartAnalyzeResponseBuilder:
         self.item.services = services
         return self

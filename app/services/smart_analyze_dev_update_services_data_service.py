@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from app import app_main_logger
 from app.models.service_data import ServiceData
+from app.models.services_data import ServicesData
 from app.services.nexus_search_service import NexusSearchService
 
 
@@ -12,7 +13,7 @@ class UpdateServiceDataService:
 
     def update_services_data(self,
                              repository: str | None,
-                             services_data: dict[str, ServiceData] | None) -> dict[str, ServiceData] | None:
+                             services_data: ServicesData | None) -> ServicesData | None:
         app_main_logger.debug("UpdateServiceDataService.update_services_data(): Executing UpdateServiceDataStep.")
 
         if services_data is None or len(services_data) == 0:
@@ -20,14 +21,15 @@ class UpdateServiceDataService:
             return None
 
         ms_list = [service for service in services_data
-                   if services_data[service].to_version == services_data[service].from_version or
-                   services_data[service].to_version is None]
+                   if services_data.get_service(service).to_version ==
+                   services_data.get_service(service).from_version or
+                   services_data.get_service(service).to_version is None]
 
         services_from_nexus = self.nexus_search_service.get_services_master_version(repository, ms_list)
 
-        updated_services_data_map = {}
+        updated_services_data_map = ServicesData()
         for service in services_data:
-            service_data = services_data[service]
+            service_data = services_data.get_service(service)
             if services_data is None:
                 app_main_logger.warning(f"UpdateServiceDataService.update_services_data(): "
                                         f"Service {service} does not exist in services data.")
@@ -35,14 +37,16 @@ class UpdateServiceDataService:
 
             to_version = None
             if (service in services_from_nexus and
-                    (services_from_nexus[service].to_version is None or
-                     services_from_nexus[service].to_version == services_from_nexus[service].from_version)):
-                to_version = services_from_nexus[service].to_version
+                    (services_from_nexus.get_service(service).to_version is None or
+                     services_from_nexus.get_service(service).to_version ==
+                     services_from_nexus.get_service(service).from_version)):
+                to_version = services_from_nexus.get_service(service).to_version
 
-            updated_services_data_map[service] = (ServiceData.create()
-                                                  .from_version(service_data.from_version)
-                                                  .to_version(to_version if to_version else service_data.to_version)
-                                                  .build())
+            updated_services_data_map.add_service(service, (ServiceData.create()
+                                                            .from_version(service_data.from_version)
+                                                            .to_version(
+                to_version if to_version else service_data.to_version)
+                                                            .build()))
 
         app_main_logger.debug(f"UpdateServiceDataService.update_services_data()"
                               f": Response services={updated_services_data_map}")
