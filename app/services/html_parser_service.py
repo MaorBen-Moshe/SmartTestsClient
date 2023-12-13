@@ -65,7 +65,7 @@ class HtmlParserService:
                 version = cells[version_index].text.strip()
                 if len(name) > 0 and len(version) > 0 and name in filtered_ms_list:
                     if name in services_map:
-                        services_map.get_service(name).to_version = version
+                        services_map.get_item(name).to_version = version
                     else:
-                        services_map.add_service(name,
+                        services_map.add_item(name,
                                                  ServiceData.create().to_version(version).from_version(version).build())

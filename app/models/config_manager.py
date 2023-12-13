@@ -8,6 +8,7 @@ from cryptography.fernet import Fernet
 from app.exceptions.excpetions import ConfigurationError
 from app.models.singleton_meta import SingletonMeta
 from app.models.supported_group import SupportedGroup
+from app.models.supported_groups import SupportedGroups
 
 
 class ConfigManager(metaclass=SingletonMeta):
@@ -29,7 +30,7 @@ class ConfigManager(metaclass=SingletonMeta):
     def get_server_host(self) -> str | None:
         return self._config["server"]["host"]
 
-    def get_supported_groups(self) -> dict[str, SupportedGroup]:
+    def get_supported_groups(self) -> SupportedGroups:
         supported_groups_dict = self._config["app"]["supported_groups"]
         return self.__get_supported_groups_helper(supported_groups_dict)
 
@@ -52,7 +53,8 @@ class ConfigManager(metaclass=SingletonMeta):
         return f'{self._config["smart_client"]["base_url"]}{self._config["smart_client"]["smart_tests_all_endpoint"]}'
 
     def get_smart_tests_statistics_url(self) -> str:
-        return f'{self._config["smart_client"]["base_url"]}{self._config["smart_client"]["smart_tests_statistics_endpoint"]}'
+        return (f'{self._config["smart_client"]["base_url"]}'
+                f'{self._config["smart_client"]["smart_tests_statistics_endpoint"]}')
 
     def get_admin_api_token(self) -> str:
         return self._config["app"]["admin_token"]
@@ -70,15 +72,15 @@ class ConfigManager(metaclass=SingletonMeta):
         return self._config["logging"][name] if name in self._config["logging"] else self.get_log_level()
 
     @classmethod
-    def __get_supported_groups_helper(cls, supported_groups_str_format: dict[str, Any]) -> dict[str, SupportedGroup]:
-        groups = {}
+    def __get_supported_groups_helper(cls, supported_groups_str_format: dict[str, Any]) -> SupportedGroups:
+        groups = SupportedGroups()
         for group_name, group in supported_groups_str_format.items():
             if group_name is not None:
-                groups[group_name] = (SupportedGroup.create().group_name(group_name)
-                                      .url(group["url"])
-                                      .cluster(group["cluster"])
-                                      .testng_xml(group["testng_xml"])
-                                      .filtered_ms_list(group["filtered_ms_list"])
-                                      .build())
+                groups.add_item(group_name, (SupportedGroup.create().group_name(group_name)
+                                             .url(group["url"])
+                                             .cluster(group["cluster"])
+                                             .testng_xml(group["testng_xml"])
+                                             .filtered_ms_list(group["filtered_ms_list"])
+                                             .build()))
 
         return groups

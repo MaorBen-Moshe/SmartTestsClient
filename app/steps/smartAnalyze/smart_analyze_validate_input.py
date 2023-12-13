@@ -16,5 +16,5 @@ class SmartAnalyzeValidateInputStep(SmartAnalyzeStepInterface):
 
         if parameters.build_url is None or parameters.build_url == "":
             raise BadRequest("No build url provided.")
-        if parameters.group_name not in parameters.supported_groups:
+        if not parameters.supported_groups.contains_key(parameters.group_name):
             raise BadRequest(f"Group Name: '{parameters.group_name}' is not supported.")

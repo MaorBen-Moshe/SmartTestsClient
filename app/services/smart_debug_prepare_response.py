@@ -13,21 +13,21 @@ class DebugPrepareResponseStrategy(IPrepareResponseStrategy):
             app_main_logger.warning("PrepareResponseStep.execute(): No groups data to prepare response.")
             return SmartAnalyzeResponse.create().build()
 
-        total_count = sum([groups_data.get_group(key).total_flows_count for key in groups_data
-                           if groups_data.get_group(key).total_flows_count > 0])
+        total_count = sum([groups_data.get_item(key).total_flows_count for key in groups_data
+                           if groups_data.get_item(key).total_flows_count > 0])
 
-        curr_flows_count = sum([groups_data.get_group(key).curr_flows_count for key in groups_data
-                                if groups_data.get_group(key).curr_flows_count > 0])
+        curr_flows_count = sum([groups_data.get_item(key).curr_flows_count for key in groups_data
+                                if groups_data.get_item(key).curr_flows_count > 0])
 
         smart_app_service_response = (SmartAnalyzeResponse.create()
                                       .total_flows_count(total_count)
                                       .curr_flows_count(curr_flows_count)
                                       .groups({key:
-                                               groups_data.get_group(key).serialize()
+                                               groups_data.get_item(key).serialize()
                                                for key in groups_data
                                                })
                                       .services({key:
-                                                 services_data.get_service(key).serialize()
+                                                 services_data.get_item(key).serialize()
                                                  for key in services_data
                                                  })
                                       .build())

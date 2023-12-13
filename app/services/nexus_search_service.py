@@ -55,7 +55,7 @@ class NexusSearchService:
                         .to_version(sorted_list[0])
                         .build())
 
-                self.services_map.add_service(entry, data)
+                self.services_map.add_item(entry, data)
         else:
             app_main_logger.warning(f"NexusSearchService._get_service_data_for_each_entry():"
                                     f" Failed to get version for {entry}")

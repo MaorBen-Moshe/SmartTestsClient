@@ -16,7 +16,7 @@ class TestHtmlParserServiceUnit(TestUnitBase):
 
         service.load_html("http://example.com/file.zip", 
                           services_map,
-                          self.config.get_supported_groups()['oc-cd-group4'].filtered_ms_list)
+                          self.config.get_supported_groups().get_item('oc-cd-group4').filtered_ms_list)
 
         self.mock_get_html.assert_called()
         self.assertEqual(len(services_map), 10)
@@ -39,7 +39,7 @@ class TestHtmlParserServiceUnit(TestUnitBase):
 
         self.assert_exception(lambda: service.load_html("http://example.com/missing_table_file.zip",
                                                         services_map,
-                                                        self.config.get_supported_groups()['oc-cd-group4']
+                                                        self.config.get_supported_groups().get_item('oc-cd-group4')
                                                         .filtered_ms_list),
                               NotFoundError,
                               'error with build report structure. not found main deployment table')
@@ -50,15 +50,15 @@ class TestHtmlParserServiceUnit(TestUnitBase):
     def test_load_html_services_map_contains_common_entry(self):
         service = HtmlParserService()
         services_map = ServicesData()
-        services_map.add_service("productconfigurator-action",
+        services_map.add_item("productconfigurator-action",
                                  ServiceData.create().to_version("0.67.6").from_version("0.67.9").build())
 
-        services_map.add_service("productconfigurator-commitmentterm",
+        services_map.add_item("productconfigurator-commitmentterm",
                                  ServiceData.create().to_version("0.67.1").from_version("0.67.10").build())
 
         service.load_html("http://example.com/file.zip",
                           services_map,
-                          self.config.get_supported_groups()['oc-cd-group4'].filtered_ms_list)
+                          self.config.get_supported_groups().get_item('oc-cd-group4').filtered_ms_list)
 
         self.mock_get_html.assert_called()
         self.assertEqual(len(services_map), 10)
@@ -75,6 +75,6 @@ class TestHtmlParserServiceUnit(TestUnitBase):
 
     def __assert_entry(self, services_map: ServicesData, key_name: str, old_version: str, new_version: str):
         self.assertIn(key_name, services_map)
-        self.assertIsInstance(services_map.get_service(key_name), ServiceData)
-        self.assertEqual(services_map.get_service(key_name).to_version, old_version)
-        self.assertEqual(services_map.get_service(key_name).from_version, new_version)
+        self.assertIsInstance(services_map.get_item(key_name), ServiceData)
+        self.assertEqual(services_map.get_item(key_name).to_version, old_version)
+        self.assertEqual(services_map.get_item(key_name).from_version, new_version)

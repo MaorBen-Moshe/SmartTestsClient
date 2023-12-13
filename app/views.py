@@ -38,7 +38,7 @@ def supported_groups():
 
     groups = config.get_supported_groups()
 
-    serialized_groups = {group_name: groups[group_name].serialize() for group_name in groups}
+    serialized_groups = {group_name: groups.get_item(group_name).serialize() for group_name in groups}
 
     app_main_logger.debug(f"Supported groups response. response={serialized_groups}")
 

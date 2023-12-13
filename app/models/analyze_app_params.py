@@ -6,11 +6,12 @@ from app.models.groups_data import TestGroupsData
 from app.models.services_data import ServicesData
 from app.models.smart_analyze_response import SmartAnalyzeResponse
 from app.models.supported_group import SupportedGroup
+from app.models.supported_groups import SupportedGroups
 
 
 class AnalyzeAppServiceParameters:
     def __init__(self):
-        self._supported_groups: dict[str, SupportedGroup] = {}
+        self._supported_groups: SupportedGroups = SupportedGroups()
         self.build_url: str | None = None
         self.group_name: str | None = None
         self.session_id: str | None = None
@@ -44,11 +45,11 @@ class AnalyzeAppServiceParameters:
         self._group_name = group_name
 
     @property
-    def supported_groups(self) -> dict[str, SupportedGroup]:
+    def supported_groups(self) -> SupportedGroups:
         return self._supported_groups
 
     @supported_groups.setter
-    def supported_groups(self, supported_groups: dict[str, SupportedGroup]) -> None:
+    def supported_groups(self, supported_groups: SupportedGroups) -> None:
         self._supported_groups = supported_groups
 
     @property
@@ -77,7 +78,7 @@ class AnalyzeAppServiceParameters:
 
     @property
     def curr_group_data(self) -> SupportedGroup | None:
-        return self.supported_groups[self.group_name] if self.group_name in self.supported_groups else None
+        return self.supported_groups.get_item(self.group_name)
 
     @staticmethod
     def create() -> AnalyzeAppServiceParametersBuilder:
@@ -97,7 +98,7 @@ class AnalyzeAppServiceParametersBuilder(Builder[AnalyzeAppServiceParameters]):
         self.item.build_url = build_url
         return self
 
-    def supported_groups(self, supported_groups: dict[str, SupportedGroup]) -> AnalyzeAppServiceParametersBuilder:
+    def supported_groups(self, supported_groups: SupportedGroups) -> AnalyzeAppServiceParametersBuilder:
         self.item.supported_groups = supported_groups
         return self
 

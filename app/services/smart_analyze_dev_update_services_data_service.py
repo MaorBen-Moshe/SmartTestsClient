@@ -21,15 +21,15 @@ class UpdateServiceDataService:
             return None
 
         ms_list = [service for service in services_data
-                   if services_data.get_service(service).to_version ==
-                   services_data.get_service(service).from_version or
-                   services_data.get_service(service).to_version is None]
+                   if services_data.get_item(service).to_version ==
+                   services_data.get_item(service).from_version or
+                   services_data.get_item(service).to_version is None]
 
         services_from_nexus = self.nexus_search_service.get_services_master_version(repository, ms_list)
 
         updated_services_data_map = ServicesData()
         for service in services_data:
-            service_data = services_data.get_service(service)
+            service_data = services_data.get_item(service)
             if services_data is None:
                 app_main_logger.warning(f"UpdateServiceDataService.update_services_data(): "
                                         f"Service {service} does not exist in services data.")
@@ -37,12 +37,12 @@ class UpdateServiceDataService:
 
             to_version = None
             if (service in services_from_nexus and
-                    (services_from_nexus.get_service(service).to_version is None or
-                     services_from_nexus.get_service(service).to_version ==
-                     services_from_nexus.get_service(service).from_version)):
-                to_version = services_from_nexus.get_service(service).to_version
+                    (services_from_nexus.get_item(service).to_version is None or
+                     services_from_nexus.get_item(service).to_version ==
+                     services_from_nexus.get_item(service).from_version)):
+                to_version = services_from_nexus.get_item(service).to_version
 
-            updated_services_data_map.add_service(service, (ServiceData.create()
+            updated_services_data_map.add_item(service, (ServiceData.create()
                                                             .from_version(service_data.from_version)
                                                             .to_version(to_version if to_version
                                                                         else service_data.to_version)

@@ -34,7 +34,7 @@ class SmartAnalyzeDevValidateInputStep(SmartAnalyzeDevStepInterface):
                     raise BadRequest(f"Service '{service.get(SERVICE_NAME_KEY)}' is missing mandatory field: "
                                      f"'{SERVICE_FROM_KEY}'.")
 
-                parameters.services_map.add_service(service.get(SERVICE_NAME_KEY), (ServiceData.create()
+                parameters.services_map.add_item(service.get(SERVICE_NAME_KEY), (ServiceData.create()
                                                                                     .from_version(
                     service.get(SERVICE_FROM_KEY))
                                                                                     .to_version(
