@@ -8,6 +8,7 @@ from app.clients.nexus_client import NexusClient
 from app.constants.constants import CONTINUATION_TOKEN, VERSION_KEY, ITEMS_KEY, NEXUS_REPOSITORY_KEY, NEXUS_NAME_KEY
 from app.exceptions.excpetions import EmptyInputError
 from app.models.service_data import ServiceData
+from app.utils.utils import Utils
 
 
 class NexusSearchService:
@@ -39,11 +40,11 @@ class NexusSearchService:
         versions = []
         params = {NEXUS_REPOSITORY_KEY: repository, NEXUS_NAME_KEY: entry}
         data = self.nexus_client.search_data(params)
-        versions = self._merge_list(versions, self._get_service_versions(data))
+        versions = Utils.merge_list(versions, self._get_service_versions(data))
         while data is not None and CONTINUATION_TOKEN in data and data[CONTINUATION_TOKEN] is not None:
             params[CONTINUATION_TOKEN] = data[CONTINUATION_TOKEN]
             data = self.nexus_client.search_data(params)
-            versions = self._merge_list(versions, self._get_service_versions(data))
+            versions = Utils.merge_list(versions, self._get_service_versions(data))
 
         if len(versions) > 0:
             sorted_list = sorted(versions, key=LooseVersion, reverse=True)
@@ -56,13 +57,9 @@ class NexusSearchService:
             app_main_logger.warning(f"NexusSearchService._get_service_data_for_each_entry():"
                                     f" Failed to get version for {entry}")
 
-    @staticmethod
-    def _get_service_versions(data: dict[str, Any]) -> list[str]:
+    @classmethod
+    def _get_service_versions(cls, data: dict[str, Any]) -> list[str]:
         if data is not None and ITEMS_KEY in data and len(data[ITEMS_KEY]) > 0:
             return [item[VERSION_KEY] for item in data[ITEMS_KEY] if VERSION_KEY in item and item[VERSION_KEY] is not None]
         else:
             return []
-
-    @staticmethod
-    def _merge_list(list_to: list[str], list_from: list[str]) -> list[str]:
-        return list(set(list_to + list_from))

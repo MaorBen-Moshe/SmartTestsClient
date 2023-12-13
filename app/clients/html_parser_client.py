@@ -13,8 +13,8 @@ from app.utils.utils import Utils
 
 
 class HtmlParserClient:
-    @staticmethod
-    def get_html(build_url: str | None):
+    @classmethod
+    def get_html(cls, build_url: str | None):
         if not Utils.is_valid_url(build_url):
             raise URLError(f"Build report url: '{build_url}' is not valid.")
 

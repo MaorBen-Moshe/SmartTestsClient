@@ -45,8 +45,8 @@ class AppLoggerManager(metaclass=SingletonMeta):
         app_logger = self._loggers[logger_name]
         return app_logger
 
-    @staticmethod
-    def __init_file_handler_path(log_file_path: str, log_file_name: str) -> str:
+    @classmethod
+    def __init_file_handler_path(cls, log_file_path: str, log_file_name: str) -> str:
         if os.path.exists(log_file_path) is False:
             os.mkdir(log_file_path)
 

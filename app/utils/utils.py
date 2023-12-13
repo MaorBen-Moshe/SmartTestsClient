@@ -51,3 +51,7 @@ class Utils:
     @staticmethod
     def get_session_id_or_default(data: dict[str, Any]):
         return data.get(SESSION_ID_KEY) if data.get(SESSION_ID_KEY) else uuid.uuid4()
+
+    @staticmethod
+    def merge_list(list_to: list[str], list_from: list[str]) -> list[str]:
+        return list(set(list_to + list_from))
