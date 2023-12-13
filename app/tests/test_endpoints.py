@@ -107,8 +107,8 @@ class TestEndpointsUnit(TestUnitBase):
             args, kwargs = self.mock_analyze_flows.call_args
             self.assertEqual(len(args), 4)
             self.assertEqual(args[0], "productconfigurator")
-            self.assertEqual(args[1], "0.67.18")
-            self.assertEqual(args[2], "0.67.19")
+            self.assertEqual(args[1], "0.67.19")
+            self.assertEqual(args[2], "0.67.18")
             self.assertEqual(args[3], ".*group4_integration_tests_testng.*|.*mat_APIGW_testng"
                                       ".*|.*extended_mat_7a_APIGW_testng.*|"
                                       ".*extended_mat_7b_APIGW_testng.*|.*extended_mat_APIGW_testng"
@@ -308,8 +308,8 @@ class TestEndpointsUnit(TestUnitBase):
                                                         'name': 'productconfigurator'})
         self.mock_get_all_flows.assert_called_once_with('')
         self.assertEqual(2, self.mock_analyze_flows.call_count)
-        self.mock_analyze_flows.assert_has_calls([call("productconfigurator", "0.67.19", "0.67.20", ''),
-                                                  call("productconfigurator-pioperations", "0.67.11", "0.67.13", '')],
+        self.mock_analyze_flows.assert_has_calls([call("productconfigurator", "0.67.20", "0.67.19", ''),
+                                                  call("productconfigurator-pioperations", "0.67.13", "0.67.11", '')],
                                                  any_order=False)
 
     @parameterized.expand([
