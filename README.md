@@ -1,1 +1,136 @@
-this is a project to analyze flows to run according to ci changes.
+# Flask API for Smart Tests Analysis
+
+This is a flask application that provides several endpoints for analyzing the test flows to run based on the changes in the services versions.
+
+## Installation
+
+To install the required dependencies, run the following command:
+
+`pip install -r requirements.txt`
+
+## Usage
+
+The application exposes three endpoints:
+
+### /supported-groups
+
+This endpoint is a GET method and returns in the response all the supported groups the server supports.
+
+**Response example:**
+
+```json
+{
+    "oc-cd-group4": {
+        "cluster": "ilocpde456",
+        "group_name": "oc-cd-group4",
+        "url": "http://illin5565:18080/job/oc-cd-group4/job/oc-cd-group4/"
+    }
+}
+```
+
+### /smart-tests-analyze
+
+This endpoint is a POST method. It gets in the request build_url and supported group and returns in the response json that contains flows to run per testGroup.
+
+Payload fields:
+
+- **groupName**: str [mandatory] = one of the supported groups
+- **buildUrl**: str [mandatory] = url to a zip file of the jenkins build report
+- **sessionID**: str = this session id is added to message sent from the server in the socket channel namespace: /smart-analyze-progress and event name is -smart-analyze-progress.
+- **infoLevel**: str = valid values: info or debug. if not provided the default value is info. this field affects on the response data. in debug we add also the services data in the response.
+
+**Request example:**
+    
+```json
+{
+    "groupName": "oc-cd-group4",
+    "buildUrl": "http://illin5565:18080/job/oc-cd-group4/job/oc-cd-group4/lastSuccessfulBuild/artifact/oc-cd-group4.zip",
+    "sessionID": "1234",
+    "infoLevel": "info"
+}
+```
+
+**Response example:**
+```json
+{
+  "curr_flows_count": 2,
+  "groups": {
+    "ContratedOffer_Pack_testng.xml": {
+      "curr_flows_count": 2,
+      "flows": [
+        "com.amdocs.core.oc.group4.test.flows.contractedOffer.CROSS_71143_reject_unReject_promotion",
+        "com.amdocs.core.oc.group4.test.flows.contractedOffer.CROSS70993_ManageManualPromotion_AddPromotionToContractedInstance"
+      ],
+      "test_xml_name": "ContratedOffer_Pack_testng.xml",
+      "test_xml_path": "com/amdocs/core/oc/group4/testng",
+      "total_flows_count": 24
+    }
+  },
+  "total_flows_count": 24
+}
+```
+
+### /smart-tests-analyze-dev
+This endpoint is a POST method. It gets in the request services list and for each service makes the analysis of flows to run because of the changes in the version.
+
+Payload fields:
+
+- **services**: list[object] = each service is object contains a name and from version (new version) these fields are mandatory, also, it has “to” field (old version). if it not provided we get the master version of the service from the nexus.
+- **sessionID**: str = this session id is added to message sent from the server in the socket channel namespace: /smart-analyze-progress and event name is -smart-analyze-progress.
+- **infoLevel**: str = valid values: info or debug. if not provided the default value is info. this field affects on the response data. in debug we add also the services data in the response.
+
+**Request example**:
+```json
+{
+    "services": [
+        {
+            "name": "productconfigurator",
+            "from": "0.67.110",
+            "to": "0.67.109"
+        },
+        {
+            "name": "productconfigurator-commitmentterm",
+            "from": "0.67.100"
+        }
+    ],
+    "sessionID": "1234",
+    "infoLevel": "debug"
+}
+```
+
+**Response example**:
+
+```json
+{
+  "curr_flows_count": 2,
+  "groups": {
+    "ContratedOffer_Pack_testng.xml": {
+      "curr_flows_count": 2,
+      "flows": [
+        "com.amdocs.core.oc.group4.test.flows.contractedOffer.CROSS_71143_reject_unReject_promotion",
+        "com.amdocs.core.oc.group4.test.flows.contractedOffer.CROSS70993_ManageManualPromotion_AddPromotionToContractedInstance"
+      ],
+      "test_xml_name": "ContratedOffer_Pack_testng.xml",
+      "test_xml_path": "com/amdocs/core/oc/group4/testng",
+      "total_flows_count": 24
+    }
+  },
+  "services": {
+    "productconfigurator": {
+      "flows": [],
+      "from_version": "0.67.110",
+      "to_version": "0.67.109"
+    },
+    "productconfigurator-commitmentterm": {
+      "flows": [
+        "com.amdocs.core.oc.group4.test.flows.contractedOffer.CROSS_71143_reject_unReject_promotion",
+        "com.amdocs.core.oc.group4.test.flows.contractedOffer.CROSS70993_ManageManualPromotion_AddPromotionToContractedInstance"
+      ],
+      "from_version": "0.67.100",
+      "to_version": "0.67.94"
+    }
+  },
+  "total_flows_count": 24
+}
+```
+
