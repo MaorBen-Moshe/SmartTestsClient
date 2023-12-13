@@ -57,17 +57,17 @@ class ErrorModelBuilder(Builder[Error]):
         super().__init__(error)
 
     def error_code(self, error_code: int | None) -> ErrorModelBuilder:
-        self.item.error_code = error_code
+        self._item.error_code = error_code
         return self
 
     def error_message(self, error_message: str | None) -> ErrorModelBuilder:
-        self.item.error_message = error_message
+        self._item.error_message = error_message
         return self
 
     def timestamp(self, timestamp: str | None) -> ErrorModelBuilder:
-        self.item.timestamp = timestamp
+        self._item.timestamp = timestamp
         return self
 
     def trace_id(self, trace_id: str | None) -> ErrorModelBuilder:
-        self.item.trace_id = trace_id
+        self._item.trace_id = trace_id
         return self

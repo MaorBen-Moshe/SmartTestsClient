@@ -91,21 +91,21 @@ class AnalyzeAppServiceParametersBuilder(Builder[AnalyzeAppServiceParameters]):
         super().__init__(parameters)
 
     def group_name(self, group_name: str | None) -> AnalyzeAppServiceParametersBuilder:
-        self.item.group_name = group_name
+        self._item.group_name = group_name
         return self
 
     def build_url(self, build_url: str | None) -> AnalyzeAppServiceParametersBuilder:
-        self.item.build_url = build_url
+        self._item.build_url = build_url
         return self
 
     def supported_groups(self, supported_groups: SupportedGroups) -> AnalyzeAppServiceParametersBuilder:
-        self.item.supported_groups = supported_groups
+        self._item.supported_groups = supported_groups
         return self
 
     def session_id(self, session_id: str | None) -> AnalyzeAppServiceParametersBuilder:
-        self.item.session_id = session_id
+        self._item.session_id = session_id
         return self
 
     def res_info_level(self, res_info_level: ResInfoLevelEnum) -> AnalyzeAppServiceParametersBuilder:
-        self.item.res_info_level = res_info_level
+        self._item.res_info_level = res_info_level
         return self

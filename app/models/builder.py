@@ -5,7 +5,7 @@ T = TypeVar("T")
 
 class Builder(Generic[T]):
     def __init__(self, item: T):
-        self.item = item
+        self._item = item
 
     def build(self) -> T:
-        return self.item
+        return self._item

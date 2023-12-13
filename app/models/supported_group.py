@@ -68,21 +68,21 @@ class SupportedGroupBuilder(Builder[SupportedGroup]):
         super().__init__(supported_group)
 
     def group_name(self, group_name: str | None) -> SupportedGroupBuilder:
-        self.item.group_name = group_name
+        self._item.group_name = group_name
         return self
 
     def cluster(self, cluster: str | None) -> SupportedGroupBuilder:
-        self.item.cluster = cluster
+        self._item.cluster = cluster
         return self
 
     def url(self, url: str | None) -> SupportedGroupBuilder:
-        self.item.url = url
+        self._item.url = url
         return self
 
     def testng_xml(self, testng_xml: list[str]) -> SupportedGroupBuilder:
-        self.item.testng_xml = testng_xml
+        self._item.testng_xml = testng_xml
         return self
 
     def filtered_ms_list(self, filtered_ms_list: list[str]) -> SupportedGroupBuilder:
-        self.item.filtered_ms_list = filtered_ms_list
+        self._item.filtered_ms_list = filtered_ms_list
         return self

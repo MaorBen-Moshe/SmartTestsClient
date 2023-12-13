@@ -28,5 +28,5 @@ class UserBuilder(Builder[User]):
         super().__init__(user)
 
     def is_admin(self, is_admin: bool | None) -> UserBuilder:
-        self.item.is_admin = is_admin
+        self._item.is_admin = is_admin
         return self

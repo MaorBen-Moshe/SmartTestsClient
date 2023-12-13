@@ -69,13 +69,13 @@ class AnalyzeDevAppServiceParametersBuilder(Builder[AnalyzeDevAppServiceParamete
         super().__init__(parameters)
 
     def services_input(self, services_input: Any) -> AnalyzeDevAppServiceParametersBuilder:
-        self.item.services_input = services_input
+        self._item.services_input = services_input
         return self
 
     def session_id(self, session_id: str | None) -> AnalyzeDevAppServiceParametersBuilder:
-        self.item.session_id = session_id
+        self._item.session_id = session_id
         return self
 
     def res_info_level(self, res_info_level: ResInfoLevelEnum) -> AnalyzeDevAppServiceParametersBuilder:
-        self.item.res_info_level = res_info_level
+        self._item.res_info_level = res_info_level
         return self

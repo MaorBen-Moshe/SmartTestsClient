@@ -53,13 +53,13 @@ class ServiceDataBuilder(Builder[ServiceData]):
         super().__init__(service_data)
 
     def from_version(self, from_version: str | None) -> ServiceDataBuilder:
-        self.item.from_version = from_version
+        self._item.from_version = from_version
         return self
 
     def to_version(self, to_version: str | None) -> ServiceDataBuilder:
-        self.item.to_version = to_version
+        self._item.to_version = to_version
         return self
 
     def flows(self, flows: list[str]) -> ServiceDataBuilder:
-        self.item.flows = flows
+        self._item.flows = flows
         return self

@@ -72,18 +72,18 @@ class GroupDataBuilder(Builder[GroupData]):
         super().__init__(group_data)
 
     def test_xml_name(self, test_xml_name: str | None) -> GroupDataBuilder:
-        self.item.test_xml_name = test_xml_name
+        self._item.test_xml_name = test_xml_name
         return self
 
     def test_xml_path(self, test_xml_path: str | None) -> GroupDataBuilder:
-        self.item.test_xml_path = test_xml_path
+        self._item.test_xml_path = test_xml_path
         return self
 
     def total_flows_count(self, total_flows_count: int) -> GroupDataBuilder:
-        self.item.total_flows_count = total_flows_count
+        self._item.total_flows_count = total_flows_count
         return self
 
     def flows(self, flows: list[str] | None) -> GroupDataBuilder:
-        self.item.flows = flows
-        self.item.curr_flows_count = len(flows) if flows is not None else 0
+        self._item.flows = flows
+        self._item.curr_flows_count = len(flows) if flows is not None else 0
         return self

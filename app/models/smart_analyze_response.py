@@ -60,17 +60,17 @@ class SmartAnalyzeResponseBuilder(Builder[SmartAnalyzeResponse]):
         super().__init__(smart_analyze_response)
 
     def total_flows_count(self, total_flows_count: int) -> SmartAnalyzeResponseBuilder:
-        self.item.total_flows_count = total_flows_count
+        self._item.total_flows_count = total_flows_count
         return self
 
     def curr_flows_count(self, curr_flows_count: int) -> SmartAnalyzeResponseBuilder:
-        self.item.curr_flows_count = curr_flows_count
+        self._item.curr_flows_count = curr_flows_count
         return self
 
     def groups(self, groups: dict[str, Any] | None) -> SmartAnalyzeResponseBuilder:
-        self.item.groups = groups
+        self._item.groups = groups
         return self
 
     def services(self, services: dict[str, Any] | None) -> SmartAnalyzeResponseBuilder:
-        self.item.services = services
+        self._item.services = services
         return self
