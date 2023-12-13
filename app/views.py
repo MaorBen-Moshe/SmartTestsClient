@@ -128,6 +128,7 @@ def handle_exception(ex):
                           .error_message(error_msg)
                           .error_code(error_code)
                           .timestamp(datetime.now().strftime("%d/%m/%Y %H:%M:%S"))
+                          .trace_id(Utils.get_request_id())
                           .build()
                           .serialize()), error_code)
 

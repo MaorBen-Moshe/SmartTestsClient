@@ -9,6 +9,7 @@ class Error:
         self.error_code: int | None = None
         self.error_message: str | None = None
         self.timestamp: str | None = None
+        self.trace_id: str | None = None
 
     def serialize(self) -> dict[str, str | int]:
         return Utils.serialize_class(self, [])
@@ -37,6 +38,14 @@ class Error:
     def timestamp(self, timestamp: str | None):
         self._timestamp = timestamp
 
+    @property
+    def trace_id(self) -> str | None:
+        return self._trace_id
+
+    @trace_id.setter
+    def trace_id(self, trace_id: str | None):
+        self._trace_id = trace_id
+
     @staticmethod
     def create():
         return ErrorModelBuilder()
@@ -57,4 +66,8 @@ class ErrorModelBuilder(Builder[Error]):
 
     def timestamp(self, timestamp: str | None) -> ErrorModelBuilder:
         self.item.timestamp = timestamp
+        return self
+
+    def trace_id(self, trace_id: str | None) -> ErrorModelBuilder:
+        self.item.trace_id = trace_id
         return self
