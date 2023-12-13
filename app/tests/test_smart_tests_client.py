@@ -34,8 +34,8 @@ class TestSmartTestsClient(TestBase):
             responses.add(responses.POST, path, json=json.load(f), status=200)
 
         res_json = self.client.analyze_flows("productcofigurator",
-                                             "0.67.18",
                                              "0.67.19",
+                                             "0.67.18",
                                              "")
 
         self.assertIn("flowsCount", res_json)

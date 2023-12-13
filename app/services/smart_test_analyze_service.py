@@ -47,8 +47,8 @@ class SmartTestsAnalyzeService:
                                   groups_data: TestGroupsData,
                                   include_groups_filter: str):
         res_json = self.client.analyze_flows(service_key,
-                                             services_map.get_item(service_key).to_version,
                                              services_map.get_item(service_key).from_version,
+                                             services_map.get_item(service_key).to_version,
                                              include_groups_filter)
 
         if res_json is not None and int(res_json.get(SMART_SERVICE_GROUP_FLOWS_COUNT_KEY)) > 0:
