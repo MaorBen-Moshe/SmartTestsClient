@@ -69,3 +69,28 @@ class TestUtils(TestBase):
         Utils.add_flows_without_duplications(flows, curr_flows)
 
         self.assertEqual(flows, expected)
+
+    @parameterized.expand([
+        (["flow1", "flow2"], None, ["flow1", "flow2"]),
+        (["flow1", "flow2"], [], ["flow1", "flow2"]),
+        (["flow1", "flow2"], ["flow3", "flow4"], ["flow1", "flow2", "flow3", "flow4"]),
+        (["flow1", "flow2"], ["flow1", "flow2"], ["flow1", "flow2"]),
+        (["flow1", "flow2"], ["flow1", "flow3"], ["flow1", "flow2", "flow3"]),
+        ([], ["flow1", "flow2"], ["flow1", "flow2"])
+    ])
+    def test_merge_list(self, list_to, list_from, expected):
+        result = Utils.merge_list(list_to, list_from)
+
+        result = sorted(result)
+        self.assertEqual(result, expected)
+
+    @parameterized.expand([
+        ("productconfigurator", "DIGOC"),
+        ("", None),
+        (None, None)
+    ])
+    def test_get_project_name_from_supported_group(self, service_name, expected):
+        result = Utils.get_project_name_from_supported_group(service_name, self.config.get_supported_groups())
+
+        self.assertEqual(result, expected)
+

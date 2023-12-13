@@ -55,6 +55,8 @@ class Utils:
 
     @staticmethod
     def merge_list(list_to: list[str], list_from: list[str]) -> list[str]:
+        list_to = list_to if list_to is not None else []
+        list_from = list_from if list_from is not None else []
         return list(set(list_to + list_from))
 
     @staticmethod
