@@ -7,6 +7,7 @@ from app.models.builder import Builder
 from app.models.groups_data import TestGroupsData
 from app.models.services_data import ServicesData
 from app.models.smart_analyze_response import SmartAnalyzeResponse
+from app.models.supported_groups import SupportedGroups
 
 
 class AnalyzeDevAppServiceParameters:
@@ -17,6 +18,7 @@ class AnalyzeDevAppServiceParameters:
         self.res_info_level: ResInfoLevelEnum | None = None
         self._services_map: ServicesData = ServicesData()
         self._groups_data: TestGroupsData = TestGroupsData()
+        self.supported_groups: SupportedGroups | None = None
 
     @property
     def services_input(self) -> Any:
@@ -58,6 +60,14 @@ class AnalyzeDevAppServiceParameters:
     def res_info_level(self, res_info_level: ResInfoLevelEnum) -> None:
         self._res_info_level = res_info_level
 
+    @property
+    def supported_groups(self) -> SupportedGroups | None:
+        return self._supported_groups
+
+    @supported_groups.setter
+    def supported_groups(self, supported_groups: SupportedGroups | None) -> None:
+        self._supported_groups = supported_groups
+
     @staticmethod
     def create():
         return AnalyzeDevAppServiceParametersBuilder()
@@ -78,4 +88,8 @@ class AnalyzeDevAppServiceParametersBuilder(Builder[AnalyzeDevAppServiceParamete
 
     def res_info_level(self, res_info_level: ResInfoLevelEnum) -> AnalyzeDevAppServiceParametersBuilder:
         self._item.res_info_level = res_info_level
+        return self
+
+    def supported_groups(self, supported_groups: SupportedGroups | None) -> AnalyzeDevAppServiceParametersBuilder:
+        self._item.supported_groups = supported_groups
         return self

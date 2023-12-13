@@ -41,12 +41,12 @@ class TestUtils(TestBase):
         self.assertEqual(result, expected)
 
     @parameterized.expand([
-        (ServiceData.create().to_version("to_version").from_version("from_version").build(),
+        (ServiceData.create().to_version("to_version").from_version("from_version").project('project').build(),
          [],
-         {"to_version": "to_version", "from_version": "from_version", "flows": []}),
+         {"to_version": "to_version", "from_version": "from_version", "flows": [], "project": "project"}),
         (ServiceData.create().to_version("to_version").from_version("from_version").build(),
          ['to_version'],
-         {"from_version": "from_version", "flows": []}),
+         {"from_version": "from_version", "flows": [], "project": None}),
         (WithoutProperties("Alice", 25, "female"),
          [],
          {"name": "Alice", "age": 25, "gender": "female"}),

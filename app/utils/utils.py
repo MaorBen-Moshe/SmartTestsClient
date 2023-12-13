@@ -8,6 +8,7 @@ from typing import Any
 import flask
 
 from app.constants.constants import SESSION_ID_KEY, FLASK_REQUEST_ID_KEY
+from app.models.supported_groups import SupportedGroups
 
 
 class Utils:
@@ -55,3 +56,15 @@ class Utils:
     @staticmethod
     def merge_list(list_to: list[str], list_from: list[str]) -> list[str]:
         return list(set(list_to + list_from))
+
+    @staticmethod
+    def get_project_name_from_supported_group(service_name: str | None, supported_groups: SupportedGroups):
+        project = None
+        if service_name:
+            for group_name in supported_groups:
+                group = supported_groups.get_item(group_name)
+                if service_name in group.filtered_ms_list:
+                    project = group.project
+                    break
+
+        return project

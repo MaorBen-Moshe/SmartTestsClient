@@ -36,6 +36,7 @@ class TestSmartTestsClient(TestBase):
         res_json = self.client.analyze_flows("productcofigurator",
                                              "0.67.19",
                                              "0.67.18",
+                                             "DIGOC",
                                              "")
 
         self.assertIn("flowsCount", res_json)

@@ -81,6 +81,7 @@ class ConfigManager(metaclass=SingletonMeta):
                                              .cluster(group["cluster"])
                                              .testng_xml(group["testng_xml"])
                                              .filtered_ms_list(group["filtered_ms_list"])
+                                             .project(group["project"])
                                              .build()))
 
         return groups

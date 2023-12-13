@@ -17,8 +17,9 @@ class TestSmartAnalyzeDevValidateInputUnit(TestUnitBase):
                                                                  "from": "from1"}]).build(),
         AnalyzeDevAppServiceParameters.create().services_input([]).build()
     ])
-    def test_check_input_success(self, parameters):
+    def test_check_input_success(self, parameters: AnalyzeDevAppServiceParameters):
         try:
+            parameters.supported_groups = self.config.get_supported_groups()
             self.step.execute(parameters)
             if len(parameters.services_input) > 0:
                 self.assertIsNotNone(parameters.services_map)

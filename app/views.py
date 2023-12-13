@@ -84,6 +84,7 @@ def analyze_dev():
                   .services_input(req_data.get(SERVICES_KEY))
                   .session_id(Utils.get_session_id_or_default(req_data))
                   .res_info_level(ResInfoLevelEnum.get_level(req_data.get(INFO_LEVEL_KEY)))
+                  .supported_groups(config.get_supported_groups())
                   .build())
 
     app_main_logger.debug(f"Smart tests analyze dev request. parameters={parameters}")

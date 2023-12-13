@@ -15,6 +15,7 @@ class SmartTestsClient:
                       service_key: str | None,
                       from_version: str | None,
                       to_version: str | None,
+                      service_project: str | None,
                       include_groups_filter: str | None):
 
         if include_groups_filter is None:
@@ -26,7 +27,7 @@ class SmartTestsClient:
                 "restrictions": [
                     "repo_exclude_config"
                 ],
-                "project": "DIGOC",
+                "project": service_project,
                 "repo": f"{service_key}{MS_POSTFIX}",
                 "from": from_version,
                 "to": to_version,

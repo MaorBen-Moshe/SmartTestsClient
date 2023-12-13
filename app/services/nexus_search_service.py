@@ -20,7 +20,8 @@ class NexusSearchService:
 
     def get_services_master_version(self,
                                     repository: str | None,
-                                    ms_list: list[str] | None) -> ServicesData:
+                                    ms_list: list[str] | None,
+                                    project: str | None) -> ServicesData:
         if repository is None:
             raise EmptyInputError("Provided to 'get_services_master_version' repository=None")
 
@@ -28,7 +29,7 @@ class NexusSearchService:
             threads = []
             for entry in ms_list:
                 t = threading.Thread(target=self._get_service_data_for_each_entry,
-                                     args=(repository, entry))
+                                     args=(repository, entry, project))
                 threads.append(t)
                 t.start()
 
@@ -37,7 +38,9 @@ class NexusSearchService:
 
         return self.services_map
 
-    def _get_service_data_for_each_entry(self, repository: str | None, entry: str | None):
+    def _get_service_data_for_each_entry(self, repository: str | None,
+                                         entry: str | None,
+                                         project: str | None):
         versions = []
         params = {NEXUS_REPOSITORY_KEY: repository, NEXUS_NAME_KEY: entry}
         data = self.nexus_client.search_data(params)
@@ -53,6 +56,7 @@ class NexusSearchService:
                 data = (ServiceData.create()
                         .from_version(sorted_list[0])
                         .to_version(sorted_list[0])
+                        .project(project)
                         .build())
 
                 self.services_map.add_item(entry, data)

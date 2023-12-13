@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import json
 import unittest
 import unittest.mock as mock
@@ -56,10 +58,11 @@ class TestUnitBase(TestBase):
         self.get_all_flows_patcher.stop()
         self.analyze_flows_patcher.stop()
 
-    def assert_services_map_entry(self, entry, to_version: str, from_version: str):
+    def assert_services_map_entry(self, entry, to_version: str, from_version: str, project: str | None):
         self.assertIsInstance(entry, ServiceData)
         self.assertEqual(entry.to_version, to_version)
         self.assertEqual(entry.from_version, from_version)
+        self.assertEqual(entry.project, project)
 
     def assert_group_data(self, group_data: GroupData, name: str, path: str, total_count: int):
         self.assertIsNotNone(group_data)

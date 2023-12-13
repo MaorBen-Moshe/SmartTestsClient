@@ -8,9 +8,10 @@ from app.utils.utils import Utils
 
 class ServiceData:
     def __init__(self):
-        self.from_version = None
-        self.to_version = None
+        self.from_version: str | None = None
+        self.to_version: str | None = None
         self.flows = []
+        self.project: str | None = None
 
     @property
     def from_version(self) -> str | None:
@@ -35,6 +36,14 @@ class ServiceData:
     @flows.setter
     def flows(self, flows: list[str]) -> None:
         self._flows = flows
+
+    @property
+    def project(self) -> str | None:
+        return self._project
+
+    @project.setter
+    def project(self, project: str | None) -> None:
+        self._project = project
 
     def add_flows(self, curr_flows: list[str] | None):
         Utils.add_flows_without_duplications(self.flows, curr_flows)
@@ -62,4 +71,8 @@ class ServiceDataBuilder(Builder[ServiceData]):
 
     def flows(self, flows: list[str]) -> ServiceDataBuilder:
         self._item.flows = flows
+        return self
+
+    def project(self, project: str | None) -> ServiceDataBuilder:
+        self._item.project = project
         return self

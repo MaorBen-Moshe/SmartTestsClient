@@ -15,47 +15,42 @@ class TestUpdateServiceDataService(TestUnitBase):
     def test_update_services_data_success(self):
         services_data = ServicesData()
         services_data.add_item("productconfigurator",
-                                  ServiceData.create().from_version("0.67.21").build())
+                               ServiceData.create().from_version("0.67.21").build())
 
         res = self.update_service_data_service.update_services_data(self._repo, services_data)
 
         self.assertIsNotNone(res)
         self.assertEqual(len(res), 1)
-        self.assert_services_map_entry(res.get_item("productconfigurator"), "0.67.19", "0.67.21")
+        self.assert_services_map_entry(res.get_item("productconfigurator"),
+                                       "0.67.19",
+                                       "0.67.21",
+                                       None)
 
     def test_update_services_data_one_item_with_missing_to_version(self):
-        services_data = {
-            "productconfigurator": ServiceData.create()
-            .from_version("0.67.21")
-            .build(),
-            "productconfigurator-pioperations": ServiceData.create()
-            .from_version("0.67.13")
-            .to_version("0.67.9")
-            .build(),
-        }
-
         services_data = ServicesData()
         services_data.add_item("productconfigurator",
-                                  ServiceData.create().from_version("0.67.21").build())
+                               ServiceData.create().from_version("0.67.21").build())
         services_data.add_item("productconfigurator-pioperations",
-                                  ServiceData.create().from_version("0.67.13").to_version("0.67.9").build())
+                               ServiceData.create().from_version("0.67.13").to_version("0.67.9").build())
 
         res = self.update_service_data_service.update_services_data(self._repo, services_data)
 
         self.mock_nexus_search.assert_called_once()
         self.assertIsNotNone(res)
         self.assertEqual(len(res), 2)
-        self.assert_services_map_entry(res.get_item("productconfigurator"), "0.67.19", "0.67.21")
+        self.assert_services_map_entry(res.get_item("productconfigurator"),
+                                       "0.67.19",
+                                       "0.67.21",
+                                       None)
         self.assert_services_map_entry(res.get_item("productconfigurator-pioperations"),
                                        "0.67.9",
-                                       "0.67.13")
+                                       "0.67.13",
+                                       None)
 
     @parameterized.expand([
-            ([],),
-            None
+        ([],),
+        None
     ])
     def test_update_services_data_empty_input(self, services_data):
         res = self.update_service_data_service.update_services_data(self._repo, services_data)
         self.assertIsNone(res)
-
-

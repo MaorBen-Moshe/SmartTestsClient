@@ -6,6 +6,7 @@ from app.exceptions.excpetions import BadRequest
 from app.models.analyze_dev_app_params import AnalyzeDevAppServiceParameters
 from app.models.service_data import ServiceData
 from app.steps.smartAnalyzeDev.interfaces.smart_analyze_dev_step_interface import SmartAnalyzeDevStepInterface
+from app.utils.utils import Utils
 
 
 class SmartAnalyzeDevValidateInputStep(SmartAnalyzeDevStepInterface):
@@ -34,12 +35,16 @@ class SmartAnalyzeDevValidateInputStep(SmartAnalyzeDevStepInterface):
                     raise BadRequest(f"Service '{service.get(SERVICE_NAME_KEY)}' is missing mandatory field: "
                                      f"'{SERVICE_FROM_KEY}'.")
 
-                parameters.services_map.add_item(service.get(SERVICE_NAME_KEY), (ServiceData.create()
-                                                                                    .from_version(
+                service_name = service.get(SERVICE_NAME_KEY)
+                parameters.services_map.add_item(service_name, (ServiceData.create()
+                                                                .from_version(
                     service.get(SERVICE_FROM_KEY))
-                                                                                    .to_version(
+                                                                .to_version(
                     service.get(SERVICE_TO_KEY, None))
-                                                                                    .build()))
+                                                                .project(
+                    Utils.get_project_name_from_supported_group(service_name,
+                                                                parameters.supported_groups))
+                                                                .build()))
         else:
             app_main_logger.warning("SmartAnalyzeDevValidateInputStep.execute(): No services provided.")
 
