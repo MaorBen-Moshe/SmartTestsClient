@@ -2,7 +2,8 @@ from __future__ import annotations
 
 from app.enums.res_info_level import ResInfoLevelEnum
 from app.models.builder import Builder
-from app.models.data_manager import DataManager
+from app.models.groups_data import TestGroupsData
+from app.models.services_data import ServicesData
 from app.models.smart_analyze_response import SmartAnalyzeResponse
 from app.models.supported_group import SupportedGroup
 
@@ -13,13 +14,18 @@ class AnalyzeAppServiceParameters:
         self.build_url: str | None = None
         self.group_name: str | None = None
         self.session_id: str | None = None
-        self.__data_manager: DataManager = DataManager()
         self.smart_app_service_response: SmartAnalyzeResponse | None = None
         self.res_info_level: ResInfoLevelEnum | None = None
+        self._services_map: ServicesData = ServicesData()
+        self._groups_data: TestGroupsData = TestGroupsData()
 
     @property
-    def data_manager(self) -> DataManager:
-        return self.__data_manager
+    def services_map(self) -> ServicesData | None:
+        return self._services_map
+
+    @property
+    def groups_data(self) -> TestGroupsData:
+        return self._groups_data
 
     @property
     def build_url(self) -> str | None:

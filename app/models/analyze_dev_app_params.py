@@ -4,7 +4,8 @@ from typing import Any
 
 from app.enums.res_info_level import ResInfoLevelEnum
 from app.models.builder import Builder
-from app.models.data_manager import DataManager
+from app.models.groups_data import TestGroupsData
+from app.models.services_data import ServicesData
 from app.models.smart_analyze_response import SmartAnalyzeResponse
 
 
@@ -12,9 +13,10 @@ class AnalyzeDevAppServiceParameters:
     def __init__(self):
         self.smart_analyze_dev_app_service_response = None
         self.services_input = None
-        self.__data_manager = DataManager()
         self.session_id: str | None = None
         self.res_info_level: ResInfoLevelEnum | None = None
+        self._services_map: ServicesData = ServicesData()
+        self._groups_data: TestGroupsData = TestGroupsData()
 
     @property
     def services_input(self) -> Any:
@@ -25,8 +27,12 @@ class AnalyzeDevAppServiceParameters:
         self._services_input = services_input
 
     @property
-    def data_manager(self) -> DataManager:
-        return self.__data_manager
+    def services_map(self) -> ServicesData | None:
+        return self._services_map
+
+    @property
+    def groups_data(self) -> TestGroupsData:
+        return self._groups_data
 
     @property
     def session_id(self) -> str | None:

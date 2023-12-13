@@ -13,11 +13,11 @@ class InitGroupsDataStep(SmartAnalyzeDevStepInterface):
     def execute(self, parameters: AnalyzeDevAppServiceParameters):
         app_main_logger.debug("InitGroupsDataStep.execute(): start")
 
-        if parameters is None or parameters.data_manager is None:
+        if parameters is None:
             return
 
         groups_data = self.service.get_all_flows_by_filter([])
 
         app_main_logger.debug(f"InitGroupsDataStep.execute(): groups data = {groups_data}")
 
-        parameters.data_manager.groups_data = groups_data
+        parameters.groups_data.merge(groups_data)

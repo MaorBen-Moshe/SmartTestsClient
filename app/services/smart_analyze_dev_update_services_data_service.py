@@ -44,8 +44,8 @@ class UpdateServiceDataService:
 
             updated_services_data_map.add_service(service, (ServiceData.create()
                                                             .from_version(service_data.from_version)
-                                                            .to_version(
-                to_version if to_version else service_data.to_version)
+                                                            .to_version(to_version if to_version
+                                                                        else service_data.to_version)
                                                             .build()))
 
         app_main_logger.debug(f"UpdateServiceDataService.update_services_data()"

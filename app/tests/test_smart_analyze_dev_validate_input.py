@@ -21,14 +21,14 @@ class TestSmartAnalyzeDevValidateInputUnit(TestUnitBase):
         try:
             self.step.execute(parameters)
             if len(parameters.services_input) > 0:
-                self.assertIsNotNone(parameters.data_manager.services_map)
-                self.assertEqual(len(parameters.services_input), len(parameters.data_manager.services_map))
-                self.assertIsNotNone(parameters.data_manager.services_map.get_service("service1"))
-                self.assertEqual("from1", parameters.data_manager.services_map.get_service("service1").from_version)
-                self.assertEqual(None, parameters.data_manager.services_map.get_service("service1").to_version)
+                self.assertIsNotNone(parameters.services_map)
+                self.assertEqual(len(parameters.services_input), len(parameters.services_map))
+                self.assertIsNotNone(parameters.services_map.get_service("service1"))
+                self.assertEqual("from1", parameters.services_map.get_service("service1").from_version)
+                self.assertEqual(None, parameters.services_map.get_service("service1").to_version)
             else:
-                self.assertIsNotNone(parameters.data_manager.services_map)
-                self.assertEqual(0, len(parameters.data_manager.services_map))
+                self.assertIsNotNone(parameters.services_map)
+                self.assertEqual(0, len(parameters.services_map))
         except Exception as ex:
             self.fail(f"Error: {ex}")
 

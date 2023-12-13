@@ -19,7 +19,7 @@ class HtmlParserService:
 
     def load_html(self,
                   html_zip_url: str | None,
-                  services_map: ServicesData | None,
+                  services_map: ServicesData,
                   filtered_ms_list: list[str]):
         app_main_logger.debug(f"HtmlParserService.load_html(): Loading build report data. build_url={html_zip_url}")
 
@@ -53,7 +53,7 @@ class HtmlParserService:
         return name_index, version_index
 
     def __update_map(self,
-                     services_map: ServicesData | None,
+                     services_map: ServicesData,
                      name_index: int,
                      version_index: int,
                      filtered_ms_list: list[str]):

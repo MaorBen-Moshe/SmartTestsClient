@@ -8,6 +8,7 @@ from app.constants.constants import SMART_SERVICE_GROUP_FLOWS_COUNT_KEY, SMART_S
     SMART_SERVICE_GROUP_NAME_KEY, SMART_SERVICE_GROUP_TESTS_ALL_KEY, SMART_SERVICE_GROUP_FLOWS_KEY
 from app.exceptions.excpetions import EmptyInputError
 from app.models.group_data import GroupData
+from app.models.groups_data import TestGroupsData
 from app.models.services_data import ServicesData
 from app.utils.utils import Utils
 
@@ -21,7 +22,7 @@ class SmartTestsAnalyzeService:
     def analyze_flows(self,
                       services_map: ServicesData | None,
                       filter_group: list[str] | None,
-                      groups_data: dict[str, GroupData] | None):
+                      groups_data: TestGroupsData | None):
         if services_map is not None and groups_data is not None:
             include_groups_filter = Utils.create_filter_by_list(filter_group)
             threads = []
@@ -43,7 +44,7 @@ class SmartTestsAnalyzeService:
 
     def _analyze_flow_per_service(self, service_key: str,
                                   services_map: ServicesData,
-                                  groups_data: dict[str, GroupData],
+                                  groups_data: TestGroupsData,
                                   include_groups_filter: str):
         res_json = self.client.analyze_flows(service_key,
                                              services_map.get_service(service_key).to_version,
@@ -56,17 +57,17 @@ class SmartTestsAnalyzeService:
                 group_name = group.get(SMART_SERVICE_GROUP_NAME_KEY).split("/")[-1]
                 if group_name in groups_data:
                     with self._lock:
-                        groups_data.get(group_name).add_flows(group.get(SMART_SERVICE_GROUP_FLOWS_KEY))
+                        groups_data.get_group(group_name).add_flows(group.get(SMART_SERVICE_GROUP_FLOWS_KEY))
                         services_map.get_service(service_key).add_flows(group.get(SMART_SERVICE_GROUP_FLOWS_KEY))
                 else:
                     app_main_logger.warning(f"SmartTestsAnalyzeService._analyze_flow_per_service(): "
                                             f"Group {group_name} not found in groups data.")
 
-    def get_all_flows_by_filter(self, include_filter_list: list[str] | None) -> dict[str, GroupData]:
+    def get_all_flows_by_filter(self, include_filter_list: list[str] | None) -> TestGroupsData:
         app_main_logger.debug(f"SmartTestsAnalyzeService.get_all_flows_by_filter(): "
                               f"Get all flows by filter. include_filter_list={include_filter_list}")
 
-        groups_data = {}
+        groups_data = TestGroupsData()
         include_groups_filter = Utils.create_filter_by_list(include_filter_list)
 
         data = self.client.get_all_flows_stats(include_groups_filter)
@@ -86,12 +87,12 @@ class SmartTestsAnalyzeService:
                 total_count = curr_xml.get(SMART_SERVICE_GROUP_FLOWS_COUNT_KEY)
 
                 if len(include_filter_list) == 0 or name.replace(".xml", "") in include_filter_list:
-                    groups_data[name] = (GroupData
-                                         .create()
-                                         .test_xml_name(name)
-                                         .test_xml_path(path)
-                                         .total_flows_count(total_count)
-                                         .build())
+                    groups_data.add_group(name, (GroupData
+                                                 .create()
+                                                 .test_xml_name(name)
+                                                 .test_xml_path(path)
+                                                 .total_flows_count(total_count)
+                                                 .build()))
         else:
             app_main_logger.warning(f"SmartTestsAnalyzeService.get_all_flows_by_filter(): "
                                     f"Failed to get all flows by filter. data={data}")

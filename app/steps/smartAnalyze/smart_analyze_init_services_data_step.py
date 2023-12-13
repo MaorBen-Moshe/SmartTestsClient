@@ -26,4 +26,4 @@ class InitServiceMapStep(SmartAnalyzeStepInterface):
 
         app_main_logger.debug(f"InitServiceMapStep.execute() services_map={services_map}")
 
-        parameters.data_manager.services_map = services_map
+        parameters.services_map.merge(services_map)

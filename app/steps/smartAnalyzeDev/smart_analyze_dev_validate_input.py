@@ -5,7 +5,6 @@ from app.constants.constants import SERVICE_NAME_KEY, SERVICE_FROM_KEY, SERVICE_
 from app.exceptions.excpetions import BadRequest
 from app.models.analyze_dev_app_params import AnalyzeDevAppServiceParameters
 from app.models.service_data import ServiceData
-from app.models.services_data import ServicesData
 from app.steps.smartAnalyzeDev.interfaces.smart_analyze_dev_step_interface import SmartAnalyzeDevStepInterface
 
 
@@ -23,7 +22,6 @@ class SmartAnalyzeDevValidateInputStep(SmartAnalyzeDevStepInterface):
         if type(parameters.services_input) != list:
             raise BadRequest("Services input should be a list.")
 
-        services: ServicesData = ServicesData()
         if len(parameters.services_input) > 0:
             for service in parameters.services_input:
                 if type(service) != dict:
@@ -36,13 +34,13 @@ class SmartAnalyzeDevValidateInputStep(SmartAnalyzeDevStepInterface):
                     raise BadRequest(f"Service '{service.get(SERVICE_NAME_KEY)}' is missing mandatory field: "
                                      f"'{SERVICE_FROM_KEY}'.")
 
-                services.add_service(service.get(SERVICE_NAME_KEY), (ServiceData.create()
-                                                                     .from_version(service.get(SERVICE_FROM_KEY))
-                                                                     .to_version(service.get(SERVICE_TO_KEY, None))
-                                                                     .build()))
+                parameters.services_map.add_service(service.get(SERVICE_NAME_KEY), (ServiceData.create()
+                                                                                    .from_version(
+                    service.get(SERVICE_FROM_KEY))
+                                                                                    .to_version(
+                    service.get(SERVICE_TO_KEY, None))
+                                                                                    .build()))
         else:
             app_main_logger.warning("SmartAnalyzeDevValidateInputStep.execute(): No services provided.")
 
-        app_main_logger.debug(f"SmartAnalyzeDevValidateInputStep.execute(): services: {services}")
-
-        parameters.data_manager.services_map = services
+        app_main_logger.debug(f"SmartAnalyzeDevValidateInputStep.execute(): services: {parameters.services_map}")

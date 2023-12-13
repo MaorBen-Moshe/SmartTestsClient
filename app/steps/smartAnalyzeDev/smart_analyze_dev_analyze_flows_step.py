@@ -13,10 +13,10 @@ class AnalyzeFlowsStep(SmartAnalyzeDevStepInterface):
     def execute(self, parameters: AnalyzeDevAppServiceParameters):
         app_main_logger.debug(f"AnalyzeFlowsStep.execute(): parameters={parameters}")
 
-        if parameters is None or parameters.data_manager.groups_data is None:
+        if parameters is None or parameters.groups_data is None:
             app_main_logger.warning("AnalyzeFlowsStep.execute(): parameters or groups_data is None")
             return
 
-        self.service.analyze_flows(parameters.data_manager.services_map,
+        self.service.analyze_flows(parameters.services_map,
                                    [],
-                                   parameters.data_manager.groups_data)
+                                   parameters.groups_data)

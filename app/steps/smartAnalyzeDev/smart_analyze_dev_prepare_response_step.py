@@ -18,8 +18,8 @@ class PrepareResponseStep(SmartAnalyzeStepInterface):
         prepare_response_strategy = self.prepare_response_strategy_factory.get(parameters.res_info_level)
 
         parameters.smart_analyze_dev_app_service_response = prepare_response_strategy.get(
-            parameters.data_manager.groups_data,
-            parameters.data_manager.services_map)
+            parameters.groups_data,
+            parameters.services_map)
 
         app_main_logger.debug(f"PrepareResponseStep.execute():"
                               f" response={parameters.smart_analyze_dev_app_service_response}")

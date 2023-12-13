@@ -3,7 +3,6 @@ from __future__ import annotations
 from typing import Any
 
 from app.models.builder import Builder
-from app.models.services_data import ServicesData
 from app.utils import utils
 
 
@@ -39,11 +38,11 @@ class SmartAnalyzeResponse:
         self._groups = groups
 
     @property
-    def services(self) -> ServicesData | None:
+    def services(self) -> dict[str, Any] | None:
         return self._services
 
     @services.setter
-    def services(self, services: ServicesData | None):
+    def services(self, services: dict[str, Any] | None):
         self._services = services
 
     def serialize(self) -> dict[str, Any]:
@@ -56,7 +55,8 @@ class SmartAnalyzeResponse:
 
 class SmartAnalyzeResponseBuilder(Builder[SmartAnalyzeResponse]):
     def __init__(self, smart_analyze_response=None):
-        smart_analyze_response = smart_analyze_response if smart_analyze_response is not None else SmartAnalyzeResponse()
+        smart_analyze_response = smart_analyze_response if smart_analyze_response is not None \
+                                                        else SmartAnalyzeResponse()
         super().__init__(smart_analyze_response)
 
     def total_flows_count(self, total_flows_count: int) -> SmartAnalyzeResponseBuilder:
@@ -71,6 +71,6 @@ class SmartAnalyzeResponseBuilder(Builder[SmartAnalyzeResponse]):
         self.item.groups = groups
         return self
 
-    def services(self, services: ServicesData | None) -> SmartAnalyzeResponseBuilder:
+    def services(self, services: dict[str, Any] | None) -> SmartAnalyzeResponseBuilder:
         self.item.services = services
         return self

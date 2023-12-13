@@ -13,11 +13,11 @@ class HtmlParserStep(SmartAnalyzeStepInterface):
     def execute(self, parameters: AnalyzeAppServiceParameters):
         app_main_logger.debug(f"HtmlParserStep.execute(): Loading build report data. build_url={parameters.build_url}")
 
-        if parameters is None or parameters.build_url is None or parameters.data_manager is None:
+        if parameters is None or parameters.build_url is None:
             return
 
         self.html_parser_service.load_html(parameters.build_url,
-                                           parameters.data_manager.services_map,
+                                           parameters.services_map,
                                            parameters.curr_group_data.filtered_ms_list)
 
         app_main_logger.debug(f"HtmlParserStep.execute(): Loading build report data completed.")

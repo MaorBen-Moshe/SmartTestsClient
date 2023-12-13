@@ -21,7 +21,7 @@ class InitGroupsDataStep(SmartAnalyzeStepInterface):
 
         app_main_logger.debug(f"InitGroupsDataStep.execute(): groups_data={groups_data}")
 
-        parameters.data_manager.groups_data = groups_data
+        parameters.groups_data.merge(groups_data)
 
 
 class AnalyzeFlowsStep(SmartAnalyzeStepInterface):
@@ -31,9 +31,9 @@ class AnalyzeFlowsStep(SmartAnalyzeStepInterface):
     def execute(self, parameters: AnalyzeAppServiceParameters):
         app_main_logger.debug("AnalyzeFlowsStep.execute(): Analyze flows step.")
 
-        if parameters is None or parameters.data_manager.groups_data is None:
+        if parameters is None or parameters.groups_data is None:
             return
 
-        self.client.analyze_flows(parameters.data_manager.services_map,
+        self.client.analyze_flows(parameters.services_map,
                                   parameters.curr_group_data.testng_xml,
-                                  parameters.data_manager.groups_data)
+                                  parameters.groups_data)
