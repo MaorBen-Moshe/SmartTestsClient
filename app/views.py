@@ -101,17 +101,17 @@ def analyze_dev():
 
 @login_manager.request_loader
 def load_user_from_request(req):
-    api_key = req.args.get(API_KEY_QUERY_PARAM)
+    api_key = req.headers.get(API_KEY_QUERY_PARAM)
     if api_key:
         if config.get_admin_api_token() == api_key:
             return User.create().is_admin(True).build()
         elif config.get_user_api_token() == api_key:
             return User.create().is_admin(False).build()
         else:
-            app_main_logger.error(f"Invalid api key. api_key={api_key}")
+            app_main_logger.error(f"Invalid api key header. {API_KEY_QUERY_PARAM}={api_key}")
             return None
 
-    app_main_logger.error(f"Invalid api key. api_key=None")
+    app_main_logger.error(f"Invalid api key header. {API_KEY_QUERY_PARAM}=None")
     return None
 
 

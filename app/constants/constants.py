@@ -10,7 +10,7 @@ MS_POSTFIX = "-ms"
 CONTINUATION_TOKEN = "continuationToken"
 VERSION_KEY = "version"
 ITEMS_KEY = "items"
-API_KEY_QUERY_PARAM = "api_key"
+API_KEY_QUERY_PARAM = "X-Api-Key"
 TRACE_ID_HEADER = "X-TraceId"
 
 GROUP_NAME_KEY = "groupName"

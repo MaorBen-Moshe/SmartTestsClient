@@ -1,6 +1,7 @@
 from parameterized import parameterized
 from unittest.mock import call
 
+from app.constants.constants import API_KEY_QUERY_PARAM
 from test_base import TestUnitBase
 
 
@@ -15,7 +16,7 @@ class TestEndpointsUnit(TestUnitBase):
     def test_supported_groups_endpoint_success(self):
         with self.assertLogs(self.logger.get_logger_name(), level='DEBUG') as cm:
             res = self.client_fixture.get("/supported-groups",
-                                          query_string={"api_key": self.config.get_user_api_token()})
+                                          headers={API_KEY_QUERY_PARAM: self.config.get_user_api_token()})
             self.assertEqual(res.status_code, 200)
             self.assertEqual(b'{"oc-cd-group4":{"cluster":"ilocpde456",'
                              b'"group_name":"oc-cd-group4",'
@@ -47,7 +48,7 @@ class TestEndpointsUnit(TestUnitBase):
             res = self.client_fixture.post("/smart-tests-analyze",
                                            json=data,
                                            content_type='application/json',
-                                           query_string={"api_key": self.config.get_user_api_token()})
+                                           headers={API_KEY_QUERY_PARAM: self.config.get_user_api_token()})
 
             # asserts
             self.assertEqual(res.status_code, 200)
@@ -162,7 +163,7 @@ class TestEndpointsUnit(TestUnitBase):
         res = self.client_fixture.post("/smart-tests-analyze",
                                        json=data,
                                        content_type='application/json',
-                                       query_string={"api_key": self.config.get_user_api_token()})
+                                       headers={API_KEY_QUERY_PARAM: self.config.get_user_api_token()})
 
         # asserts
         self.assertEqual(res.status_code, 200)
@@ -232,11 +233,11 @@ class TestEndpointsUnit(TestUnitBase):
                           'understand.')
     ])
     def test_smart_analyze_endpoint_missing_data(self, payload, with_query_param, error_code, error_msg):
-        query_params = {"api_key": self.config.get_user_api_token()} if with_query_param else {}
+        headers = {API_KEY_QUERY_PARAM: self.config.get_user_api_token()} if with_query_param else {}
         res = self.client_fixture.post("/smart-tests-analyze",
                                        json=payload,
                                        content_type='application/json',
-                                       query_string=query_params)
+                                       headers=headers)
         self.assertEqual(error_code, res.status_code)
         self.assertEqual(error_msg, res.json['error_message'])
 
@@ -261,7 +262,7 @@ class TestEndpointsUnit(TestUnitBase):
         res = self.client_fixture.post("/smart-tests-analyze-dev",
                                        json=data,
                                        content_type='application/json',
-                                       query_string={"api_key": self.config.get_user_api_token()})
+                                       headers={API_KEY_QUERY_PARAM: self.config.get_user_api_token()})
 
         # asserts
         self.assertEqual(res.status_code, 200)
@@ -345,10 +346,10 @@ class TestEndpointsUnit(TestUnitBase):
          }, True, 400, "[ERROR] 400: Service is missing mandatory field: 'name'."),
     ])
     def test_smart_analyze_dev_endpoint_missing_data(self, payload, with_query_param, error_code, error_msg):
-        query_params = {"api_key": self.config.get_user_api_token()} if with_query_param else {}
+        headers = {API_KEY_QUERY_PARAM: self.config.get_user_api_token()} if with_query_param else {}
         res = self.client_fixture.post("/smart-tests-analyze-dev",
                                        json=payload,
                                        content_type='application/json',
-                                       query_string=query_params)
+                                       headers=headers)
         self.assertEqual(error_code, res.status_code)
         self.assertEqual(res.json['error_message'], error_msg)
