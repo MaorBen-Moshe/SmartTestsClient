@@ -10,13 +10,13 @@ class SupportedGroup:
     def __init__(self):
         self.group_name: str | None = None
         self.cluster: str | None = None
-        self.testng_xml: list[str] = []
+        self.test_files: list[str] = []
         self.url: str | None = None
-        self.filtered_ms_list: list[str] = []
+        self.ms_list: list[str] = []
         self.project: str | None = None
 
     def serialize(self) -> dict[str, Any]:
-        return utils.Utils.serialize_class(self, ['testng_xml', 'filtered_ms_list', 'project'])
+        return utils.Utils.serialize_class(self, [])
 
     @property
     def group_name(self) -> str | None:
@@ -43,20 +43,20 @@ class SupportedGroup:
         self._url = url
 
     @property
-    def testng_xml(self) -> list[str]:
-        return self._testng_xml
+    def test_files(self) -> list[str]:
+        return self._test_files
 
-    @testng_xml.setter
-    def testng_xml(self, testng_xml: list[str]):
-        self._testng_xml = testng_xml
+    @test_files.setter
+    def test_files(self, test_files: list[str]):
+        self._test_files = test_files
 
     @property
-    def filtered_ms_list(self) -> list[str]:
-        return self._filtered_ms_list
+    def ms_list(self) -> list[str]:
+        return self._ms_list
 
-    @filtered_ms_list.setter
-    def filtered_ms_list(self, filtered_ms_list: list[str]):
-        self._filtered_ms_list = filtered_ms_list
+    @ms_list.setter
+    def ms_list(self, ms_list: list[str]):
+        self._ms_list = ms_list
 
     @property
     def project(self) -> str | None:
@@ -88,12 +88,12 @@ class SupportedGroupBuilder(Builder[SupportedGroup]):
         self._item.url = url
         return self
 
-    def testng_xml(self, testng_xml: list[str]) -> SupportedGroupBuilder:
-        self._item.testng_xml = testng_xml
+    def test_files(self, test_files: list[str]) -> SupportedGroupBuilder:
+        self._item.test_files = test_files
         return self
 
-    def filtered_ms_list(self, filtered_ms_list: list[str]) -> SupportedGroupBuilder:
-        self._item.filtered_ms_list = filtered_ms_list
+    def ms_list(self, ms_list: list[str]) -> SupportedGroupBuilder:
+        self._item.ms_list = ms_list
         return self
 
     def project(self, project: str | None) -> SupportedGroupBuilder:

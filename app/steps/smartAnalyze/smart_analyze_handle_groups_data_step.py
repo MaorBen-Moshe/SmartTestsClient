@@ -17,7 +17,7 @@ class InitGroupsDataStep(SmartAnalyzeStepInterface):
             app_main_logger.warning("InitGroupsDataStep.execute(): Init groups data step. parameters is None.")
             return
 
-        groups_data = self.client.get_all_flows_by_filter(parameters.curr_group_data.testng_xml)
+        groups_data = self.client.get_all_flows_by_filter(parameters.curr_group_data.test_files)
 
         app_main_logger.debug(f"InitGroupsDataStep.execute(): groups_data={groups_data}")
 
@@ -35,5 +35,5 @@ class AnalyzeFlowsStep(SmartAnalyzeStepInterface):
             return
 
         self.client.analyze_flows(parameters.services_map,
-                                  parameters.curr_group_data.testng_xml,
+                                  parameters.curr_group_data.test_files,
                                   parameters.groups_data)

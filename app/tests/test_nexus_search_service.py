@@ -19,7 +19,7 @@ class TestNexusSearchService(TestUnitBase):
         group4 = self.config.get_supported_groups().get_item('oc-cd-group4')
         services_map = self.nexus_search_service.get_services_master_version(
             self._repo,
-            group4.filtered_ms_list,
+            group4.ms_list,
             group4.project)
 
         self.mock_nexus_search.assert_called()
@@ -54,7 +54,7 @@ class TestNexusSearchService(TestUnitBase):
     def test_get_services_master_version_none_input(self):
         self.assert_exception(lambda: self.nexus_search_service.get_services_master_version(
             None,
-            self.config.get_supported_groups().get_item('oc-cd-group4').filtered_ms_list, ""),
+            self.config.get_supported_groups().get_item('oc-cd-group4').ms_list, ""),
                               EmptyInputError,
                               "Provided to 'get_services_master_version' repository=None")
 

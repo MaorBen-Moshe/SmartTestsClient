@@ -23,7 +23,7 @@ class TestSmartTestsClient(TestBase):
         with open("resources/analyze_flows/all_flows_stats.json", mode="r") as f:
             responses.add(responses.POST, path, json=json.load(f), status=200)
 
-        group4_xml = self.config.get_supported_groups().get_item('oc-cd-group4').testng_xml
+        group4_xml = self.config.get_supported_groups().get_item('oc-cd-group4').test_files
         groups_data = self.client.get_all_flows_stats(Utils.create_filter_by_list(group4_xml))
 
         self.assertEqual(len(groups_data), 2)

@@ -1,0 +1,193 @@
+swagger: '2.0'
+info:
+  title: Flask API for Smart Tests Analysis
+  description: This is a flask application that provides several endpoints for analyzing the test flows to run based on the changes in the services versions.
+  version: '1.0'
+host: localhost:5001
+schemes:
+  - http
+basePath: /
+produces:
+  - application/json;charset=utf-8
+paths:
+  /supported-groups:
+    get:
+      summary: Get all the supported groups the server supports
+      produces:
+        - application/json;charset=utf-8
+      parameters:
+      - name: x-api-key
+        in: header
+        required: true
+        type: string
+      responses:
+        200:
+          description: A JSON object containing the supported groups
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/SupportedGroup'
+        401:
+          description: Invalid api key header.
+          schema:
+            $ref: '#/definitions/Error'
+  /smart-tests-analyze:
+    post:
+      summary: Analyze the test flows to run based on the build url and supported group
+      consumes:
+      - application/json;charset=utf-8
+      produces:
+      - application/json;charset=utf-8
+      parameters:
+      - name: x-api-key
+        in: header
+        required: true
+        type: string
+      - name: SmartAnalyzePayload
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/SmartAnalyzePayload'
+      responses:
+        200:
+          description: A JSON object containing the flows to run per testGroup
+          schema:
+            $ref: '#/definitions/SmartAnalyzeResponse'
+        401:
+          description: Invalid api key header.
+          schema:
+            $ref: '#/definitions/Error'
+
+  /smart-tests-analyze-dev:
+    post:
+      summary: Analyze the test flows to run based on the services list
+      parameters:
+      - name: x-api-key
+        in: header
+        required: true
+        type: string
+      - name: SmartAnalyzePayload
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/SmartAnalyzeDevPayload'
+      responses:
+        200:
+          description: A JSON object containing the flows to run per testGroup
+          schema:
+            $ref: '#/definitions/SmartAnalyzeResponse'
+        401:
+          description: Invalid api key header.
+          schema:
+            $ref: '#/definitions/Error'
+
+definitions:
+  SupportedGroup:
+    type: object
+    properties:
+      cluster:
+        type: string
+      group_name:
+        type: string
+      url:
+        type: string
+      project:
+        type: string
+      test_files:
+        type: array
+        items:
+          type: string
+      ms_list:
+        type: array
+        items:
+          type: string
+
+  SmartAnalyzePayload:
+      type: object
+      properties:
+        groupName:
+          type: string
+          description: One of the supported groups
+        buildUrl:
+          type: string
+          description: Url to a zip file of the jenkins build report
+        sessionID:
+          type: string
+          description: This session id is added to message sent from the server in the socket channel namespace /smart-analyze-progress and event name is -smart-analyze-progress
+        infoLevel:
+          type: string
+          description: Valid values are info or debug. If not provided the default value is info. This field affects on the response data. In debug we add also the services data in the response.
+
+  SmartAnalyzeDevPayload:
+      type: object
+      properties:
+        services:
+          type: array
+          items:
+            $ref: '#/definitions/ServiceData'
+        sessionID:
+          type: string
+          description: This session id is added to message sent from the server in the socket channel namespace /smart-analyze-progress and event name is -smart-analyze-progress
+        infoLevel:
+          type: string
+          description: Valid values are info or debug. If not provided the default value is info. This field affects on the response data. In debug we add also the services data in the response.
+
+  SmartAnalyzeResponse:
+    type: object
+    properties:
+      curr_flows_count:
+        type: integer
+      total_flows_count:
+        type: integer
+      groups:
+        description: each key is the group name
+        additionalProperties:
+          $ref: '#/definitions/GroupData'
+      services:
+        description: each key is the service name
+        additionalProperties:
+          $ref: '#/definitions/ServiceData'
+
+  GroupData:
+    type: object
+    properties:
+      curr_flows_count:
+        type: integer
+      total_flows_count:
+        type: integer
+      test_xml_name:
+        type: string
+      test_xml_path:
+        type: string
+      flows:
+        type: array
+        items:
+          type: string
+
+  ServiceData:
+    type: object
+    properties:
+      service_name:
+        type: string
+      from:
+        type: string
+      to:
+        type: string
+      pullRequestId:
+        type: string
+      flows:
+        type: array
+        items:
+          type: string
+
+  Error:
+    type: object
+    properties:
+      error_code:
+        type: string
+      error_message:
+        type: string
+      timestamp:
+        type: string
+      trace_id:
+        type: string

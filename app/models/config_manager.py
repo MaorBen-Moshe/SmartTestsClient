@@ -79,8 +79,8 @@ class ConfigManager(metaclass=SingletonMeta):
                 groups.add_item(group_name, (SupportedGroup.create().group_name(group_name)
                                              .url(group["url"])
                                              .cluster(group["cluster"])
-                                             .testng_xml(group["testng_xml"])
-                                             .filtered_ms_list(group["filtered_ms_list"])
+                                             .test_files(group["test_files"])
+                                             .ms_list(group["ms_list"])
                                              .project(group["project"])
                                              .build()))
 

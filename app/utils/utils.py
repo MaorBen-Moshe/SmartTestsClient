@@ -65,7 +65,7 @@ class Utils:
         if service_name:
             for group_name in supported_groups:
                 group = supported_groups.get_item(group_name)
-                if service_name in group.filtered_ms_list:
+                if service_name in group.ms_list:
                     project = group.project
                     break
 

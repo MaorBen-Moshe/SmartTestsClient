@@ -16,19 +16,19 @@ class ServiceData:
 
     @property
     def from_version(self) -> str | None:
-        return self._from_version
+        return self._from
 
     @from_version.setter
     def from_version(self, from_version: str | None) -> None:
-        self._from_version = from_version
+        self._from = from_version
 
     @property
     def to_version(self) -> str | None:
-        return self._to_version
+        return self._to
 
     @to_version.setter
     def to_version(self, to_version: str | None) -> None:
-        self._to_version = to_version
+        self._to = to_version
 
     @property
     def flows(self) -> list[str]:
@@ -48,11 +48,11 @@ class ServiceData:
 
     @property
     def pull_request_id(self) -> str | None:
-        return self._pull_request_id
+        return self._pullRequestId
 
     @pull_request_id.setter
     def pull_request_id(self, pull_request_id: str | None) -> None:
-        self._pull_request_id = pull_request_id
+        self._pullRequestId = pull_request_id
 
     def add_flows(self, curr_flows: list[str] | None):
         Utils.add_flows_without_duplications(self.flows, curr_flows)

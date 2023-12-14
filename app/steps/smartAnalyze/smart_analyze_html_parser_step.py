@@ -18,6 +18,6 @@ class HtmlParserStep(SmartAnalyzeStepInterface):
 
         self.html_parser_service.load_html(parameters.build_url,
                                            parameters.services_map,
-                                           parameters.curr_group_data.filtered_ms_list)
+                                           parameters.curr_group_data.ms_list)
 
         app_main_logger.debug(f"HtmlParserStep.execute(): Loading build report data completed.")
