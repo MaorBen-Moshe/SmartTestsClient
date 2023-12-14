@@ -23,6 +23,7 @@ This endpoint is a GET method and returns in the response all the supported grou
     "oc-cd-group4": {
         "cluster": "ilocpde456",
         "group_name": "oc-cd-group4",
+        "project": "DIGOC",
         "url": "http://illin5565:18080/job/oc-cd-group4/job/oc-cd-group4/",
         "ms_list": ["productconfigurator", "productconfigurator-pioperations"],
         "test_files": ["ContratedOffer_Pack_testng.xml"]
