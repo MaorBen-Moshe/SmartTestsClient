@@ -27,29 +27,48 @@ class TestEndpointsUnit(TestUnitBase):
                              'http://illin5565:18080/job/oc-cd-group4/job/oc-cd-group4/')
             self.assertEqual(res.json['oc-cd-group4']['project'], 'DIGOC')
             self.assertEqual(len(res.json['oc-cd-group4']['ms_list']), 10)
-            self.assertEqual(len(res.json['oc-cd-group4']['test_files']), 18)
+            self.assertEqual(len(res.json['oc-cd-group4']['test_files']), 22)
 
             self.assertEqual(cm.output,
-                             [
-                                 'DEBUG:app:Supported groups request.',
-                                 "DEBUG:app:Supported groups response. response={'oc-cd-group4': "
-                                 "{'group_name': 'oc-cd-group4', 'cluster': 'ilocpde456', 'test_files': "
-                                 "['group4_integration_tests_testng', 'mat_APIGW_testng', "
-                                 "'extended_mat_7a_APIGW_testng', 'extended_mat_7b_APIGW_testng', "
-                                 "'extended_mat_APIGW_testng', 'shared_regression_testng', "
-                                 "'grp4_integration_to_CT_testng', 'ContratedOffer_tests_testng', "
-                                 "'ContratedOffer_Pack_testng', 'Everest_Configurator_Pack_testng', "
-                                 "'Everest_Qualification_Pack_testng', 'Everest_validator_pack', "
-                                 "'Olympus_pack_testng', 'Everest_Validator_Dependency_Rules_Pack_testng', "
-                                 "'Fuji_Price_Pack_testng', 'Fuji_Promotion_Pack_testng', "
-                                 "'Fuji_Replace_Pack_testng', "
-                                 "'mat_oc_product_configurator_hooks_APIGW_testng'], 'url': "
-                                 "'http://illin5565:18080/job/oc-cd-group4/job/oc-cd-group4/', 'ms_list': "
-                                 "['productconfigurator', 'productconfigurator-action', "
-                                 "'productconfigurator-commitmentterm', 'productconfigurator-mergeentities', "
-                                 "'productconfigurator-pioperations', 'productconfigurator-price', "
-                                 "'productconfigurator-promotion', 'productconfigurator-qualification', "
-                                 "'productconfigurator-replace', 'productvalidator'], 'project': 'DIGOC'}}"])
+                             ['DEBUG:app:Supported groups request.', "DEBUG:app:Supported groups response. response={"
+                                                                     "'oc-cd-group4': {'group_name': 'oc-cd-group4', "
+                                                                     "'cluster': 'ilocpde456', 'test_files': ["
+                                                                     "'group4_integration_tests_testng', "
+                                                                     "'mat_APIGW_testng', "
+                                                                     "'extended_mat_7a_APIGW_testng', "
+                                                                     "'extended_mat_7b_APIGW_testng', "
+                                                                     "'extended_mat_APIGW_testng', "
+                                                                     "'extended_mat_2_APIGW_testng', "
+                                                                     "'extended_mat_3_APIGW_testng', "
+                                                                     "'extended_mat_4_APIGW_testng', "
+                                                                     "'extended_mat_5_APIGW_testng', "
+                                                                     "'shared_regression_testng', "
+                                                                     "'grp4_integration_to_CT_testng', "
+                                                                     "'ContratedOffer_tests_testng', "
+                                                                     "'ContratedOffer_Pack_testng', "
+                                                                     "'Everest_Configurator_Pack_testng', "
+                                                                     "'Everest_Qualification_Pack_testng', "
+                                                                     "'Everest_validator_pack', "
+                                                                     "'Olympus_pack_testng', "
+                                                                     "'Everest_Validator_Dependency_Rules_Pack_testng"
+                                                                     "', 'Fuji_Price_Pack_testng', "
+                                                                     "'Fuji_Promotion_Pack_testng', "
+                                                                     "'Fuji_Replace_Pack_testng', "
+                                                                     "'mat_oc_product_configurator_hooks_APIGW_testng"
+                                                                     "'], "
+                                                                     "'url': "
+                                                                     "'http://illin5565:18080/job/oc-cd-group4/job/oc"
+                                                                     "-cd-group4/', 'ms_list': ["
+                                                                     "'productconfigurator', "
+                                                                     "'productconfigurator-action', "
+                                                                     "'productconfigurator-commitmentterm', "
+                                                                     "'productconfigurator-mergeentities', "
+                                                                     "'productconfigurator-pioperations', "
+                                                                     "'productconfigurator-price', "
+                                                                     "'productconfigurator-promotion', "
+                                                                     "'productconfigurator-qualification', "
+                                                                     "'productconfigurator-replace', "
+                                                                     "'productvalidator'], 'project': 'DIGOC'}}"])
 
     def test_supported_groups_endpoint_missing_api_key(self):
         res = self.client_fixture.get("/supported-groups")
@@ -109,22 +128,25 @@ class TestEndpointsUnit(TestUnitBase):
             self.mock_get_html.assert_called_once_with("http://illin5565:18080/job/oc-cd-group4/job/oc-cd-group4"
                                                        "/lastSuccessfulBuild/BuildReport/*zip*/BuildReport.zip")
             self.mock_get_all_flows.assert_called_once_with(".*group4_integration_tests_testng.*|.*mat_APIGW_testng"
-                                                            ".*|.*extended_mat_7a_APIGW_testng.*|"
-                                                            ".*extended_mat_7b_APIGW_testng"
+                                                            ".*|.*extended_mat_7a_APIGW_testng"
+                                                            ".*|.*extended_mat_7b_APIGW_testng"
                                                             ".*|.*extended_mat_APIGW_testng"
-                                                            ".*|.*shared_regression_testng"
-                                                            ".*|.*grp4_integration_to_CT_testng"
-                                                            ".*|.*ContratedOffer_tests_testng"
-                                                            ".*|.*ContratedOffer_Pack_testng"
-                                                            ".*|.*Everest_Configurator_Pack_testng"
-                                                            ".*|.*Everest_Qualification_Pack_testng"
-                                                            ".*|.*Everest_validator_pack"
-                                                            ".*|.*Olympus_pack_testng"
-                                                            ".*|.*Everest_Validator_Dependency_Rules_Pack_testng"
-                                                            ".*|.*Fuji_Price_Pack_testng"
-                                                            ".*|.*Fuji_Promotion_Pack_testng"
-                                                            ".*|.*Fuji_Replace_Pack_testng"
-                                                            ".*|.*mat_oc_product_configurator_hooks_APIGW_testng.*")
+                                                            ".*|.*extended_mat_2_APIGW_testng"
+                                                            ".*|.*extended_mat_3_APIGW_testng.*|"
+                                                            ".*extended_mat_4_APIGW_testng.*|"
+                                                            ".*extended_mat_5_APIGW_testng.*|"
+                                                            ".*shared_regression_testng.*|"
+                                                            ".*grp4_integration_to_CT_testng.*|"
+                                                            ".*ContratedOffer_tests_testng.*|"
+                                                            ".*ContratedOffer_Pack_testng.*|"
+                                                            ".*Everest_Configurator_Pack_testng.*|"
+                                                            ".*Everest_Qualification_Pack_testng.*|"
+                                                            ".*Everest_validator_pack.*|"
+                                                            ".*Olympus_pack_testng.*|"
+                                                            ".*Everest_Validator_Dependency_Rules_Pack_testng.*|"
+                                                            ".*Fuji_Price_Pack_testng.*|.*Fuji_Promotion_Pack_testng.*|"
+                                                            ".*Fuji_Replace_Pack_testng.*|"
+                                                            ".*mat_oc_product_configurator_hooks_APIGW_testng.*")
 
             self.mock_analyze_flows.assert_called_once()
             args, kwargs = self.mock_analyze_flows.call_args
@@ -135,21 +157,25 @@ class TestEndpointsUnit(TestUnitBase):
             self.assertEqual(args[1].to_version, "0.67.18")
             self.assertEqual(args[1].project, "DIGOC")
             self.assertEqual(args[2], ".*group4_integration_tests_testng.*|.*mat_APIGW_testng"
-                                      ".*|.*extended_mat_7a_APIGW_testng.*|"
-                                      ".*extended_mat_7b_APIGW_testng.*|.*extended_mat_APIGW_testng"
-                                      ".*|.*shared_regression_testng"
-                                      ".*|.*grp4_integration_to_CT_testng"
-                                      ".*|.*ContratedOffer_tests_testng"
-                                      ".*|.*ContratedOffer_Pack_testng"
-                                      ".*|.*Everest_Configurator_Pack_testng"
-                                      ".*|.*Everest_Qualification_Pack_testng"
-                                      ".*|.*Everest_validator_pack"
-                                      ".*|.*Olympus_pack_testng"
-                                      ".*|.*Everest_Validator_Dependency_Rules_Pack_testng"
-                                      ".*|.*Fuji_Price_Pack_testng"
-                                      ".*|.*Fuji_Promotion_Pack_testng"
-                                      ".*|.*Fuji_Replace_Pack_testng"
-                                      ".*|.*mat_oc_product_configurator_hooks_APIGW_testng.*")
+                                      ".*|.*extended_mat_7a_APIGW_testng"
+                                      ".*|.*extended_mat_7b_APIGW_testng"
+                                      ".*|.*extended_mat_APIGW_testng"
+                                      ".*|.*extended_mat_2_APIGW_testng"
+                                      ".*|.*extended_mat_3_APIGW_testng.*|"
+                                      ".*extended_mat_4_APIGW_testng.*|"
+                                      ".*extended_mat_5_APIGW_testng.*|"
+                                      ".*shared_regression_testng.*|"
+                                      ".*grp4_integration_to_CT_testng.*|"
+                                      ".*ContratedOffer_tests_testng.*|"
+                                      ".*ContratedOffer_Pack_testng.*|"
+                                      ".*Everest_Configurator_Pack_testng.*|"
+                                      ".*Everest_Qualification_Pack_testng.*|"
+                                      ".*Everest_validator_pack.*|"
+                                      ".*Olympus_pack_testng.*|"
+                                      ".*Everest_Validator_Dependency_Rules_Pack_testng.*|"
+                                      ".*Fuji_Price_Pack_testng.*|.*Fuji_Promotion_Pack_testng.*|"
+                                      ".*Fuji_Replace_Pack_testng.*|"
+                                      ".*mat_oc_product_configurator_hooks_APIGW_testng.*")
 
             self.assertEqual(cm.output, ['INFO:app:AnalyzeAppService.analyze(): Processing payload data.',
                                          'INFO:app:AnalyzeAppService.analyze(): Loading services version from '
@@ -221,21 +247,25 @@ class TestEndpointsUnit(TestUnitBase):
         self.assertEqual(10, self.mock_nexus_search.call_count)
         self.mock_get_html.assert_called_once_with("http://test_html_same_version/zipfile.zip")
         self.mock_get_all_flows.assert_called_once_with(".*group4_integration_tests_testng.*|.*mat_APIGW_testng"
-                                                        ".*|.*extended_mat_7a_APIGW_testng.*|"
-                                                        ".*extended_mat_7b_APIGW_testng.*|.*extended_mat_APIGW_testng"
-                                                        ".*|.*shared_regression_testng"
-                                                        ".*|.*grp4_integration_to_CT_testng"
-                                                        ".*|.*ContratedOffer_tests_testng"
-                                                        ".*|.*ContratedOffer_Pack_testng"
-                                                        ".*|.*Everest_Configurator_Pack_testng"
-                                                        ".*|.*Everest_Qualification_Pack_testng"
-                                                        ".*|.*Everest_validator_pack"
-                                                        ".*|.*Olympus_pack_testng"
-                                                        ".*|.*Everest_Validator_Dependency_Rules_Pack_testng"
-                                                        ".*|.*Fuji_Price_Pack_testng"
-                                                        ".*|.*Fuji_Promotion_Pack_testng"
-                                                        ".*|.*Fuji_Replace_Pack_testng"
-                                                        ".*|.*mat_oc_product_configurator_hooks_APIGW_testng.*")
+                                                        ".*|.*extended_mat_7a_APIGW_testng"
+                                                        ".*|.*extended_mat_7b_APIGW_testng"
+                                                        ".*|.*extended_mat_APIGW_testng"
+                                                        ".*|.*extended_mat_2_APIGW_testng"
+                                                        ".*|.*extended_mat_3_APIGW_testng.*|"
+                                                        ".*extended_mat_4_APIGW_testng.*|"
+                                                        ".*extended_mat_5_APIGW_testng.*|"
+                                                        ".*shared_regression_testng.*|"
+                                                        ".*grp4_integration_to_CT_testng.*|"
+                                                        ".*ContratedOffer_tests_testng.*|"
+                                                        ".*ContratedOffer_Pack_testng.*|"
+                                                        ".*Everest_Configurator_Pack_testng.*|"
+                                                        ".*Everest_Qualification_Pack_testng.*|"
+                                                        ".*Everest_validator_pack.*|"
+                                                        ".*Olympus_pack_testng.*|"
+                                                        ".*Everest_Validator_Dependency_Rules_Pack_testng.*|"
+                                                        ".*Fuji_Price_Pack_testng.*|.*Fuji_Promotion_Pack_testng.*|"
+                                                        ".*Fuji_Replace_Pack_testng.*|"
+                                                        ".*mat_oc_product_configurator_hooks_APIGW_testng.*")
 
         self.mock_analyze_flows.assert_not_called()
 
