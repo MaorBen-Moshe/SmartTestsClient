@@ -23,7 +23,9 @@ This endpoint is a GET method and returns in the response all the supported grou
     "oc-cd-group4": {
         "cluster": "ilocpde456",
         "group_name": "oc-cd-group4",
-        "url": "http://illin5565:18080/job/oc-cd-group4/job/oc-cd-group4/"
+        "url": "http://illin5565:18080/job/oc-cd-group4/job/oc-cd-group4/",
+        "ms_list": ["productconfigurator", "productconfigurator-pioperations"],
+        "test_files": ["ContratedOffer_Pack_testng.xml"]
     }
 }
 ```
@@ -126,20 +128,20 @@ Payload fields:
   "services": {
     "productconfigurator": {
       "flows": [],
-      "from_version": "0.67.110",
-      "to_version": "0.67.109"
+      "from": "0.67.110",
+      "to": "0.67.109"
     },
     "productconfigurator-commitmentterm": {
       "flows": [
         "com.amdocs.core.oc.group4.test.flows.contractedOffer.CROSS_71143_reject_unReject_promotion",
         "com.amdocs.core.oc.group4.test.flows.contractedOffer.CROSS70993_ManageManualPromotion_AddPromotionToContractedInstance"
       ],
-      "from_version": "0.67.100",
-      "to_version": "0.67.94"
+      "from": "0.67.100",
+      "to": "0.67.94"
     },
     "productconfigurator-pioperations": {
       "flows": [],
-      "pull_request_id": "12345"
+      "pullRequestId": "12345"
     }
   },
   "total_flows_count": 24
