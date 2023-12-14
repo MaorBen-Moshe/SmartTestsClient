@@ -75,9 +75,13 @@ This endpoint is a POST method. It gets in the request services list and for eac
 
 Payload fields:
 
-- **services**: list[object] = each service is object contains a name and from version (new version) these fields are mandatory, also, it has “to” field (old version). if it not provided we get the master version of the service from the nexus.
+- **services**: list[object] = each service is object contains service data input. the object can contain the following fields:
+    - **name**: str [mandatory] = service name
+    - **from**: str [optional] = service from version
+    - **to**: str [optional] = service to version
+    - **pullRequestId**: str [optional] = pull request id. if provided the from and to fields are ignored and the service versions are taken from the pull request commits. 
 - **sessionID**: str = this session id is added to message sent from the server in the socket channel namespace: /smart-analyze-progress and event name is -smart-analyze-progress.
-- **infoLevel**: str = valid values: info or debug. if not provided the default value is info. this field affects on the response data. in debug we add also the services data in the response.
+- **infoLevel**: str = valid values: info or debug. if not provided the default value is info. this field affects on the response data. in debug, we add also the services data in the response.
 
 **Request example**:
 ```json
@@ -91,6 +95,10 @@ Payload fields:
         {
             "name": "productconfigurator-commitmentterm",
             "from": "0.67.100"
+        },
+        {
+            "name": "productconfigurator-pioperations",
+            "pullRequestId": "12345"
         }
     ],
     "sessionID": "1234",
@@ -128,6 +136,10 @@ Payload fields:
       ],
       "from_version": "0.67.100",
       "to_version": "0.67.94"
+    },
+    "productconfigurator-pioperations": {
+      "flows": [],
+      "pull_request_id": "12345"
     }
   },
   "total_flows_count": 24

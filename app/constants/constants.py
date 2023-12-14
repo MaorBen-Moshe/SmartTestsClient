@@ -18,6 +18,7 @@ BUILD_URL_KEY = "buildURL"
 SERVICES_KEY = "services"
 INFO_LEVEL_KEY = "infoLevel"
 SESSION_ID_KEY = "sessionID"
+PULL_REQUEST_ID_KEY = "pullRequestId"
 FLASK_REQUEST_ID_KEY = "request_id"
 
 SERVICE_NAME_KEY = "name"

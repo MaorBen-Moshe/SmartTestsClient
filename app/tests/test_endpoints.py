@@ -1,7 +1,7 @@
 from parameterized import parameterized
-from unittest.mock import call
 
 from app.constants.constants import API_KEY_QUERY_PARAM
+from app.models.service_data import ServiceData
 from test_base import TestUnitBase
 
 
@@ -105,12 +105,13 @@ class TestEndpointsUnit(TestUnitBase):
 
             self.mock_analyze_flows.assert_called_once()
             args, kwargs = self.mock_analyze_flows.call_args
-            self.assertEqual(len(args), 5)
+            self.assertEqual(len(args), 3)
             self.assertEqual(args[0], "productconfigurator")
-            self.assertEqual(args[1], "0.67.19")
-            self.assertEqual(args[2], "0.67.18")
-            self.assertEqual(args[3], "DIGOC")
-            self.assertEqual(args[4], ".*group4_integration_tests_testng.*|.*mat_APIGW_testng"
+            self.assertTrue(isinstance(args[1], ServiceData))
+            self.assertEqual(args[1].from_version, "0.67.19")
+            self.assertEqual(args[1].to_version, "0.67.18")
+            self.assertEqual(args[1].project, "DIGOC")
+            self.assertEqual(args[2], ".*group4_integration_tests_testng.*|.*mat_APIGW_testng"
                                       ".*|.*extended_mat_7a_APIGW_testng.*|"
                                       ".*extended_mat_7b_APIGW_testng.*|.*extended_mat_APIGW_testng"
                                       ".*|.*shared_regression_testng"
@@ -309,13 +310,123 @@ class TestEndpointsUnit(TestUnitBase):
                                                         'name': 'productconfigurator'})
         self.mock_get_all_flows.assert_called_once_with('')
         self.assertEqual(2, self.mock_analyze_flows.call_count)
-        self.mock_analyze_flows.assert_has_calls([call("productconfigurator", "0.67.20", "0.67.19", 'DIGOC', ''),
-                                                  call("productconfigurator-pioperations",
-                                                       "0.67.13",
-                                                       "0.67.11",
-                                                       'DIGOC',
-                                                       '')],
-                                                 any_order=False)
+
+        calls = [self.mock_analyze_flows.mock_calls[0], self.mock_analyze_flows.mock_calls[1]]
+
+        services_expected = {
+            'productconfigurator': ServiceData.create()
+            .from_version('0.67.20')
+            .to_version('0.67.19')
+            .project('DIGOC')
+            .build(),
+            'productconfigurator-pioperations': ServiceData.create()
+            .from_version('0.67.13')
+            .to_version('0.67.11')
+            .project('DIGOC')
+            .build()
+        }
+
+        for curr_call in calls:
+            self.assertEqual(len(curr_call.args), 3)
+            expected_service = services_expected.get(curr_call.args[0])
+            self.assertIsNotNone(expected_service)
+            self.assertTrue(isinstance(curr_call.args[1], ServiceData))
+            service = curr_call.args[1]
+            self.assertEqual(service.from_version, expected_service.from_version)
+            self.assertEqual(service.to_version, expected_service.to_version)
+            self.assertEqual(service.project, expected_service.project)
+            self.assertEqual(service.pull_request_id, expected_service.pull_request_id)
+            self.assertEqual(curr_call.args[2], '')
+
+    @parameterized.expand([
+        ({
+            "infoLevel": "debug",
+            "services": [
+                {
+                    "name": "productconfigurator",
+                    "pullRequestId": '12345',
+                }
+            ]
+        },),
+        ({
+            "infoLevel": "debug",
+            "services": [
+                {
+                    "name": "productconfigurator",
+                    "from": "0.67.20",
+                    "pullRequestId": '12345'
+                }
+            ]
+        },),
+        ({
+            "infoLevel": "debug",
+            "services": [
+                {
+                    "name": "productconfigurator",
+                    "from": "0.67.20",
+                    "to": "0.67.19",
+                    "pullRequestId": '12345'
+                }
+            ]
+        },)
+    ])
+    def test_smart_analyze_dev_endpoint_success_pull_request_id(self, data):
+        # execute
+        res = self.client_fixture.post("/smart-tests-analyze-dev",
+                                       json=data,
+                                       content_type='application/json',
+                                       headers={API_KEY_QUERY_PARAM: self.config.get_user_api_token()})
+
+        # asserts
+        self.assertEqual(res.status_code, 200)
+        self.assertIsNotNone(res.json)
+        self.assertEqual(712, res.json['total_flows_count'])
+        self.assertEqual(2, res.json['curr_flows_count'])
+        services = res.json['services']
+        self.assertIsNotNone(services)
+        self.assertEqual(len(services), 1)
+        self.assertIn('productconfigurator', services)
+        self.assertIsNone(services['productconfigurator'].get('from_version'))
+        self.assertIsNone(services['productconfigurator'].get('to_version'))
+        self.assertEqual(services['productconfigurator'].get('pull_request_id'), '12345')
+        self.assertEqual(len(services['productconfigurator']['flows']), 2)
+        body = res.json['groups']
+        self.assertIsNotNone(body)
+        self.assertEqual(len(body), 3)
+        self.assertIn('extended_mat_7b_APIGW_testng.xml', body)
+        self.assertEqual(body['extended_mat_7b_APIGW_testng.xml']['curr_flows_count'], 0)
+        self.assertEqual(body['extended_mat_7b_APIGW_testng.xml']['total_flows_count'], 45)
+        self.assertListEqual(body['extended_mat_7b_APIGW_testng.xml']['flows'], [])
+        self.assertEqual(body['extended_mat_7b_APIGW_testng.xml']['test_xml_name'], 'extended_mat_7b_APIGW_testng.xml')
+        self.assertEqual(body['extended_mat_7b_APIGW_testng.xml']['test_xml_path'], 'com/amdocs/core/oc/testng')
+        self.assertIn('mat_APIGW_testng.xml', body)
+        self.assertEqual(body['mat_APIGW_testng.xml']['curr_flows_count'], 2)
+        self.assertEqual(body['mat_APIGW_testng.xml']['total_flows_count'], 12)
+        self.assertListEqual(body['mat_APIGW_testng.xml']['flows'],
+                             ['com.amdocs.core.oc.test.flows.schedulerTask.RetrieveSchedulerTaskFlow',
+                              'com.amdocs.core.oc.test.flows.discovery.categories.BrowsingCategoriesSelfServiceFlows'])
+        self.assertEqual(body['mat_APIGW_testng.xml']['test_xml_name'], 'mat_APIGW_testng.xml')
+        self.assertEqual(body['mat_APIGW_testng.xml']['test_xml_path'], 'com/amdocs/core/oc/testng')
+        self.assertIn('unknown-group', body)
+        self.assertEqual(body['unknown-group']['curr_flows_count'], 0)
+        self.assertEqual(body['unknown-group']['total_flows_count'], 655)
+        self.assertListEqual(body['unknown-group']['flows'], [])
+        self.assertEqual(body['unknown-group']['test_xml_name'], 'unknown-group')
+        self.assertEqual(body['unknown-group']['test_xml_path'], '')
+
+        self.mock_nexus_search.assert_not_called()
+        self.mock_get_all_flows.assert_called_once_with('')
+        self.assertEqual(1, self.mock_analyze_flows.call_count)
+        call_args = self.mock_analyze_flows.mock_calls[0].args
+        self.assertEqual(len(call_args), 3)
+        self.assertEqual(call_args[0], 'productconfigurator')
+        self.assertTrue(isinstance(call_args[1], ServiceData))
+        service = call_args[1]
+        self.assertIsNone(service.from_version)
+        self.assertIsNone(service.to_version)
+        self.assertEqual(service.project, 'DIGOC')
+        self.assertEqual(service.pull_request_id, '12345')
+        self.assertEqual(call_args[2], '')
 
     @parameterized.expand([
         (None, True, 400, '[ERROR] 400 Bad Request: The browser (or proxy) sent a request that this server could not '

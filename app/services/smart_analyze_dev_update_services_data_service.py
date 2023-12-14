@@ -20,10 +20,10 @@ class UpdateServiceDataService:
             app_main_logger.warning("UpdateServiceDataService.update_services_data(): No services data to update.")
             return None
 
-        ms_list = [service for service in services_data
-                   if services_data.get_item(service).to_version ==
-                   services_data.get_item(service).from_version or
-                   services_data.get_item(service).to_version is None]
+        ms_list = [service for service in services_data if
+                   services_data.get_item(service).pull_request_id is None and
+                   (services_data.get_item(service).to_version == services_data.get_item(service).from_version or
+                    services_data.get_item(service).to_version is None)]
 
         services_from_nexus = self.nexus_search_service.get_services_master_version(repository, ms_list, "DIGOC")
 
@@ -47,6 +47,7 @@ class UpdateServiceDataService:
                                                          .to_version(to_version if to_version
                                                                      else service_data.to_version)
                                                          .project(service_data.project)
+                                                         .pull_request_id(service_data.pull_request_id)
                                                          .build()))
 
         app_main_logger.debug(f"UpdateServiceDataService.update_services_data()"

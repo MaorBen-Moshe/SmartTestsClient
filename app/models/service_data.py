@@ -12,6 +12,7 @@ class ServiceData:
         self.to_version: str | None = None
         self.flows = []
         self.project: str | None = None
+        self.pull_request_id: str | None = None
 
     @property
     def from_version(self) -> str | None:
@@ -45,6 +46,14 @@ class ServiceData:
     def project(self, project: str | None) -> None:
         self._project = project
 
+    @property
+    def pull_request_id(self) -> str | None:
+        return self._pull_request_id
+
+    @pull_request_id.setter
+    def pull_request_id(self, pull_request_id: str | None) -> None:
+        self._pull_request_id = pull_request_id
+
     def add_flows(self, curr_flows: list[str] | None):
         Utils.add_flows_without_duplications(self.flows, curr_flows)
 
@@ -75,4 +84,8 @@ class ServiceDataBuilder(Builder[ServiceData]):
 
     def project(self, project: str | None) -> ServiceDataBuilder:
         self._item.project = project
+        return self
+
+    def pull_request_id(self, pull_request_id: str | None) -> ServiceDataBuilder:
+        self._item.pull_request_id = pull_request_id
         return self

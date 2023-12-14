@@ -10,7 +10,7 @@ from app import app, login_manager, config, socket_handler, app_main_logger
 from app.appServices.analyze_app_service import AnalyzeAppService
 from app.appServices.analyze_dev_app_service import AnalyzeDevAppService
 from app.constants.constants import TRACE_ID_HEADER, GROUP_NAME_KEY, BUILD_URL_KEY, INFO_LEVEL_KEY, SERVICES_KEY, \
-    API_KEY_QUERY_PARAM
+    API_KEY_QUERY_PARAM, PULL_REQUEST_ID_KEY
 from app.enums.res_info_level import ResInfoLevelEnum
 from app.exceptions.excpetions import SmartClientBaseException
 from app.models.analyze_app_params import AnalyzeAppServiceParameters

@@ -27,8 +27,10 @@ class SmartTestsAnalyzeService:
             include_groups_filter = Utils.create_filter_by_list(filter_group)
             threads = []
             for service_key in services_map:
-                if (services_map.get_item(service_key).to_version ==
-                        services_map.get_item(service_key).from_version):
+                service = services_map.get_item(service_key)
+                if (service is None or
+                        (service.pull_request_id is None and (services_map.get_item(service_key).to_version ==
+                                                              services_map.get_item(service_key).from_version))):
                     continue
 
                 t = threading.Thread(target=self._analyze_flow_per_service,
@@ -47,9 +49,7 @@ class SmartTestsAnalyzeService:
                                   groups_data: TestGroupsData,
                                   include_groups_filter: str):
         res_json = self.client.analyze_flows(service_key,
-                                             services_map.get_item(service_key).from_version,
-                                             services_map.get_item(service_key).to_version,
-                                             services_map.get_item(service_key).project,
+                                             services_map.get_item(service_key),
                                              include_groups_filter)
 
         if res_json is not None and int(res_json.get(SMART_SERVICE_GROUP_FLOWS_COUNT_KEY)) > 0:

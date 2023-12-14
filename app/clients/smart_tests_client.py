@@ -4,6 +4,7 @@ import requests
 
 from app import config, app_main_logger
 from app.constants.constants import MS_POSTFIX
+from app.models.service_data import ServiceData
 
 
 class SmartTestsClient:
@@ -13,10 +14,11 @@ class SmartTestsClient:
 
     def analyze_flows(self,
                       service_key: str | None,
-                      from_version: str | None,
-                      to_version: str | None,
-                      service_project: str | None,
+                      service_data: ServiceData | None,
                       include_groups_filter: str | None):
+
+        if service_key is None or service_data is None:
+            return None
 
         if include_groups_filter is None:
             include_groups_filter = ""
@@ -27,10 +29,11 @@ class SmartTestsClient:
                 "restrictions": [
                     "repo_exclude_config"
                 ],
-                "project": service_project,
+                "project": service_data.project,
                 "repo": f"{service_key}{MS_POSTFIX}",
-                "from": from_version,
-                "to": to_version,
+                "from": service_data.from_version,
+                "to": service_data.to_version,
+                "pullRequestId": service_data.pull_request_id,
                 "includeFileGroupNamePattern": include_groups_filter
             }
         ]

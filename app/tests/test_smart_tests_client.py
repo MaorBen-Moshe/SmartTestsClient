@@ -3,6 +3,7 @@ import json
 import responses
 
 from app.clients.smart_tests_client import SmartTestsClient
+from app.models.service_data import ServiceData
 from test_base import TestBase
 from app.utils.utils import Utils
 
@@ -33,10 +34,14 @@ class TestSmartTestsClient(TestBase):
         with open("resources/analyze_flows/smart_stats.json", mode="r") as f:
             responses.add(responses.POST, path, json=json.load(f), status=200)
 
+        ServiceData.create().project("DIGOC").from_version("0.67.19").to_version("0.67.18").build()
+
         res_json = self.client.analyze_flows("productcofigurator",
-                                             "0.67.19",
-                                             "0.67.18",
-                                             "DIGOC",
+                                             ServiceData.create()
+                                             .project("DIGOC")
+                                             .from_version("0.67.19")
+                                             .to_version("0.67.18")
+                                             .build(),
                                              "")
 
         self.assertIn("flowsCount", res_json)
