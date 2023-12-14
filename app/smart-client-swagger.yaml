@@ -13,6 +13,7 @@ paths:
   /supported-groups:
     get:
       summary: Get all the supported groups the server supports
+      operationId: getSupportedGroups
       produces:
         - application/json;charset=utf-8
       parameters:
@@ -34,6 +35,7 @@ paths:
   /smart-tests-analyze:
     post:
       summary: Analyze the test flows to run based on the build url and supported group
+      operationId: smartTestsAnalyze
       consumes:
       - application/json;charset=utf-8
       produces:
@@ -61,6 +63,7 @@ paths:
   /smart-tests-analyze-dev:
     post:
       summary: Analyze the test flows to run based on the services list
+      operationId: smartTestsAnalyzeDev
       parameters:
       - name: x-api-key
         in: header
