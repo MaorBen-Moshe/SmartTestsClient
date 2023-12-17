@@ -1,9 +1,9 @@
 from __future__ import annotations
 
-from app.models.builder import Builder
+from app.models.serializable_model import Serializable
 
 
-class SupportedGroup:
+class SupportedGroupDTO(Serializable):
     def __init__(self):
         self.group_name: str | None = None
         self.cluster: str | None = None
@@ -59,37 +59,3 @@ class SupportedGroup:
     @project.setter
     def project(self, project: str | None):
         self._project = project
-
-    @staticmethod
-    def create():
-        return SupportedGroupBuilder()
-
-
-class SupportedGroupBuilder(Builder[SupportedGroup]):
-    def __init__(self, supported_group=None):
-        supported_group = supported_group if supported_group is not None else SupportedGroup()
-        super().__init__(supported_group)
-
-    def group_name(self, group_name: str | None) -> SupportedGroupBuilder:
-        self._item.group_name = group_name
-        return self
-
-    def cluster(self, cluster: str | None) -> SupportedGroupBuilder:
-        self._item.cluster = cluster
-        return self
-
-    def url(self, url: str | None) -> SupportedGroupBuilder:
-        self._item.url = url
-        return self
-
-    def test_files(self, test_files: list[str]) -> SupportedGroupBuilder:
-        self._item.test_files = test_files
-        return self
-
-    def ms_list(self, ms_list: list[str]) -> SupportedGroupBuilder:
-        self._item.ms_list = ms_list
-        return self
-
-    def project(self, project: str | None) -> SupportedGroupBuilder:
-        self._item.project = project
-        return self

@@ -14,6 +14,7 @@ from app.constants.constants import TRACE_ID_HEADER, GROUP_NAME_KEY, BUILD_URL_K
 from app.enums.res_info_level import ResInfoLevelEnum
 from app.exceptions.excpetions import SmartClientBaseException
 from app.mappers.service_data_mapper import ServiceDataMapper
+from app.mappers.supported_group_mapper import SupportedGroupMapper
 from app.models.analyze_app_params import AnalyzeAppServiceParameters
 from app.models.analyze_dev_app_params import AnalyzeDevAppServiceParameters
 from app.models.error_model import Error
@@ -39,7 +40,10 @@ def supported_groups():
 
     groups = config.get_supported_groups()
 
-    serialized_groups = {group_name: groups.get_item(group_name).toJSON() for group_name in groups}
+    serialized_groups = {
+        group_name: SupportedGroupMapper.map_to_dto(groups.get_item(group_name)).toJSON()
+        for group_name in groups
+    }
 
     app_main_logger.debug(f"Supported groups response. response={serialized_groups}")
 
