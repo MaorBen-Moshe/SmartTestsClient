@@ -6,6 +6,7 @@ from distutils.version import LooseVersion
 from app import app_main_logger
 from app.clients.nexus_client import NexusClient
 from app.constants.constants import CONTINUATION_TOKEN, VERSION_KEY, ITEMS_KEY, NEXUS_REPOSITORY_KEY, NEXUS_NAME_KEY
+from app.decorators.decorators import log_around
 from app.exceptions.excpetions import EmptyInputError
 from app.models.service_data import ServiceData
 from app.models.services_data import ServicesData
@@ -18,6 +19,7 @@ class NexusSearchService:
         self.nexus_client = NexusClient()
         self._lock = threading.Lock()
 
+    @log_around(print_output=True)
     def get_services_master_version(self,
                                     repository: str | None,
                                     ms_list: list[str] | None,

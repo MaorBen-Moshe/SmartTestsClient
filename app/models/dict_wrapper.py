@@ -26,3 +26,6 @@ class DictWrapperObject(Generic[T]):
 
     def __len__(self):
         return len(self._map)
+
+    def __str__(self):
+        return self._map.__str__() if self._map else ""

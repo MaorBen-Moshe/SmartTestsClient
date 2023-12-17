@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from app import app_main_logger
+from app.decorators.decorators import log_around
 from app.models.service_data import ServiceData
 from app.models.services_data import ServicesData
 from app.services.nexus_search_service import NexusSearchService
@@ -11,11 +12,10 @@ class UpdateServiceDataService:
     def __init__(self):
         self.nexus_search_service = NexusSearchService()
 
+    @log_around(print_output=True)
     def update_services_data(self,
                              repository: str | None,
                              services_data: ServicesData | None) -> ServicesData | None:
-        app_main_logger.debug("UpdateServiceDataService.update_services_data(): Executing UpdateServiceDataStep.")
-
         if services_data is None or len(services_data) == 0:
             app_main_logger.warning("UpdateServiceDataService.update_services_data(): No services data to update.")
             return None
@@ -49,8 +49,5 @@ class UpdateServiceDataService:
                                                          .project(service_data.project)
                                                          .pull_request_id(service_data.pull_request_id)
                                                          .build()))
-
-        app_main_logger.debug(f"UpdateServiceDataService.update_services_data()"
-                              f": Response services={updated_services_data_map}")
 
         return updated_services_data_map

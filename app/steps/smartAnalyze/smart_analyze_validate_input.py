@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from app import app_main_logger
+from app.decorators.decorators import log_around
 from app.exceptions.excpetions import BadRequest
 from app.models.analyze_app_params import AnalyzeAppServiceParameters
 from app.steps.smartAnalyze.interfaces.smart_analyze_step_interface import SmartAnalyzeStepInterface
@@ -8,9 +8,8 @@ from app.steps.smartAnalyze.interfaces.smart_analyze_step_interface import Smart
 
 class SmartAnalyzeValidateInputStep(SmartAnalyzeStepInterface):
 
+    @log_around(print_output=False)
     def execute(self, parameters: AnalyzeAppServiceParameters):
-        app_main_logger.debug(f"SmartAnalyzeValidateInputStep.execute(): parameters={parameters}")
-
         if parameters is None:
             raise BadRequest("No payload provided.")
 

@@ -2,10 +2,10 @@ from __future__ import annotations
 
 from bs4 import BeautifulSoup
 
-from app import app_main_logger
 from app.clients.html_parser_client import HtmlParserClient
 from app.constants.constants import TR, TD, B, TABLE, TABLE_NAME, TABLE_INDEX_NAME_KEY, TABLE_INDEX_VERSION_KEY, \
     TABLE_INDEX_MICROSERVICE_PREFIX
+from app.decorators.decorators import log_around
 from app.exceptions.excpetions import NotFoundError
 from app.models.service_data import ServiceData
 from app.models.services_data import ServicesData
@@ -17,12 +17,11 @@ class HtmlParserService:
         self.html = None
         self.soup = None
 
+    @log_around(print_output=False)
     def load_html(self,
                   html_zip_url: str | None,
                   services_map: ServicesData,
                   filtered_ms_list: list[str]):
-        app_main_logger.debug(f"HtmlParserService.load_html(): Loading build report data. build_url={html_zip_url}")
-
         self.html = HtmlParserClient.get_html(html_zip_url)
         self.soup = BeautifulSoup(self.html, "html.parser")
         self.table = self.__find_table()

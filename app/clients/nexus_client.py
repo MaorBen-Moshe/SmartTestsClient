@@ -5,8 +5,9 @@ from typing import Any
 import requests
 from requests.auth import HTTPBasicAuth
 
-from app import config, app_main_logger
+from app import config
 from app.constants.constants import NEXUS_REPOSITORY_KEY
+from app.decorators.decorators import gatewayErrorsHandler, log_around
 from app.exceptions.excpetions import URLError
 
 
@@ -17,11 +18,11 @@ class NexusClient:
         self.password_cred = password
         self._url = config.get_nexus_search_url()
 
+    @gatewayErrorsHandler
+    @log_around(print_output=True)
     def search_data(self, params: dict[str, str] | None) -> Any:
         if params is None or NEXUS_REPOSITORY_KEY not in params or params[NEXUS_REPOSITORY_KEY] is None:
             raise URLError("Provided to 'search_data' None repository query parameter.")
-
-        app_main_logger.debug(f"NexusClient.search_data() params={params}")
 
         with requests.get(self._url,
                           auth=HTTPBasicAuth(self.user_cred, self.password_cred),
@@ -29,7 +30,5 @@ class NexusClient:
                           params=params) as response:
             response.raise_for_status()
             res_data = response.json()
-
-        app_main_logger.debug(f"NexusClient.search_data() res_data={res_data}")
 
         return res_data

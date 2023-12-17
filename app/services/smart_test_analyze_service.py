@@ -6,6 +6,7 @@ from app import app_main_logger
 from app.clients.smart_tests_client import SmartTestsClient
 from app.constants.constants import SMART_SERVICE_GROUP_FLOWS_COUNT_KEY, SMART_SERVICE_GROUP_FLOWS_BY_GROUP_KEY, \
     SMART_SERVICE_GROUP_NAME_KEY, SMART_SERVICE_GROUP_TESTS_ALL_KEY, SMART_SERVICE_GROUP_FLOWS_KEY
+from app.decorators.decorators import log_around
 from app.exceptions.excpetions import EmptyInputError
 from app.models.group_data import GroupData
 from app.models.groups_data import TestGroupsData
@@ -19,6 +20,7 @@ class SmartTestsAnalyzeService:
         self.client = SmartTestsClient()
         self._lock = threading.Lock()
 
+    @log_around(print_output=False)
     def analyze_flows(self,
                       services_map: ServicesData | None,
                       filter_group: list[str] | None,

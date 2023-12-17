@@ -1,4 +1,5 @@
 from app import app_main_logger
+from app.decorators.decorators import log_around
 from app.models.groups_data import TestGroupsData
 from app.models.services_data import ServicesData
 from app.models.smart_analyze_response import SmartAnalyzeResponse
@@ -6,9 +7,9 @@ from app.services.interfaces.smart_prepare_response_interface import IPrepareRes
 
 
 class DebugPrepareResponseStrategy(IPrepareResponseStrategy):
-    def get(self, groups_data: TestGroupsData, services_data: ServicesData) -> SmartAnalyzeResponse:
-        app_main_logger.debug("InfoPrepareResponseStrategy.get(): Preparing response.")
 
+    @log_around(print_output=True)
+    def get(self, groups_data: TestGroupsData, services_data: ServicesData) -> SmartAnalyzeResponse:
         if groups_data is None or len(groups_data) == 0:
             app_main_logger.warning("PrepareResponseStep.execute(): No groups data to prepare response.")
             return SmartAnalyzeResponse.create().build()
@@ -31,8 +32,5 @@ class DebugPrepareResponseStrategy(IPrepareResponseStrategy):
                                                  for key in services_data
                                                  })
                                       .build())
-
-        app_main_logger.debug(f"InfoPrepareResponseStrategy.get(): "
-                              f"response={smart_app_service_response}")
 
         return smart_app_service_response

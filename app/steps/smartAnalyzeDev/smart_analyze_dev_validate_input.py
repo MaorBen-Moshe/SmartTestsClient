@@ -4,6 +4,7 @@ from typing import Any
 
 from app import app_main_logger
 from app.constants.constants import SERVICE_NAME_KEY, SERVICE_FROM_KEY, SERVICE_TO_KEY, PULL_REQUEST_ID_KEY
+from app.decorators.decorators import log_around
 from app.exceptions.excpetions import BadRequest
 from app.models.analyze_dev_app_params import AnalyzeDevAppServiceParameters
 from app.models.service_data import ServiceData
@@ -14,9 +15,8 @@ from app.utils.utils import Utils
 
 class SmartAnalyzeDevValidateInputStep(SmartAnalyzeDevStepInterface):
 
+    @log_around(print_output=False)
     def execute(self, parameters: AnalyzeDevAppServiceParameters):
-        app_main_logger.debug("SmartAnalyzeDevValidateInputStep.execute(): validating input.")
-
         if parameters is None:
             raise BadRequest("No payload provided.")
 

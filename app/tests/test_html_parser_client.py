@@ -4,7 +4,7 @@ import responses
 from bs4 import BeautifulSoup
 
 from app.clients.html_parser_client import HtmlParserClient
-from app.exceptions.excpetions import URLError
+from app.exceptions.excpetions import URLError, BadGatewayError
 from test_base import TestBase
 
 
@@ -25,7 +25,9 @@ class TestHtmlParserClient(TestBase):
         path = "http://test.com/file.zip"
         responses.add(responses.GET, path, body="", status=200)
 
-        self.assert_exception(lambda: HtmlParserClient.get_html(path), BadZipFile, "File is not a zip file")
+        self.assert_exception(lambda: HtmlParserClient.get_html(path),
+                              BadGatewayError,
+                              "File is not a zip file")
 
     def test_get_html_none_url(self):
         self.assert_exception(lambda: HtmlParserClient.get_html(None),

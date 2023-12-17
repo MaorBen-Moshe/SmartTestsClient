@@ -2,8 +2,9 @@ from __future__ import annotations
 
 import requests
 
-from app import config, app_main_logger
+from app import config
 from app.constants.constants import MS_POSTFIX
+from app.decorators.decorators import gatewayErrorsHandler, log_around
 from app.models.service_data import ServiceData
 
 
@@ -12,6 +13,8 @@ class SmartTestsClient:
         self.smart_tests_all_url = config.get_smart_tests_all_url()
         self.smart_tests_statistics_url = config.get_smart_tests_statistics_url()
 
+    @gatewayErrorsHandler
+    @log_around(print_output=True)
     def analyze_flows(self,
                       service_key: str | None,
                       service_data: ServiceData | None,
@@ -38,8 +41,6 @@ class SmartTestsClient:
             }
         ]
 
-        app_main_logger.debug(f"SmartTestsClient.analyze_flows(): Analyze flows. body={body}")
-
         with requests.post(
                 url=self.smart_tests_statistics_url,
                 params={"queryType": "repo"},
@@ -48,10 +49,10 @@ class SmartTestsClient:
             res.raise_for_status()
             res_json = res.json()
 
-        app_main_logger.debug(f"SmartTestsClient.analyze_flows(): Analyze flows. res_json={res_json}")
-
         return res_json
 
+    @gatewayErrorsHandler
+    @log_around(print_output=True)
     def get_all_flows_stats(self, include_groups_filter: str | None):
         body = []
         if include_groups_filter:
@@ -59,14 +60,10 @@ class SmartTestsClient:
                 "includeFileGroupNamePattern": include_groups_filter
             })
 
-        app_main_logger.debug(f"SmartTestsClient.get_all_flows_stats(): Get all flows stats. body={body}")
-
         with requests.post(url=self.smart_tests_all_url,
                            json=body,
                            verify=False) as res:
             res.raise_for_status()
             data = res.json()
-
-        app_main_logger.debug(f"SmartTestsClient.get_all_flows_stats(): Get all flows stats. data={data}")
 
         return data

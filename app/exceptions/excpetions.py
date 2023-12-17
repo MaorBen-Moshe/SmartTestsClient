@@ -32,3 +32,8 @@ class ConfigurationError(SmartClientBaseException):
 class URLError(SmartClientBaseException):
     def __init__(self, message: str | None):
         super().__init__(message, HTTPStatus.INTERNAL_SERVER_ERROR.value)
+
+
+class BadGatewayError(SmartClientBaseException):
+    def __init__(self, message: str | None):
+        super().__init__(message, HTTPStatus.BAD_GATEWAY.value)
