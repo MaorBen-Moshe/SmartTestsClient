@@ -45,8 +45,8 @@ class SmartAnalyzeResponse:
     def services(self, services: dict[str, Any] | None):
         self._services = services
 
-    def serialize(self) -> dict[str, Any]:
-        return utils.Utils.serialize_class(self, [])
+    def toJSON(self) -> dict[str, Any]:
+        return utils.Utils.serialize_class(self)
 
     @staticmethod
     def create():

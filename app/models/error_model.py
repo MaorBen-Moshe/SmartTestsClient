@@ -11,8 +11,8 @@ class Error:
         self.timestamp: str | None = None
         self.trace_id: str | None = None
 
-    def serialize(self) -> dict[str, str | int]:
-        return Utils.serialize_class(self, [])
+    def toJSON(self) -> dict[str, str | int]:
+        return Utils.serialize_class(self)
 
     @property
     def error_code(self) -> int | None:

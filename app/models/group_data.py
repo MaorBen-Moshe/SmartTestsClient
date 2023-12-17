@@ -58,8 +58,8 @@ class GroupData:
         Utils.add_flows_without_duplications(self.flows, curr_flows)
         self.curr_flows_count = len(self.flows)
 
-    def serialize(self) -> dict[str, Any]:
-        return Utils.serialize_class(self, [])
+    def toJSON(self) -> dict[str, Any]:
+        return Utils.serialize_class(self)
 
     @staticmethod
     def create():

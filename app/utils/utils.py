@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 import os
 import urllib
 import uuid
@@ -24,14 +25,13 @@ class Utils:
         return ext in [".zip", ".html"]
 
     @staticmethod
-    def serialize_class(cls, ignored_fields: list[str]):
+    def serialize_class(cls):
         if cls is None:
             return None
 
         return (dict(
             (i.replace(cls.__class__.__name__, '').lstrip("_"), value)
             for i, value in cls.__dict__.items()
-            if i.replace(cls.__class__.__name__, '').lstrip("_") not in ignored_fields
         ))
 
     @staticmethod
@@ -63,10 +63,11 @@ class Utils:
     def get_project_name_from_supported_group(service_name: str | None, supported_groups: SupportedGroups):
         project = None
         if service_name:
-            for group_name in supported_groups:
-                group = supported_groups.get_item(group_name)
-                if service_name in group.ms_list:
-                    project = group.project
-                    break
+            if supported_groups:
+                for group_name in supported_groups:
+                    group = supported_groups.get_item(group_name)
+                    if service_name in group.ms_list:
+                        project = group.project
+                        break
 
         return project

@@ -32,7 +32,6 @@ class AppLoggerManager(metaclass=SingletonMeta):
         file_handler.setFormatter(self._formatter)
         console_handler.setFormatter(self._formatter)
 
-        # Add the file and console handlers to the logger
         logger.addHandler(file_handler)
         logger.addHandler(console_handler)
 

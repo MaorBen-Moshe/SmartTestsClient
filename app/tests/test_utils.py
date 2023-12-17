@@ -47,22 +47,20 @@ class TestUtils(TestBase):
          .project("project")
          .pull_request_id("pull_request_id")
          .build(),
-         [],
-         {"to": "to_version",
+         {"service_name": None,
+          "to": "to_version",
           "from": "from_version",
           "flows": [],
           "project": "project",
           "pullRequestId": "pull_request_id"}),
         (ServiceData.create().to_version("to_version").from_version("from_version").build(),
-         ['to'],
-         {"from": "from_version", "flows": [], "project": None, "pullRequestId": None}),
+         {"service_name": None, "to": "to_version", "from": "from_version", "flows": [], "project": None, "pullRequestId": None}),
         (WithoutProperties("Alice", 25, "female"),
-         [],
          {"name": "Alice", "age": 25, "gender": "female"}),
-        (None, [], None)
+        (None, None)
     ])
-    def test_serialize_class(self, cls, ignore_fields, expected):
-        res = Utils.serialize_class(cls, ignore_fields)
+    def test_serialize_class(self, cls, expected):
+        res = Utils.serialize_class(cls)
 
         self.assertEqual(res, expected)
 
@@ -102,4 +100,13 @@ class TestUtils(TestBase):
         result = Utils.get_project_name_from_supported_group(service_name, self.config.get_supported_groups())
 
         self.assertEqual(result, expected)
+
+    @parameterized.expand([
+        None,
+        ([],)
+    ])
+    def test_get_project_name_from_supported_group_empty(self, supported_groups):
+        result = Utils.get_project_name_from_supported_group('service1', supported_groups)
+
+        self.assertIsNone(result)
 

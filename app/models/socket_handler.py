@@ -28,7 +28,7 @@ class SocketHandler(metaclass=SingletonMeta):
 
     def send_message(self, message, session_id):
         self.socketio.emit(self.event_name,
-                           SocketResponse(message=message, session_id=session_id).serialize(),
+                           SocketResponse(message=message, session_id=session_id).toJSON(),
                            namespace=self.namespace)
 
 
@@ -42,9 +42,9 @@ class SocketResponse:
     def message(self):
         return self._message
 
-    @message.setter
-    def message(self, message):
-        self._message = message
+    @property
+    def session_id(self):
+        return self._session_id
 
-    def serialize(self) -> dict[str, Any]:
-        return Utils.serialize_class(self, [])
+    def toJSON(self) -> dict[str, Any]:
+        return Utils.serialize_class(self)

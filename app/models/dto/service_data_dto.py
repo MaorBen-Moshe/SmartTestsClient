@@ -6,7 +6,7 @@ from app.models.builder import Builder
 from app.utils.utils import Utils
 
 
-class ServiceData:
+class ServiceDataDTO:
     def __init__(self):
         self.service_name: str | None = None
         self.from_version: str | None = None
@@ -71,34 +71,34 @@ class ServiceData:
 
     @staticmethod
     def create():
-        return ServiceDataBuilder()
+        return ServiceDataDTOBuilder()
 
 
-class ServiceDataBuilder(Builder[ServiceData]):
+class ServiceDataDTOBuilder(Builder[ServiceDataDTO]):
     def __init__(self, service_data=None):
-        service_data = service_data if service_data is not None else ServiceData()
+        service_data = service_data if service_data is not None else ServiceDataDTO()
         super().__init__(service_data)
 
-    def service_name(self, service_name: str | None) -> ServiceDataBuilder:
+    def service_name(self, service_name: str | None) -> ServiceDataDTOBuilder:
         self._item.service_name = service_name
         return self
 
-    def from_version(self, from_version: str | None) -> ServiceDataBuilder:
+    def from_version(self, from_version: str | None) -> ServiceDataDTOBuilder:
         self._item.from_version = from_version
         return self
 
-    def to_version(self, to_version: str | None) -> ServiceDataBuilder:
+    def to_version(self, to_version: str | None) -> ServiceDataDTOBuilder:
         self._item.to_version = to_version
         return self
 
-    def flows(self, flows: list[str]) -> ServiceDataBuilder:
+    def flows(self, flows: list[str]) -> ServiceDataDTOBuilder:
         self._item.flows = flows
         return self
 
-    def project(self, project: str | None) -> ServiceDataBuilder:
+    def project(self, project: str | None) -> ServiceDataDTOBuilder:
         self._item.project = project
         return self
 
-    def pull_request_id(self, pull_request_id: str | None) -> ServiceDataBuilder:
+    def pull_request_id(self, pull_request_id: str | None) -> ServiceDataDTOBuilder:
         self._item.pull_request_id = pull_request_id
         return self

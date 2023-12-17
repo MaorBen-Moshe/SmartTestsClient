@@ -1,7 +1,5 @@
 from __future__ import annotations
 
-from typing import Any
-
 from app.enums.res_info_level import ResInfoLevelEnum
 from app.models.builder import Builder
 from app.models.groups_data import TestGroupsData
@@ -13,24 +11,19 @@ from app.models.supported_groups import SupportedGroups
 class AnalyzeDevAppServiceParameters:
     def __init__(self):
         self.smart_analyze_dev_app_service_response = None
-        self.services_input = None
         self.session_id: str | None = None
         self.res_info_level: ResInfoLevelEnum | None = None
-        self._services_map: ServicesData = ServicesData()
+        self._services_map: ServicesData | None = ServicesData()
         self._groups_data: TestGroupsData = TestGroupsData()
         self.supported_groups: SupportedGroups | None = None
 
     @property
-    def services_input(self) -> Any:
-        return self._services_input
-
-    @services_input.setter
-    def services_input(self, services_input: Any) -> None:
-        self._services_input = services_input
-
-    @property
     def services_map(self) -> ServicesData | None:
         return self._services_map
+
+    @services_map.setter
+    def services_map(self, services_map: ServicesData | None) -> None:
+        self._services_map = services_map
 
     @property
     def groups_data(self) -> TestGroupsData:
@@ -78,8 +71,8 @@ class AnalyzeDevAppServiceParametersBuilder(Builder[AnalyzeDevAppServiceParamete
         parameters = parameters if parameters else AnalyzeDevAppServiceParameters()
         super().__init__(parameters)
 
-    def services_input(self, services_input: Any) -> AnalyzeDevAppServiceParametersBuilder:
-        self._item.services_input = services_input
+    def services_map(self, services_map: ServicesData) -> AnalyzeDevAppServiceParametersBuilder:
+        self._item.services_map = services_map
         return self
 
     def session_id(self, session_id: str | None) -> AnalyzeDevAppServiceParametersBuilder:

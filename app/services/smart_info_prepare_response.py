@@ -24,7 +24,7 @@ class InfoPrepareResponseStrategy(IPrepareResponseStrategy):
                                       .total_flows_count(total_count)
                                       .curr_flows_count(curr_flows_count)
                                       .groups({key:
-                                               groups_data.get_item(key).serialize()
+                                               groups_data.get_item(key).toJSON()
                                                for key in groups_data
                                                })
                                       .build())

@@ -7,7 +7,7 @@ from requests.auth import HTTPBasicAuth
 
 from app import config
 from app.constants.constants import NEXUS_REPOSITORY_KEY
-from app.decorators.decorators import gatewayErrorsHandler, log_around
+from app.decorators.decorators import gateway_errors_handler, log_around
 from app.exceptions.excpetions import URLError
 
 
@@ -18,7 +18,7 @@ class NexusClient:
         self.password_cred = password
         self._url = config.get_nexus_search_url()
 
-    @gatewayErrorsHandler
+    @gateway_errors_handler
     @log_around(print_output=True)
     def search_data(self, params: dict[str, str] | None) -> Any:
         if params is None or NEXUS_REPOSITORY_KEY not in params or params[NEXUS_REPOSITORY_KEY] is None:

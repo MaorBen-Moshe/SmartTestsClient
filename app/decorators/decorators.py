@@ -4,7 +4,7 @@ from app import app_main_logger
 from app.exceptions.excpetions import BadGatewayError, SmartClientBaseException
 
 
-def gatewayErrorsHandler(func):
+def gateway_errors_handler(func):
     @wraps(func)
     def wrapper(*args, **kwargs):
         try:

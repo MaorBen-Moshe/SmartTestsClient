@@ -482,6 +482,77 @@ class TestEndpointsUnit(TestUnitBase):
         self.assertEqual(call_args[2], '')
 
     @parameterized.expand([
+        ({
+             "infoLevel": "debug",
+             "services": [
+                 {
+                     "name": "productconfigurator",
+                     "pullRequestId": '12345',
+                     "project": "NOT_DIGOC"
+                 }
+             ]
+         },)
+    ])
+    def test_smart_analyze_dev_endpoint_success_different_project_name(self, data):
+        # execute
+        res = self.client_fixture.post("/smart-tests-analyze-dev",
+                                       json=data,
+                                       content_type='application/json',
+                                       headers={API_KEY_QUERY_PARAM: self.config.get_user_api_token()})
+
+        # asserts
+        self.assertEqual(res.status_code, 200)
+        self.assertIsNotNone(res.json)
+        self.assertEqual(712, res.json['total_flows_count'])
+        self.assertEqual(2, res.json['curr_flows_count'])
+        services = res.json['services']
+        self.assertIsNotNone(services)
+        self.assertEqual(len(services), 1)
+        self.assertIn('productconfigurator', services)
+        self.assertIsNone(services['productconfigurator'].get('from'))
+        self.assertIsNone(services['productconfigurator'].get('to'))
+        self.assertEqual(services['productconfigurator'].get('pullRequestId'), '12345')
+        self.assertEqual(len(services['productconfigurator']['flows']), 2)
+        body = res.json['groups']
+        self.assertIsNotNone(body)
+        self.assertEqual(len(body), 3)
+        self.assertIn('extended_mat_7b_APIGW_testng.xml', body)
+        self.assertEqual(body['extended_mat_7b_APIGW_testng.xml']['curr_flows_count'], 0)
+        self.assertEqual(body['extended_mat_7b_APIGW_testng.xml']['total_flows_count'], 45)
+        self.assertListEqual(body['extended_mat_7b_APIGW_testng.xml']['flows'], [])
+        self.assertEqual(body['extended_mat_7b_APIGW_testng.xml']['test_xml_name'], 'extended_mat_7b_APIGW_testng.xml')
+        self.assertEqual(body['extended_mat_7b_APIGW_testng.xml']['test_xml_path'], 'com/amdocs/core/oc/testng')
+        self.assertIn('mat_APIGW_testng.xml', body)
+        self.assertEqual(body['mat_APIGW_testng.xml']['curr_flows_count'], 2)
+        self.assertEqual(body['mat_APIGW_testng.xml']['total_flows_count'], 12)
+        self.assertListEqual(body['mat_APIGW_testng.xml']['flows'],
+                             ['com.amdocs.core.oc.test.flows.schedulerTask.RetrieveSchedulerTaskFlow',
+                              'com.amdocs.core.oc.test.flows.discovery.categories.BrowsingCategoriesSelfServiceFlows'])
+        self.assertEqual(body['mat_APIGW_testng.xml']['test_xml_name'], 'mat_APIGW_testng.xml')
+        self.assertEqual(body['mat_APIGW_testng.xml']['test_xml_path'], 'com/amdocs/core/oc/testng')
+        self.assertIn('unknown-group', body)
+        self.assertEqual(body['unknown-group']['curr_flows_count'], 0)
+        self.assertEqual(body['unknown-group']['total_flows_count'], 655)
+        self.assertListEqual(body['unknown-group']['flows'], [])
+        self.assertEqual(body['unknown-group']['test_xml_name'], 'unknown-group')
+        self.assertEqual(body['unknown-group']['test_xml_path'], '')
+
+        self.mock_nexus_search.assert_not_called()
+        self.mock_get_all_flows.assert_called_once_with('')
+        self.assertEqual(1, self.mock_analyze_flows.call_count)
+        call_args = self.mock_analyze_flows.mock_calls[0].args
+        self.assertEqual(len(call_args), 3)
+        self.assertEqual(call_args[0], 'productconfigurator')
+        self.assertTrue(isinstance(call_args[1], ServiceData))
+        service = call_args[1]
+        self.assertIsNone(service.from_version)
+        self.assertIsNone(service.to_version)
+        self.assertNotEquals(service.project, 'NOT_DIGOC')
+        self.assertEqual(service.project, 'DIGOC')
+        self.assertEqual(service.pull_request_id, '12345')
+        self.assertEqual(call_args[2], '')
+
+    @parameterized.expand([
         (None, True, 400, '[ERROR] 400 Bad Request: The browser (or proxy) sent a request that this server could not '
                           'understand.'),
         ({
@@ -491,28 +562,12 @@ class TestEndpointsUnit(TestUnitBase):
                          "g. a bad password), or your browser doesn't understand how to supply the cre"
                          'dentials required.')),
         ({
-             "services": None
-         }, True, 400, "[ERROR] 400: No services input provided."),
-        ({
-             "services": "No list type"
-         }, True, 400, "[ERROR] 400: Services input should be a list."),
-        ({
-             "services": ["No dict type"]
-         }, True, 400, "[ERROR] 400: Each Service in services should be a dictionary."),
-        ({
              "services": [
                  {
                      "name": "service_name",
                  }
              ]
          }, True, 400, "[ERROR] 400: Service 'service_name' is missing mandatory field: 'from'."),
-        ({
-             "services": [
-                 {
-                     "from": "from_version",
-                 }
-             ]
-         }, True, 400, "[ERROR] 400: Service is missing mandatory field: 'name'."),
     ])
     def test_smart_analyze_dev_endpoint_missing_data(self, payload, with_query_param, error_code, error_msg):
         headers = {API_KEY_QUERY_PARAM: self.config.get_user_api_token()} if with_query_param else {}

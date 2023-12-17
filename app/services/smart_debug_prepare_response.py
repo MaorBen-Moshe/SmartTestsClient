@@ -24,11 +24,11 @@ class DebugPrepareResponseStrategy(IPrepareResponseStrategy):
                                       .total_flows_count(total_count)
                                       .curr_flows_count(curr_flows_count)
                                       .groups({key:
-                                               groups_data.get_item(key).serialize()
+                                               groups_data.get_item(key).toJSON()
                                                for key in groups_data
                                                })
                                       .services({key:
-                                                 services_data.get_item(key).serialize()
+                                                 services_data.get_item(key).toJSON()
                                                  for key in services_data
                                                  })
                                       .build())

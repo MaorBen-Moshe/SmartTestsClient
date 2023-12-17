@@ -15,8 +15,8 @@ class SupportedGroup:
         self.ms_list: list[str] = []
         self.project: str | None = None
 
-    def serialize(self) -> dict[str, Any]:
-        return utils.Utils.serialize_class(self, [])
+    def toJSON(self) -> dict[str, Any]:
+        return utils.Utils.serialize_class(self)
 
     @property
     def group_name(self) -> str | None:

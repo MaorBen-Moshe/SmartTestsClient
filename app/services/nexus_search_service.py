@@ -56,6 +56,7 @@ class NexusSearchService:
             sorted_list = sorted(versions, key=LooseVersion, reverse=True)
             with (self._lock):
                 data = (ServiceData.create()
+                        .service_name(entry)
                         .from_version(sorted_list[0])
                         .to_version(sorted_list[0])
                         .project(project)

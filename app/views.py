@@ -10,9 +10,10 @@ from app import app, login_manager, config, socket_handler, app_main_logger
 from app.appServices.analyze_app_service import AnalyzeAppService
 from app.appServices.analyze_dev_app_service import AnalyzeDevAppService
 from app.constants.constants import TRACE_ID_HEADER, GROUP_NAME_KEY, BUILD_URL_KEY, INFO_LEVEL_KEY, SERVICES_KEY, \
-    API_KEY_QUERY_PARAM, PULL_REQUEST_ID_KEY
+    API_KEY_QUERY_PARAM
 from app.enums.res_info_level import ResInfoLevelEnum
 from app.exceptions.excpetions import SmartClientBaseException
+from app.mappers.service_data_mapper import ServiceDataMapper
 from app.models.analyze_app_params import AnalyzeAppServiceParameters
 from app.models.analyze_dev_app_params import AnalyzeDevAppServiceParameters
 from app.models.error_model import Error
@@ -38,7 +39,7 @@ def supported_groups():
 
     groups = config.get_supported_groups()
 
-    serialized_groups = {group_name: groups.get_item(group_name).serialize() for group_name in groups}
+    serialized_groups = {group_name: groups.get_item(group_name).toJSON() for group_name in groups}
 
     app_main_logger.debug(f"Supported groups response. response={serialized_groups}")
 
@@ -70,7 +71,7 @@ def analyze():
 
     app_main_logger.debug(f"Smart tests analyze response. response={res}")
 
-    resp = make_response(jsonify(res.serialize()), 200)
+    resp = make_response(jsonify(res.toJSON()), 200)
     resp.headers[TRACE_ID_HEADER] = Utils.get_request_id()
     return resp
 
@@ -80,8 +81,10 @@ def analyze():
 def analyze_dev():
     req_data = request.get_json()
 
+    services_dto = ServiceDataMapper.map_from_dict_list_to_dto(req_data.get(SERVICES_KEY))
+
     parameters = (AnalyzeDevAppServiceParameters.create()
-                  .services_input(req_data.get(SERVICES_KEY))
+                  .services_map(ServiceDataMapper.map_from_dto_to_services_data(services_dto))
                   .session_id(Utils.get_session_id_or_default(req_data))
                   .res_info_level(ResInfoLevelEnum.get_level(req_data.get(INFO_LEVEL_KEY)))
                   .supported_groups(config.get_supported_groups())
@@ -95,7 +98,7 @@ def analyze_dev():
 
     app_main_logger.debug(f"Smart tests analyze dev response. response={res}")
 
-    resp = make_response(jsonify(res.serialize()), 200)
+    resp = make_response(jsonify(res.toJSON()), 200)
     resp.headers[TRACE_ID_HEADER] = Utils.get_request_id()
     return resp
 
@@ -131,7 +134,7 @@ def handle_exception(ex):
                           .timestamp(datetime.now().strftime("%d/%m/%Y %H:%M:%S"))
                           .trace_id(Utils.get_request_id())
                           .build()
-                          .serialize()), error_code)
+                          .toJSON()), error_code)
 
 
 @socket_handler.socketio.on('connect', namespace=socket_handler.namespace)

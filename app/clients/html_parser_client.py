@@ -8,14 +8,14 @@ import requests
 from requests.auth import HTTPBasicAuth
 
 from app import config
-from app.decorators.decorators import gatewayErrorsHandler, log_around
+from app.decorators.decorators import gateway_errors_handler, log_around
 from app.exceptions.excpetions import URLError
 from app.utils.utils import Utils
 
 
 class HtmlParserClient:
     @classmethod
-    @gatewayErrorsHandler
+    @gateway_errors_handler
     @log_around(print_output=True)
     def get_html(cls, build_url: str | None):
         if not Utils.is_valid_url(build_url):

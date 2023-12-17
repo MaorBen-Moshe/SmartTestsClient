@@ -4,7 +4,7 @@ import requests
 
 from app import config
 from app.constants.constants import MS_POSTFIX
-from app.decorators.decorators import gatewayErrorsHandler, log_around
+from app.decorators.decorators import gateway_errors_handler, log_around
 from app.models.service_data import ServiceData
 
 
@@ -13,7 +13,7 @@ class SmartTestsClient:
         self.smart_tests_all_url = config.get_smart_tests_all_url()
         self.smart_tests_statistics_url = config.get_smart_tests_statistics_url()
 
-    @gatewayErrorsHandler
+    @gateway_errors_handler
     @log_around(print_output=True)
     def analyze_flows(self,
                       service_key: str | None,
@@ -51,7 +51,7 @@ class SmartTestsClient:
 
         return res_json
 
-    @gatewayErrorsHandler
+    @gateway_errors_handler
     @log_around(print_output=True)
     def get_all_flows_stats(self, include_groups_filter: str | None):
         body = []
