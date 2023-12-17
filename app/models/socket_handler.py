@@ -1,8 +1,10 @@
 import time
+from typing import Any
 
 from flask_socketio import SocketIO
 
 from app.models.singleton_meta import SingletonMeta
+from app.utils.utils import Utils
 
 
 class SocketHandler(metaclass=SingletonMeta):
@@ -26,9 +28,23 @@ class SocketHandler(metaclass=SingletonMeta):
 
     def send_message(self, message, session_id):
         self.socketio.emit(self.event_name,
-                           {
-                               "message": message,
-                               "time": time.strftime("%Y/%m/%d %H:%M:$S", time.localtime()),
-                               "session_id": session_id
-                           },
+                           SocketResponse(message=message, session_id=session_id).serialize(),
                            namespace=self.namespace)
+
+
+class SocketResponse:
+    def __init__(self, message: str, session_id: str):
+        self._message = message
+        self._session_id = session_id
+        self._timestamp = time.strftime("%Y/%m/%d %H:%M:$S", time.localtime())
+
+    @property
+    def message(self):
+        return self._message
+
+    @message.setter
+    def message(self, message):
+        self._message = message
+
+    def serialize(self) -> dict[str, Any]:
+        return Utils.serialize_class(self, [])

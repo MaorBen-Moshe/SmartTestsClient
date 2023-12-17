@@ -23,7 +23,6 @@ def log_around(print_output=False):
     def inner(func):
         @wraps(func)
         def wrapper(*args, **kwargs):
-            # Get the class name if the function is a method
             class_name = ""
             is_class_method = False
             if args and hasattr(args[0], func.__name__):
@@ -47,3 +46,5 @@ def log_around(print_output=False):
             return result
 
         return wrapper
+
+    return inner
