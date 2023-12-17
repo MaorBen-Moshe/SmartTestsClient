@@ -3,8 +3,9 @@ from __future__ import annotations
 from app import config, socket_handler, app_main_logger
 from app.models.analyze_app_params import AnalyzeAppServiceParameters
 from app.models.smart_analyze_response import SmartAnalyzeResponse
+from app.steps.smartAnalyze.smart_analyze_analyze_flows_step import AnalyzeFlowsStep
+from app.steps.smartAnalyze.smart_analyze_init_groups_data_step import InitGroupsDataStep
 from app.steps.smartAnalyze.smart_analyze_validate_input import SmartAnalyzeValidateInputStep
-from app.steps.smartAnalyze.smart_analyze_handle_groups_data_step import InitGroupsDataStep, AnalyzeFlowsStep
 from app.steps.smartAnalyze.smart_analyze_html_parser_step import HtmlParserStep
 from app.steps.smartAnalyze.smart_analyze_init_services_data_step import InitServiceMapStep
 from app.steps.smartAnalyze.smart_analyze_prepare_response_step import PrepareResponseStep
