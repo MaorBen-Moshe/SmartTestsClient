@@ -62,9 +62,6 @@ class ServiceDataDTO(Serializable):
     def pull_request_id(self, pull_request_id: str | None) -> None:
         self._pullRequestId = pull_request_id
 
-    def add_flows(self, curr_flows: list[str] | None):
-        Utils.add_flows_without_duplications(self.flows, curr_flows)
-
     @staticmethod
     def create():
         return ServiceDataDTOBuilder()

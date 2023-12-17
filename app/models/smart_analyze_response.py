@@ -3,16 +3,16 @@ from __future__ import annotations
 from typing import Any
 
 from app.models.builder import Builder
+from app.models.dto.group_data_dto import GroupDataDTO
 from app.models.dto.service_data_dto import ServiceDataDTO
 from app.models.serializable_model import Serializable
-from app.models.services_data import ServicesData
 
 
 class SmartAnalyzeResponse(Serializable):
     def __init__(self):
         self.total_flows_count = 0
         self.curr_flows_count = 0
-        self.groups = {}
+        self.groups: dict[str, GroupDataDTO] = {}
         self.services: list[ServiceDataDTO] | None = []
 
     @property
@@ -32,11 +32,11 @@ class SmartAnalyzeResponse(Serializable):
         self._curr_flows_count = curr_flows_count
 
     @property
-    def groups(self) -> dict[str, Any] | None:
+    def groups(self) -> dict[str, GroupDataDTO] | None:
         return self._groups
 
     @groups.setter
-    def groups(self, groups: dict[str, Any] | None):
+    def groups(self, groups: dict[str, GroupDataDTO] | None):
         self._groups = groups
 
     @property
@@ -66,7 +66,7 @@ class SmartAnalyzeResponseBuilder(Builder[SmartAnalyzeResponse]):
         self._item.curr_flows_count = curr_flows_count
         return self
 
-    def groups(self, groups: dict[str, Any] | None) -> SmartAnalyzeResponseBuilder:
+    def groups(self, groups: dict[str, GroupDataDTO] | None) -> SmartAnalyzeResponseBuilder:
         self._item.groups = groups
         return self
 

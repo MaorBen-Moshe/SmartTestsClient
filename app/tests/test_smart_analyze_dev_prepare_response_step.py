@@ -48,11 +48,15 @@ class TestSmartAnalyzeDevPrepareResponseStep(TestBase):
         self.assertIsNotNone(parameters.smart_analyze_dev_app_service_response)
         self.assertEqual(parameters.smart_analyze_dev_app_service_response.total_flows_count, 60)
         self.assertEqual(parameters.smart_analyze_dev_app_service_response.curr_flows_count, 5)
-        self.assertEqual(parameters.smart_analyze_dev_app_service_response.groups, {
-            'group1': parameters.groups_data.get_item('group1').toJSON(),
-            'group2': parameters.groups_data.get_item('group2').toJSON(),
-            'group3': parameters.groups_data.get_item('group3').toJSON(),
-        })
+        self.assertEqual(3, len(parameters.smart_analyze_dev_app_service_response.groups))
+        self.assertEqual(parameters.smart_analyze_dev_app_service_response.groups['group1'].toJSON(),
+                         parameters.groups_data.get_item('group1').toJSON())
+
+        self.assertEqual(parameters.smart_analyze_dev_app_service_response.groups['group2'].toJSON(),
+                         parameters.groups_data.get_item('group2').toJSON())
+
+        self.assertEqual(parameters.smart_analyze_dev_app_service_response.groups['group3'].toJSON(),
+                         parameters.groups_data.get_item('group3').toJSON())
 
     def test_execute_with_valid_parameters_debug_level(self):
         parameters = AnalyzeDevAppServiceParameters()
@@ -79,11 +83,16 @@ class TestSmartAnalyzeDevPrepareResponseStep(TestBase):
         self.assertIsNotNone(parameters.smart_analyze_dev_app_service_response)
         self.assertEqual(parameters.smart_analyze_dev_app_service_response.total_flows_count, 60)
         self.assertEqual(parameters.smart_analyze_dev_app_service_response.curr_flows_count, 5)
-        self.assertEqual(parameters.smart_analyze_dev_app_service_response.groups, {
-            'group1': parameters.groups_data.get_item('group1').toJSON(),
-            'group2': parameters.groups_data.get_item('group2').toJSON(),
-            'group3': parameters.groups_data.get_item('group3').toJSON(),
-        })
+
+        self.assertEqual(3, len(parameters.smart_analyze_dev_app_service_response.groups))
+        self.assertEqual(parameters.smart_analyze_dev_app_service_response.groups['group1'].toJSON(),
+                         parameters.groups_data.get_item('group1').toJSON())
+
+        self.assertEqual(parameters.smart_analyze_dev_app_service_response.groups['group2'].toJSON(),
+                         parameters.groups_data.get_item('group2').toJSON())
+
+        self.assertEqual(parameters.smart_analyze_dev_app_service_response.groups['group3'].toJSON(),
+                         parameters.groups_data.get_item('group3').toJSON())
 
         self.assertEqual(1, len(parameters.smart_analyze_dev_app_service_response.services))
         self.assertEqual(parameters.smart_analyze_dev_app_service_response.services[0].toJSON(),

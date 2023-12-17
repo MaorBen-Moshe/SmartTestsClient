@@ -1,5 +1,6 @@
 from app import app_main_logger
 from app.decorators.decorators import log_around
+from app.mappers.group_data_mapper import GroupDataMapper
 from app.mappers.service_data_mapper import ServiceDataMapper
 from app.models.groups_data import TestGroupsData
 from app.models.services_data import ServicesData
@@ -27,8 +28,9 @@ class DebugPrepareResponseStrategy(IPrepareResponseStrategy):
                                       .total_flows_count(total_count)
                                       .curr_flows_count(curr_flows_count)
                                       .groups({key:
-                                               groups_data.get_item(key).toJSON()
+                                               GroupDataMapper.map_to_dto(groups_data.get_item(key))
                                                for key in groups_data
+                                               if groups_data.get_item(key) is not None
                                                })
                                       .services(services_data_dto)
                                       .build())

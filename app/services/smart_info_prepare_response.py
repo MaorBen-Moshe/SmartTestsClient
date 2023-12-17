@@ -1,5 +1,6 @@
 from app import app_main_logger
 from app.decorators.decorators import log_around
+from app.mappers.group_data_mapper import GroupDataMapper
 from app.models.groups_data import TestGroupsData
 from app.models.services_data import ServicesData
 from app.models.smart_analyze_response import SmartAnalyzeResponse
@@ -24,8 +25,9 @@ class InfoPrepareResponseStrategy(IPrepareResponseStrategy):
                                       .total_flows_count(total_count)
                                       .curr_flows_count(curr_flows_count)
                                       .groups({key:
-                                               groups_data.get_item(key).toJSON()
+                                               GroupDataMapper.map_to_dto(groups_data.get_item(key))
                                                for key in groups_data
+                                               if groups_data.get_item(key) is not None
                                                })
                                       .build())
 
