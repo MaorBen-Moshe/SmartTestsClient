@@ -1,7 +1,9 @@
 from parameterized import parameterized
 
+from app.models.group_data import GroupData
 from app.models.serializable_model import Serializable
 from app.models.service_data import ServiceData
+from app.models.smart_analyze_response import SmartAnalyzeResponse
 from app.utils.utils import Utils
 from test_base import TestBase
 
@@ -59,7 +61,19 @@ class TestUtils(TestBase):
           "pullRequestId": None}),
         (WithoutProperties("Alice", 25, "female"),
          {"name": "Alice", "age": 25, "gender": "female"}),
-        (None, None)
+        (None, None),
+        (SmartAnalyzeResponse.create()
+         .services([ServiceData.create().to_version("to_version").from_version("from_version").build()])
+         .total_flows_count(1)
+         .curr_flows_count(1)
+         .groups({"group1": GroupData.create().flows(["flow1"]).total_flows_count(1).build()})
+         .build(),
+         {"total_flows_count": 1, "curr_flows_count": 1,
+          "groups": {"group1": {"flows": ["flow1"], "curr_flows_count": 1,
+                                "total_flows_count": 1,
+                                "test_xml_name": None, "test_xml_path": None}},
+          "services": [{"service_name": None, "to": "to_version", "from": "from_version", "flows": [],
+                        "project": None, "pullRequestId": None}]})
     ])
     def test_serialize_class(self, cls, expected):
         res = cls.toJSON() if cls else None
@@ -111,4 +125,3 @@ class TestUtils(TestBase):
         result = Utils.get_project_name_from_supported_group('service1', supported_groups)
 
         self.assertIsNone(result)
-
