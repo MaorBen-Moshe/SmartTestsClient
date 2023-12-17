@@ -3,15 +3,17 @@ from __future__ import annotations
 from typing import Any
 
 from app.models.builder import Builder
-from app.utils import utils
+from app.models.dto.service_data_dto import ServiceDataDTO
+from app.models.serializable_model import Serializable
+from app.models.services_data import ServicesData
 
 
-class SmartAnalyzeResponse:
+class SmartAnalyzeResponse(Serializable):
     def __init__(self):
         self.total_flows_count = 0
         self.curr_flows_count = 0
         self.groups = {}
-        self.services = {}
+        self.services: list[ServiceDataDTO] | None = []
 
     @property
     def total_flows_count(self) -> int:
@@ -38,15 +40,12 @@ class SmartAnalyzeResponse:
         self._groups = groups
 
     @property
-    def services(self) -> dict[str, Any] | None:
+    def services(self) -> list[ServiceDataDTO] | None:
         return self._services
 
     @services.setter
-    def services(self, services: dict[str, Any] | None):
+    def services(self, services: list[ServiceDataDTO] | None):
         self._services = services
-
-    def toJSON(self) -> dict[str, Any]:
-        return utils.Utils.serialize_class(self)
 
     @staticmethod
     def create():
@@ -71,6 +70,6 @@ class SmartAnalyzeResponseBuilder(Builder[SmartAnalyzeResponse]):
         self._item.groups = groups
         return self
 
-    def services(self, services: dict[str, Any] | None) -> SmartAnalyzeResponseBuilder:
+    def services(self, services: list[ServiceDataDTO] | None) -> SmartAnalyzeResponseBuilder:
         self._item.services = services
         return self

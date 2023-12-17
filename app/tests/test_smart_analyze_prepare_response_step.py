@@ -1,5 +1,6 @@
 from app.enums.res_info_level import ResInfoLevelEnum
 from app.models.analyze_app_params import AnalyzeAppServiceParameters
+from app.models.dto.service_data_dto import ServiceDataDTO
 from app.models.group_data import GroupData
 from app.models.service_data import ServiceData
 from app.steps.smartAnalyze.smart_analyze_prepare_response_step import PrepareResponseStep
@@ -19,7 +20,7 @@ class TestSmartAnalyzePrepareResponseStep(TestBase):
         self.assertEqual(0, parameters.smart_app_service_response.total_flows_count)
         self.assertEqual(0, parameters.smart_app_service_response.curr_flows_count)
         self.assertEqual({}, parameters.smart_app_service_response.groups)
-        self.assertEqual({}, parameters.smart_app_service_response.services)
+        self.assertEqual([], parameters.smart_app_service_response.services)
 
     def test_execute_with_valid_parameters_info_level(self):
         parameters = AnalyzeAppServiceParameters()
@@ -78,6 +79,7 @@ class TestSmartAnalyzePrepareResponseStep(TestBase):
             'group2': parameters.groups_data.get_item('group2').toJSON(),
             'group3': parameters.groups_data.get_item('group3').toJSON(),
         })
-        self.assertEqual(parameters.smart_app_service_response.services, {
-            'service1': parameters.services_map.get_item('service1').toJSON(),
-        })
+
+        self.assertEqual(1, len(parameters.smart_app_service_response.services))
+        self.assertEqual(parameters.smart_app_service_response.services[0].toJSON(),
+                         parameters.services_map.get_item('service1').toJSON())

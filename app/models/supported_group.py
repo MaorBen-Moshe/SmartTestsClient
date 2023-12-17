@@ -1,12 +1,10 @@
 from __future__ import annotations
 
-from typing import Any
-
 from app.models.builder import Builder
-from app.utils import utils
+from app.models.serializable_model import Serializable
 
 
-class SupportedGroup:
+class SupportedGroup(Serializable):
     def __init__(self):
         self.group_name: str | None = None
         self.cluster: str | None = None
@@ -14,9 +12,6 @@ class SupportedGroup:
         self.url: str | None = None
         self.ms_list: list[str] = []
         self.project: str | None = None
-
-    def toJSON(self) -> dict[str, Any]:
-        return utils.Utils.serialize_class(self)
 
     @property
     def group_name(self) -> str | None:

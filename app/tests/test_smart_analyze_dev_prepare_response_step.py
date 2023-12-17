@@ -19,7 +19,7 @@ class TestSmartAnalyzeDevPrepareResponseStep(TestBase):
         self.assertEqual(0, parameters.smart_analyze_dev_app_service_response.total_flows_count)
         self.assertEqual(0, parameters.smart_analyze_dev_app_service_response.curr_flows_count)
         self.assertEqual({}, parameters.smart_analyze_dev_app_service_response.groups)
-        self.assertEqual({}, parameters.smart_analyze_dev_app_service_response.services)
+        self.assertEqual([], parameters.smart_analyze_dev_app_service_response.services)
 
     def test_execute_with_valid_parameters_info_level(self):
         parameters = AnalyzeDevAppServiceParameters()
@@ -85,6 +85,6 @@ class TestSmartAnalyzeDevPrepareResponseStep(TestBase):
             'group3': parameters.groups_data.get_item('group3').toJSON(),
         })
 
-        self.assertEqual(parameters.smart_analyze_dev_app_service_response.services, {
-            'service1': parameters.services_map.get_item('service1').toJSON(),
-        })
+        self.assertEqual(1, len(parameters.smart_analyze_dev_app_service_response.services))
+        self.assertEqual(parameters.smart_analyze_dev_app_service_response.services[0].toJSON(),
+                         parameters.services_map.get_item('service1').toJSON())

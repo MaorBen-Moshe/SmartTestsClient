@@ -100,10 +100,12 @@ class TestEndpointsUnit(TestUnitBase):
             services = res.json['services']
             self.assertIsNotNone(services)
             self.assertEqual(len(services), 10)
-            self.assertIn('productconfigurator', services)
-            self.assertEqual(services['productconfigurator']['from'], '0.67.19')
-            self.assertEqual(services['productconfigurator']['to'], '0.67.18')
-            self.assertEqual(len(services['productconfigurator']['flows']), 2)
+            configurator_service = [service for service in services
+                                    if service['service_name'] == 'productconfigurator']
+            self.assertEqual(1, len(configurator_service))
+            self.assertEqual(configurator_service[0]['from'], '0.67.19')
+            self.assertEqual(configurator_service[0]['to'], '0.67.18')
+            self.assertEqual(len(configurator_service[0]['flows']), 2)
             body = res.json['groups']
             self.assertIsNotNone(body)
             self.assertEqual(len(body), 2)
@@ -224,10 +226,12 @@ class TestEndpointsUnit(TestUnitBase):
         services = res.json['services']
         self.assertIsNotNone(services)
         self.assertEqual(len(services), 10)
-        self.assertIn('productconfigurator', services)
-        self.assertEqual(services['productconfigurator']['from'], '0.67.19')
-        self.assertEqual(services['productconfigurator']['to'], '0.67.19')
-        self.assertEqual(len(services['productconfigurator']['flows']), 0)
+        configurator_service = [service for service in services
+                                if service['service_name'] == 'productconfigurator']
+        self.assertEqual(1, len(configurator_service))
+        self.assertEqual(configurator_service[0]['from'], '0.67.19')
+        self.assertEqual(configurator_service[0]['to'], '0.67.19')
+        self.assertEqual(len(configurator_service[0]['flows']), 0)
         body = res.json['groups']
         self.assertIsNotNone(body)
         self.assertEqual(len(body), 2)
@@ -327,14 +331,18 @@ class TestEndpointsUnit(TestUnitBase):
         services = res.json['services']
         self.assertIsNotNone(services)
         self.assertEqual(len(services), 2)
-        self.assertIn('productconfigurator', services)
-        self.assertEqual(services['productconfigurator']['from'], '0.67.20')
-        self.assertEqual(services['productconfigurator']['to'], '0.67.19')
-        self.assertEqual(len(services['productconfigurator']['flows']), 2)
-        self.assertIn('productconfigurator-pioperations', services)
-        self.assertEqual(services['productconfigurator-pioperations']['from'], '0.67.13')
-        self.assertEqual(services['productconfigurator-pioperations']['to'], '0.67.11')
-        self.assertEqual(len(services['productconfigurator-pioperations']['flows']), 0)
+        configurator_service = [service for service in services
+                                if service['service_name'] == 'productconfigurator']
+        self.assertEqual(1, len(configurator_service))
+        self.assertEqual(configurator_service[0]['from'], '0.67.20')
+        self.assertEqual(configurator_service[0]['to'], '0.67.19')
+        self.assertEqual(len(configurator_service[0]['flows']), 2)
+        pioperations_service = [service for service in services
+                                if service['service_name'] == 'productconfigurator-pioperations']
+        self.assertEqual(1, len(pioperations_service))
+        self.assertEqual(pioperations_service[0]['from'], '0.67.13')
+        self.assertEqual(pioperations_service[0]['to'], '0.67.11')
+        self.assertEqual(len(pioperations_service[0]['flows']), 0)
         body = res.json['groups']
         self.assertIsNotNone(body)
         self.assertEqual(len(body), 3)
@@ -438,11 +446,12 @@ class TestEndpointsUnit(TestUnitBase):
         services = res.json['services']
         self.assertIsNotNone(services)
         self.assertEqual(len(services), 1)
-        self.assertIn('productconfigurator', services)
-        self.assertIsNone(services['productconfigurator'].get('from'))
-        self.assertIsNone(services['productconfigurator'].get('to'))
-        self.assertEqual(services['productconfigurator'].get('pullRequestId'), '12345')
-        self.assertEqual(len(services['productconfigurator']['flows']), 2)
+        self.assertEqual("productconfigurator", services[0]['service_name'])
+        self.assertIsNone(services[0]['from'])
+        self.assertIsNone(services[0]['to'])
+        self.assertEqual(len(services[0]['flows']), 2)
+        self.assertEqual(services[0]['pullRequestId'], '12345')
+        self.assertEqual(len(services[0]['flows']), 2)
         body = res.json['groups']
         self.assertIsNotNone(body)
         self.assertEqual(len(body), 3)
@@ -508,11 +517,14 @@ class TestEndpointsUnit(TestUnitBase):
         services = res.json['services']
         self.assertIsNotNone(services)
         self.assertEqual(len(services), 1)
-        self.assertIn('productconfigurator', services)
-        self.assertIsNone(services['productconfigurator'].get('from'))
-        self.assertIsNone(services['productconfigurator'].get('to'))
-        self.assertEqual(services['productconfigurator'].get('pullRequestId'), '12345')
-        self.assertEqual(len(services['productconfigurator']['flows']), 2)
+        configurator_service = [service for service in services
+                                if service['service_name'] == 'productconfigurator']
+        self.assertEqual(1, len(configurator_service))
+        self.assertIsNone(configurator_service[0]['from'])
+        self.assertIsNone(configurator_service[0]['to'])
+        self.assertEqual(len(configurator_service[0]['flows']), 2)
+        self.assertEqual(configurator_service[0]['pullRequestId'], '12345')
+        self.assertEqual(len(configurator_service[0]['flows']), 2)
         body = res.json['groups']
         self.assertIsNotNone(body)
         self.assertEqual(len(body), 3)

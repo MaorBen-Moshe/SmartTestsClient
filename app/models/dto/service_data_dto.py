@@ -1,12 +1,11 @@
 from __future__ import annotations
 
-from typing import Any
-
 from app.models.builder import Builder
+from app.models.serializable_model import Serializable
 from app.utils.utils import Utils
 
 
-class ServiceDataDTO:
+class ServiceDataDTO(Serializable):
     def __init__(self):
         self.service_name: str | None = None
         self.from_version: str | None = None
@@ -65,9 +64,6 @@ class ServiceDataDTO:
 
     def add_flows(self, curr_flows: list[str] | None):
         Utils.add_flows_without_duplications(self.flows, curr_flows)
-
-    def toJSON(self) -> dict[str, Any]:
-        return Utils.serialize_class(self)
 
     @staticmethod
     def create():

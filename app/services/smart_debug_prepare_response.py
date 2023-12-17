@@ -1,5 +1,6 @@
 from app import app_main_logger
 from app.decorators.decorators import log_around
+from app.mappers.service_data_mapper import ServiceDataMapper
 from app.models.groups_data import TestGroupsData
 from app.models.services_data import ServicesData
 from app.models.smart_analyze_response import SmartAnalyzeResponse
@@ -20,6 +21,8 @@ class DebugPrepareResponseStrategy(IPrepareResponseStrategy):
         curr_flows_count = sum([groups_data.get_item(key).curr_flows_count for key in groups_data
                                 if groups_data.get_item(key).curr_flows_count > 0])
 
+        services_data_dto = ServiceDataMapper.map_from_services_data_to_dto_list(services_data)
+
         smart_app_service_response = (SmartAnalyzeResponse.create()
                                       .total_flows_count(total_count)
                                       .curr_flows_count(curr_flows_count)
@@ -27,10 +30,7 @@ class DebugPrepareResponseStrategy(IPrepareResponseStrategy):
                                                groups_data.get_item(key).toJSON()
                                                for key in groups_data
                                                })
-                                      .services({key:
-                                                 services_data.get_item(key).toJSON()
-                                                 for key in services_data
-                                                 })
+                                      .services(services_data_dto)
                                       .build())
 
         return smart_app_service_response

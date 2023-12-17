@@ -1,12 +1,11 @@
 from __future__ import annotations
 
-from typing import Any
-
 from app.models.builder import Builder
+from app.models.serializable_model import Serializable
 from app.utils.utils import Utils
 
 
-class GroupData:
+class GroupData(Serializable):
     def __init__(self):
         self.test_xml_name = None
         self.test_xml_path = None
@@ -57,9 +56,6 @@ class GroupData:
     def add_flows(self, curr_flows: list[str] | None):
         Utils.add_flows_without_duplications(self.flows, curr_flows)
         self.curr_flows_count = len(self.flows)
-
-    def toJSON(self) -> dict[str, Any]:
-        return Utils.serialize_class(self)
 
     @staticmethod
     def create():

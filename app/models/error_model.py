@@ -1,18 +1,15 @@
 from __future__ import annotations
 
 from app.models.builder import Builder
-from app.utils.utils import Utils
+from app.models.serializable_model import Serializable
 
 
-class Error:
+class Error(Serializable):
     def __init__(self):
         self.error_code: int | None = None
         self.error_message: str | None = None
         self.timestamp: str | None = None
         self.trace_id: str | None = None
-
-    def toJSON(self) -> dict[str, str | int]:
-        return Utils.serialize_class(self)
 
     @property
     def error_code(self) -> int | None:

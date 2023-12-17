@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import json
 import os
 import urllib
 import uuid
@@ -23,16 +22,6 @@ class Utils:
         parsed = urllib.parse.urlparse(url)
         ext = os.path.splitext(parsed.path)[1]
         return ext in [".zip", ".html"]
-
-    @staticmethod
-    def serialize_class(cls):
-        if cls is None:
-            return None
-
-        return (dict(
-            (i.replace(cls.__class__.__name__, '').lstrip("_"), value)
-            for i, value in cls.__dict__.items()
-        ))
 
     @staticmethod
     def add_flows_without_duplications(flows: list[str], curr_flows: list[str] | None) -> None:

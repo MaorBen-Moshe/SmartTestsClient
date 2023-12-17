@@ -1,12 +1,13 @@
 from parameterized import parameterized
 
+from app.models.serializable_model import Serializable
 from app.models.service_data import ServiceData
 from app.utils.utils import Utils
 from test_base import TestBase
 
 
 class TestUtils(TestBase):
-    class WithoutProperties:
+    class WithoutProperties(Serializable):
         def __init__(self, name, age, gender):
             self._name = name
             self._age = age
@@ -54,13 +55,14 @@ class TestUtils(TestBase):
           "project": "project",
           "pullRequestId": "pull_request_id"}),
         (ServiceData.create().to_version("to_version").from_version("from_version").build(),
-         {"service_name": None, "to": "to_version", "from": "from_version", "flows": [], "project": None, "pullRequestId": None}),
+         {"service_name": None, "to": "to_version", "from": "from_version", "flows": [], "project": None,
+          "pullRequestId": None}),
         (WithoutProperties("Alice", 25, "female"),
          {"name": "Alice", "age": 25, "gender": "female"}),
         (None, None)
     ])
     def test_serialize_class(self, cls, expected):
-        res = Utils.serialize_class(cls)
+        res = cls.toJSON() if cls else None
 
         self.assertEqual(res, expected)
 

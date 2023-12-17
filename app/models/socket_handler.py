@@ -1,10 +1,9 @@
 import time
-from typing import Any
 
 from flask_socketio import SocketIO
 
+from app.models.serializable_model import Serializable
 from app.models.singleton_meta import SingletonMeta
-from app.utils.utils import Utils
 
 
 class SocketHandler(metaclass=SingletonMeta):
@@ -32,7 +31,7 @@ class SocketHandler(metaclass=SingletonMeta):
                            namespace=self.namespace)
 
 
-class SocketResponse:
+class SocketResponse(Serializable):
     def __init__(self, message: str, session_id: str):
         self._message = message
         self._session_id = session_id
@@ -45,6 +44,3 @@ class SocketResponse:
     @property
     def session_id(self):
         return self._session_id
-
-    def toJSON(self) -> dict[str, Any]:
-        return Utils.serialize_class(self)

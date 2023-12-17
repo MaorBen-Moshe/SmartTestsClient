@@ -43,6 +43,7 @@ class UpdateServiceDataService:
                 to_version = services_from_nexus.get_item(service).to_version
 
             updated_services_data_map.add_item(service, (ServiceData.create()
+                                                         .service_name(service_data.service_name)
                                                          .from_version(service_data.from_version)
                                                          .to_version(to_version if to_version
                                                                      else service_data.to_version)

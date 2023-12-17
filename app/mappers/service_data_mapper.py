@@ -44,6 +44,16 @@ class ServiceDataMapper:
         return services_data
 
     @classmethod
+    def map_from_services_data_to_dto_list(cls, services_data: ServicesData) -> list[ServiceDataDTO]:
+        services_data_dto_list = []
+        if services_data and type(services_data) is ServicesData:
+            for service_name in services_data:
+                service_data = services_data.get_item(service_name)
+                if service_data is not None and type(service_data) is ServiceData:
+                    services_data_dto_list.append(cls.map_from_service_data_to_dto(service_data))
+        return services_data_dto_list
+
+    @classmethod
     def map_from_dto(cls, service_data_dto: ServiceDataDTO | None) -> ServiceData | None:
         if service_data_dto is None or type(service_data_dto) is not ServiceDataDTO:
             return None
@@ -56,3 +66,17 @@ class ServiceDataMapper:
         service_data.project = service_data_dto.project
         service_data.pull_request_id = service_data_dto.pull_request_id
         return service_data
+
+    @classmethod
+    def map_from_service_data_to_dto(cls, service_data: ServiceData | None) -> ServiceDataDTO | None:
+        if service_data is None or type(service_data) is not ServiceData:
+            return None
+
+        service_data_dto = ServiceDataDTO()
+        service_data_dto.service_name = service_data.service_name
+        service_data_dto.from_version = service_data.from_version
+        service_data_dto.to_version = service_data.to_version
+        service_data_dto.flows = service_data.flows
+        service_data_dto.project = service_data.project
+        service_data_dto.pull_request_id = service_data.pull_request_id
+        return service_data_dto
