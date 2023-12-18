@@ -450,8 +450,8 @@ class TestEndpointsUnit(TestUnitBase):
         self.assertIsNotNone(services)
         self.assertEqual(len(services), 1)
         self.assertEqual("productconfigurator", services[0]['service_name'])
-        self.assertIsNone(services[0]['from'])
-        self.assertIsNone(services[0]['to'])
+        self.assertNotIn('from', services[0])
+        self.assertNotIn('to', services[0])
         self.assertEqual(len(services[0]['flows']), 2)
         self.assertEqual(services[0]['pullRequestId'], '12345')
         self.assertEqual(len(services[0]['flows']), 2)
@@ -523,8 +523,8 @@ class TestEndpointsUnit(TestUnitBase):
         configurator_service = [service for service in services
                                 if service['service_name'] == 'productconfigurator']
         self.assertEqual(1, len(configurator_service))
-        self.assertIsNone(configurator_service[0]['from'])
-        self.assertIsNone(configurator_service[0]['to'])
+        self.assertNotIn('from', configurator_service[0])
+        self.assertNotIn('to', configurator_service[0])
         self.assertEqual(len(configurator_service[0]['flows']), 2)
         self.assertEqual(configurator_service[0]['pullRequestId'], '12345')
         self.assertEqual(len(configurator_service[0]['flows']), 2)

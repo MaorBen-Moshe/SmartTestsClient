@@ -21,13 +21,14 @@ class HtmlParserService:
     def load_html(self,
                   html_zip_url: str | None,
                   services_map: ServicesData,
-                  filtered_ms_list: list[str]):
+                  filtered_ms_list: list[str],
+                  group_project: str | None):
         self.html = HtmlParserClient.get_html(html_zip_url)
         self.soup = BeautifulSoup(self.html, "html.parser")
         self.table = self.__find_table()
         if self.table is not None:
             name_index, version_index = self.__find_indexes()
-            self.__update_map(services_map, name_index, version_index, filtered_ms_list)
+            self.__update_map(services_map, name_index, version_index, filtered_ms_list, group_project)
         else:
             raise NotFoundError(f"error with build report structure. not found '{TABLE_NAME}' table")
 
@@ -55,7 +56,8 @@ class HtmlParserService:
                      services_map: ServicesData,
                      name_index: int,
                      version_index: int,
-                     filtered_ms_list: list[str]):
+                     filtered_ms_list: list[str],
+                     group_project: str | None):
         rows = self.table.find_all(TR)[2:]  # Skip the first and second rows
         for row in rows:
             cells = row.find_all(TD)
@@ -67,4 +69,8 @@ class HtmlParserService:
                         services_map.get_item(name).to_version = version
                     else:
                         services_map.add_item(name,
-                                                 ServiceData.create().to_version(version).from_version(version).build())
+                                              ServiceData.create()
+                                              .service_name(name)
+                                              .project(group_project)
+                                              .to_version(version)
+                                              .from_version(version).build())

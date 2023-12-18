@@ -50,15 +50,13 @@ class TestUtils(TestBase):
          .project("project")
          .pull_request_id("pull_request_id")
          .build(),
-         {"service_name": None,
-          "to": "to_version",
+         {"to": "to_version",
           "from": "from_version",
           "flows": [],
           "project": "project",
           "pullRequestId": "pull_request_id"}),
         (ServiceData.create().to_version("to_version").from_version("from_version").build(),
-         {"service_name": None, "to": "to_version", "from": "from_version", "flows": [], "project": None,
-          "pullRequestId": None}),
+         {"to": "to_version", "from": "from_version", "flows": []}),
         (WithoutProperties("Alice", 25, "female"),
          {"name": "Alice", "age": 25, "gender": "female"}),
         (None, None),
@@ -70,10 +68,8 @@ class TestUtils(TestBase):
          .build(),
          {"total_flows_count": 1, "curr_flows_count": 1,
           "groups": {"group1": {"flows": ["flow1"], "curr_flows_count": 1,
-                                "total_flows_count": 1,
-                                "test_xml_name": None, "test_xml_path": None}},
-          "services": [{"service_name": None, "to": "to_version", "from": "from_version", "flows": [],
-                        "project": None, "pullRequestId": None}]})
+                                "total_flows_count": 1}},
+          "services": [{"to": "to_version", "from": "from_version", "flows": []}]})
     ])
     def test_serialize_class(self, cls, expected):
         res = cls.toJSON() if cls else None
