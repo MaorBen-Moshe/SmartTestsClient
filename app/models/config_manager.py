@@ -71,15 +71,15 @@ class ConfigManager(metaclass=SingletonMeta):
     def get_log_level_by_name(self, name: str) -> str:
         return self._config["logging"][name] if name in self._config["logging"] else self.get_log_level()
 
-    @classmethod
-    def __get_supported_groups_helper(cls, supported_groups_str_format: dict[str, Any]) -> SupportedGroups:
+    def __get_supported_groups_helper(self, supported_groups_str_format: dict[str, Any]) -> SupportedGroups:
         groups = SupportedGroups()
         for group_name, group in supported_groups_str_format.items():
             if group_name is not None:
+                default_supported_groups = self._config["app"]["default_groups_test_files"]
                 groups.add_item(group_name, (SupportedGroup.create().group_name(group_name)
                                              .url(group["url"])
                                              .cluster(group["cluster"])
-                                             .test_files(group["test_files"])
+                                             .test_files(default_supported_groups + group["test_files"])
                                              .ms_list(group["ms_list"])
                                              .project(group["project"])
                                              .build()))
