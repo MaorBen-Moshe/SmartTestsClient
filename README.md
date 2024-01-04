@@ -35,7 +35,8 @@ This endpoint is a GET method and returns in the response all the supported grou
 
 This endpoint is a GET method and returns in the response all the supported services the server supports.
 
-query params:
+Query params:
+
 groupName: str [optional] = if provided the response will contain only the services that are part of the group.
 
 **Response example:**
