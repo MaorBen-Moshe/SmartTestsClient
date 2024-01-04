@@ -6,11 +6,7 @@ from app import config, cache_manager
 from app.constants.constants import MS_POSTFIX
 from app.decorators.decorators import gateway_errors_handler, log_around
 from app.models.service_data import ServiceData
-
-
-def _make_cache_key(*args, **kwargs):
-    suffix = args[1] if len(args) > 1 and args[1] is not None and len(args[1]) > 0 else "empty_args"
-    return f"smart_tests_all_{suffix}"
+from app.utils.utils import Utils
 
 
 class SmartTestsClient:
@@ -59,7 +55,7 @@ class SmartTestsClient:
     @gateway_errors_handler
     @log_around(print_output=True)
     @cache_manager.cached(timeout=600,
-                          make_cache_key=_make_cache_key,
+                          make_cache_key=Utils.make_cache_key_smart_get_all,
                           unless=lambda: not config.is_get_all_endpoint_cache_enabled())
     def get_all_flows_stats(self, include_groups_filter: str | None):
         body = []

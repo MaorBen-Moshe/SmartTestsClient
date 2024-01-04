@@ -60,3 +60,8 @@ class Utils:
                         break
 
         return project
+
+    @staticmethod
+    def make_cache_key_smart_get_all(*args, **kwargs):
+        suffix = args[1] if len(args) > 1 and args[1] is not None and len(args[1]) > 0 else "empty_args"
+        return f"smart_tests_all_{suffix}"
