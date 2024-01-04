@@ -8,6 +8,8 @@ from flask_login import LoginManager
 
 app = Flask(__name__)
 
+app.config['SECRET_KEY'] = os.urandom(24)
+
 CORS(app)
 
 login_manager = LoginManager()
