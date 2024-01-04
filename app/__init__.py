@@ -2,18 +2,29 @@ import os
 import logging
 
 from flask import Flask
+from flask_caching import Cache
 from flask.logging import default_handler
 from flask_cors import CORS
 from flask_login import LoginManager
 
+app_config = {
+    'SECRET_KEY': os.urandom(24),
+    'CACHE_TYPE': 'SimpleCache',  # Flask-Caching related configs
+    'CACHE_DEFAULT_TIMEOUT': 600,  # 10 minutes
+    'CACHE_THRESHOLD': 10
+}
+
 app = Flask(__name__)
 
-app.config['SECRET_KEY'] = os.urandom(24)
+app.config.from_mapping(app_config)
 
 CORS(app)
 
 login_manager = LoginManager()
 login_manager.init_app(app)
+
+cache_manager = Cache()
+cache_manager.init_app(app)
 
 from app.utils import utils
 from app.models import config_manager, socket_handler

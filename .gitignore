@@ -6,4 +6,4 @@
 /app/logs/
 *.log
 *__pycache__/
-*config.yaml
+/app/config.yaml

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import os
 import unittest
 import unittest.mock as mock
 
@@ -19,6 +20,7 @@ class TestBase(unittest.TestCase):
     def setUpClass(cls):
         super().setUpClass()
         cls.config = config
+        cls.config.init_configs(os.path.join(os.path.dirname(__file__), "testConfigs/test_config.yaml"))
         cls.logger = app_main_logger
 
     @pytest.fixture(autouse=True)

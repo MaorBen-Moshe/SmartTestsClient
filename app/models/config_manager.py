@@ -22,7 +22,7 @@ class ConfigManager(metaclass=SingletonMeta):
 
         with open(config_path, "r") as config_file:
             self._config = yaml.safe_load(config_file)
-            self._fernet = Fernet(self._config["app"]["encrypt_key"])
+            self._fernet = Fernet(self._config["app"]["encrypt_key"]) if "encrypt_key" in self._config["app"] else None
 
     def get_server_port(self) -> int:
         return self._config["server"]["port"]
@@ -35,12 +35,26 @@ class ConfigManager(metaclass=SingletonMeta):
         return self.__get_supported_groups_helper(supported_groups_dict)
 
     def get_nexus_cred(self) -> (str, str):
-        return (self._config["nexus"]["nexus_user"],
-                self._fernet.decrypt(self._config["nexus"]["nexus_password"]).decode("utf-8"))
+        nexus_user = None
+        nexus_password = None
+        if "nexus" in self._config:
+            if "nexus_user" in self._config["nexus"]:
+                nexus_user = self._config["nexus"]["nexus_user"]
+            if "nexus_password" in self._config["nexus"]:
+                nexus_password = self._fernet.decrypt(self._config["nexus"]["nexus_password"]).decode("utf-8")
+
+        return nexus_user, nexus_password
 
     def get_jenkins_cred(self) -> (str, str):
-        return (self._config["jenkins"]["jenkins_user"],
-                self._fernet.decrypt(self._config["jenkins"]["jenkins_password"]).decode("utf-8"))
+        jenkins_user = None
+        jenkins_password = None
+        if "jenkins" in self._config:
+            if "jenkins_user" in self._config["jenkins"]:
+                jenkins_user = self._config["jenkins"]["jenkins_user"]
+            if "jenkins_password" in self._config["jenkins"]:
+                jenkins_password = self._fernet.decrypt(self._config["jenkins"]["jenkins_password"]).decode("utf-8")
+
+        return jenkins_user, jenkins_password
 
     def get_index_data_repository(self) -> str | None:
         data = self._config["nexus"]["index_data_repository"]
@@ -70,6 +84,10 @@ class ConfigManager(metaclass=SingletonMeta):
 
     def get_log_level_by_name(self, name: str) -> str:
         return self._config["logging"][name] if name in self._config["logging"] else self.get_log_level()
+
+    def is_get_all_endpoint_cache_enabled(self) -> bool:
+        value = self._config["cache"]["get_all_endpoint"]['enabled']
+        return bool(value) if value is not None else False
 
     def __get_supported_groups_helper(self, supported_groups_str_format: dict[str, Any]) -> SupportedGroups:
         groups = SupportedGroups()
