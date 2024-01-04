@@ -60,11 +60,13 @@ class ServiceDataMapper:
 
         service_data = ServiceData()
         service_data.service_name = service_data_dto.service_name
+        service_data.repo_name = service_data_dto.repo_name
         service_data.from_version = service_data_dto.from_version
         service_data.to_version = service_data_dto.to_version
         service_data.flows = service_data_dto.flows
         service_data.project = service_data_dto.project
         service_data.pull_request_id = service_data_dto.pull_request_id
+        service_data.related_group = service_data_dto.related_group
         return service_data
 
     @classmethod
@@ -74,9 +76,11 @@ class ServiceDataMapper:
 
         service_data_dto = ServiceDataDTO()
         service_data_dto.service_name = service_data.service_name
+        service_data_dto.repo_name = service_data.repo_name
         service_data_dto.from_version = service_data.from_version
         service_data_dto.to_version = service_data.to_version
         service_data_dto.flows = service_data.flows
         service_data_dto.project = service_data.project
         service_data_dto.pull_request_id = service_data.pull_request_id
+        service_data_dto.related_group = service_data.related_group
         return service_data_dto

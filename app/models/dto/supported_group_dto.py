@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from app.models.serializable_model import Serializable
+from app.models.service_data import ServiceData
 
 
 class SupportedGroupDTO(Serializable):
@@ -9,7 +10,7 @@ class SupportedGroupDTO(Serializable):
         self.cluster: str | None = None
         self.test_files: list[str] = []
         self.url: str | None = None
-        self.ms_list: list[str] = []
+        self.ms_list: list[ServiceData] = []
         self.project: str | None = None
 
     @property
@@ -45,11 +46,11 @@ class SupportedGroupDTO(Serializable):
         self._test_files = test_files
 
     @property
-    def ms_list(self) -> list[str]:
+    def ms_list(self) -> list[ServiceData]:
         return self._ms_list
 
     @ms_list.setter
-    def ms_list(self, ms_list: list[str]):
+    def ms_list(self, ms_list: list[ServiceData]):
         self._ms_list = ms_list
 
     @property

@@ -8,7 +8,6 @@ from typing import Any
 import flask
 
 from app.constants.constants import SESSION_ID_KEY, FLASK_REQUEST_ID_KEY
-from app.models.supported_groups import SupportedGroups
 
 
 class Utils:
@@ -47,19 +46,6 @@ class Utils:
         list_to = list_to if list_to is not None else []
         list_from = list_from if list_from is not None else []
         return list(set(list_to + list_from))
-
-    @staticmethod
-    def get_project_name_from_supported_group(service_name: str | None, supported_groups: SupportedGroups):
-        project = None
-        if service_name:
-            if supported_groups:
-                for group_name in supported_groups:
-                    group = supported_groups.get_item(group_name)
-                    if service_name in group.ms_list:
-                        project = group.project
-                        break
-
-        return project
 
     @staticmethod
     def make_cache_key_smart_get_all(*args, **kwargs):

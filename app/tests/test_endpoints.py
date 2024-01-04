@@ -57,20 +57,185 @@ class TestEndpointsUnit(TestUnitBase):
                                                                      "'], "
                                                                      "'url': "
                                                                      "'http://illin5565:18080/job/oc-cd-group4/job/oc"
-                                                                     "-cd-group4/', 'ms_list': ["
-                                                                     "'productconfigurator', "
-                                                                     "'productconfigurator-action', "
+                                                                     "-cd-group4/', 'ms_list': [{'service_name': "
+                                                                     "'productconfigurator', 'repo_name': "
+                                                                     "'productconfigurator-ms', 'project': 'DIGOC', "
+                                                                     "'related_group': 'oc-cd-group4'}, "
+                                                                     "{'service_name': 'productconfigurator-action', "
+                                                                     "'repo_name': 'productconfigurator-action-ms', "
+                                                                     "'project': 'DIGOC', 'related_group': "
+                                                                     "'oc-cd-group4'}, {'service_name': "
                                                                      "'productconfigurator-commitmentterm', "
+                                                                     "'repo_name': "
+                                                                     "'productconfigurator-commitmentterm-ms', "
+                                                                     "'project': 'DIGOC', 'related_group': "
+                                                                     "'oc-cd-group4'}, {'service_name': "
                                                                      "'productconfigurator-mergeentities', "
+                                                                     "'repo_name': "
+                                                                     "'productconfigurator-mergeentities-ms', "
+                                                                     "'project': 'DIGOC', 'related_group': "
+                                                                     "'oc-cd-group4'}, {'service_name': "
                                                                      "'productconfigurator-pioperations', "
-                                                                     "'productconfigurator-price', "
-                                                                     "'productconfigurator-promotion', "
+                                                                     "'repo_name': "
+                                                                     "'productconfigurator-pioperations-ms', "
+                                                                     "'project': 'DIGOC', 'related_group': "
+                                                                     "'oc-cd-group4'}, {'service_name': "
+                                                                     "'productconfigurator-price', 'repo_name': "
+                                                                     "'productconfigurator-price-ms', 'project': "
+                                                                     "'DIGOC', 'related_group': 'oc-cd-group4'}, "
+                                                                     "{'service_name': "
+                                                                     "'productconfigurator-promotion', 'repo_name': "
+                                                                     "'productconfigurator-promotion-ms', 'project': "
+                                                                     "'DIGOC', 'related_group': 'oc-cd-group4'}, "
+                                                                     "{'service_name': "
                                                                      "'productconfigurator-qualification', "
-                                                                     "'productconfigurator-replace', "
-                                                                     "'productvalidator'], 'project': 'DIGOC'}}"])
+                                                                     "'repo_name': "
+                                                                     "'productconfigurator-qualification-ms', "
+                                                                     "'project': 'DIGOC', 'related_group': "
+                                                                     "'oc-cd-group4'}, {'service_name': "
+                                                                     "'productconfigurator-replace', 'repo_name': "
+                                                                     "'productconfigurator-replace-ms', 'project': "
+                                                                     "'DIGOC', 'related_group': 'oc-cd-group4'}, "
+                                                                     "{'service_name': 'productvalidator', "
+                                                                     "'repo_name': 'productvalidator-ms', 'project': "
+                                                                     "'DIGOC', 'related_group': 'oc-cd-group4'}], "
+                                                                     "'project': 'DIGOC'}}"])
 
     def test_supported_groups_endpoint_missing_api_key(self):
         res = self.client_fixture.get("/supported-groups")
+
+        self.assertEqual(res.status_code, 401)
+
+    def test_supported_services_endpoint_success(self):
+        with self.assertLogs(self.logger.get_logger_name(), level='DEBUG') as cm:
+            res = self.client_fixture.get("/supported-services",
+                                          headers={API_KEY_QUERY_PARAM: self.config.get_user_api_token()})
+            self.assertEqual(res.status_code, 200)
+            self.assertIsNotNone(res.json)
+            self.assertEqual(len(res.json), 10)
+            configurator_service = [service for service in res.json if service['service_name'] == 'productconfigurator']
+            self.assertEqual(1, len(configurator_service))
+            self.assertEqual(configurator_service[0]['service_name'], 'productconfigurator')
+            self.assertEqual(configurator_service[0]['repo_name'], 'productconfigurator-ms')
+            self.assertEqual(configurator_service[0]['project'], 'DIGOC')
+            self.assertEqual(configurator_service[0]['related_group'], 'oc-cd-group4')
+            self.assertEqual(cm.output,
+                             ['DEBUG:app:Supported services request.', "DEBUG:app:Supported services response. "
+                                                                       "response=[{'service_name': "
+                                                                       "'productconfigurator', 'repo_name': "
+                                                                       "'productconfigurator-ms', 'project': 'DIGOC', "
+                                                                       "'related_group': 'oc-cd-group4'}, "
+                                                                       "{'service_name': "
+                                                                       "'productconfigurator-action', 'repo_name': "
+                                                                       "'productconfigurator-action-ms', 'project': "
+                                                                       "'DIGOC', 'related_group': 'oc-cd-group4'}, "
+                                                                       "{'service_name': "
+                                                                       "'productconfigurator-commitmentterm', "
+                                                                       "'repo_name': "
+                                                                       "'productconfigurator-commitmentterm-ms', "
+                                                                       "'project': 'DIGOC', 'related_group': "
+                                                                       "'oc-cd-group4'}, {'service_name': "
+                                                                       "'productconfigurator-mergeentities', "
+                                                                       "'repo_name': "
+                                                                       "'productconfigurator-mergeentities-ms', "
+                                                                       "'project': 'DIGOC', 'related_group': "
+                                                                       "'oc-cd-group4'}, {'service_name': "
+                                                                       "'productconfigurator-pioperations', "
+                                                                       "'repo_name': "
+                                                                       "'productconfigurator-pioperations-ms', "
+                                                                       "'project': 'DIGOC', 'related_group': "
+                                                                       "'oc-cd-group4'}, {'service_name': "
+                                                                       "'productconfigurator-price', 'repo_name': "
+                                                                       "'productconfigurator-price-ms', 'project': "
+                                                                       "'DIGOC', 'related_group': 'oc-cd-group4'}, "
+                                                                       "{'service_name': "
+                                                                       "'productconfigurator-promotion', 'repo_name': "
+                                                                       "'productconfigurator-promotion-ms', "
+                                                                       "'project': 'DIGOC', 'related_group': "
+                                                                       "'oc-cd-group4'}, {'service_name': "
+                                                                       "'productconfigurator-qualification', "
+                                                                       "'repo_name': "
+                                                                       "'productconfigurator-qualification-ms', "
+                                                                       "'project': 'DIGOC', 'related_group': "
+                                                                       "'oc-cd-group4'}, {'service_name': "
+                                                                       "'productconfigurator-replace', 'repo_name': "
+                                                                       "'productconfigurator-replace-ms', 'project': "
+                                                                       "'DIGOC', 'related_group': 'oc-cd-group4'}, "
+                                                                       "{'service_name': 'productvalidator', "
+                                                                       "'repo_name': 'productvalidator-ms', "
+                                                                       "'project': 'DIGOC', 'related_group': "
+                                                                       "'oc-cd-group4'}]"])
+
+    def test_supported_services_endpoint_success_filter_group4(self):
+        with self.assertLogs(self.logger.get_logger_name(), level='DEBUG') as cm:
+            res = self.client_fixture.get("/supported-services?groupName=oc-cd-group4",
+                                          headers={API_KEY_QUERY_PARAM: self.config.get_user_api_token()})
+            self.assertEqual(res.status_code, 200)
+            self.assertIsNotNone(res.json)
+            self.assertEqual(len(res.json), 10)
+            configurator_service = [service for service in res.json if service['service_name'] == 'productconfigurator']
+            self.assertEqual(1, len(configurator_service))
+            self.assertEqual(configurator_service[0]['service_name'], 'productconfigurator')
+            self.assertEqual(configurator_service[0]['repo_name'], 'productconfigurator-ms')
+            self.assertEqual(configurator_service[0]['project'], 'DIGOC')
+            self.assertEqual(configurator_service[0]['related_group'], 'oc-cd-group4')
+            self.assertEqual(cm.output,
+                             ['DEBUG:app:Supported services request.', "DEBUG:app:Supported services response. "
+                                                                       "response=[{'service_name': "
+                                                                       "'productconfigurator', 'repo_name': "
+                                                                       "'productconfigurator-ms', 'project': 'DIGOC', "
+                                                                       "'related_group': 'oc-cd-group4'}, "
+                                                                       "{'service_name': "
+                                                                       "'productconfigurator-action', 'repo_name': "
+                                                                       "'productconfigurator-action-ms', 'project': "
+                                                                       "'DIGOC', 'related_group': 'oc-cd-group4'}, "
+                                                                       "{'service_name': "
+                                                                       "'productconfigurator-commitmentterm', "
+                                                                       "'repo_name': "
+                                                                       "'productconfigurator-commitmentterm-ms', "
+                                                                       "'project': 'DIGOC', 'related_group': "
+                                                                       "'oc-cd-group4'}, {'service_name': "
+                                                                       "'productconfigurator-mergeentities', "
+                                                                       "'repo_name': "
+                                                                       "'productconfigurator-mergeentities-ms', "
+                                                                       "'project': 'DIGOC', 'related_group': "
+                                                                       "'oc-cd-group4'}, {'service_name': "
+                                                                       "'productconfigurator-pioperations', "
+                                                                       "'repo_name': "
+                                                                       "'productconfigurator-pioperations-ms', "
+                                                                       "'project': 'DIGOC', 'related_group': "
+                                                                       "'oc-cd-group4'}, {'service_name': "
+                                                                       "'productconfigurator-price', 'repo_name': "
+                                                                       "'productconfigurator-price-ms', 'project': "
+                                                                       "'DIGOC', 'related_group': 'oc-cd-group4'}, "
+                                                                       "{'service_name': "
+                                                                       "'productconfigurator-promotion', 'repo_name': "
+                                                                       "'productconfigurator-promotion-ms', "
+                                                                       "'project': 'DIGOC', 'related_group': "
+                                                                       "'oc-cd-group4'}, {'service_name': "
+                                                                       "'productconfigurator-qualification', "
+                                                                       "'repo_name': "
+                                                                       "'productconfigurator-qualification-ms', "
+                                                                       "'project': 'DIGOC', 'related_group': "
+                                                                       "'oc-cd-group4'}, {'service_name': "
+                                                                       "'productconfigurator-replace', 'repo_name': "
+                                                                       "'productconfigurator-replace-ms', 'project': "
+                                                                       "'DIGOC', 'related_group': 'oc-cd-group4'}, "
+                                                                       "{'service_name': 'productvalidator', "
+                                                                       "'repo_name': 'productvalidator-ms', "
+                                                                       "'project': 'DIGOC', 'related_group': "
+                                                                       "'oc-cd-group4'}]"])
+
+    def test_supported_services_endpoint_not_exist_group(self):
+        with self.assertLogs(self.logger.get_logger_name(), level='DEBUG') as cm:
+            res = self.client_fixture.get("/supported-services?groupName=notExist",
+                                          headers={API_KEY_QUERY_PARAM: self.config.get_user_api_token()})
+            self.assertEqual(res.status_code, 200)
+            self.assertIsNotNone(res.json)
+            self.assertEqual(len(res.json), 0)
+
+    def test_supported_services_endpoint_missing_api_key(self):
+        res = self.client_fixture.get("/supported-services")
 
         self.assertEqual(res.status_code, 401)
 
@@ -111,7 +276,7 @@ class TestEndpointsUnit(TestUnitBase):
             self.assertIn('extended_mat_7b_APIGW_testng.xml', body)
             self.assertEqual(body['extended_mat_7b_APIGW_testng.xml']['curr_flows_count'], 0)
             self.assertEqual(body['extended_mat_7b_APIGW_testng.xml']['total_flows_count'], 45)
-            self.assertListEqual(body['extended_mat_7b_APIGW_testng.xml']['flows'], [])
+            self.assertNotIn('flows', body['extended_mat_7b_APIGW_testng.xml'])
             self.assertEqual(body['extended_mat_7b_APIGW_testng.xml']['test_xml_name'],
                              'extended_mat_7b_APIGW_testng.xml')
             self.assertEqual(body['extended_mat_7b_APIGW_testng.xml']['test_xml_path'], 'com/amdocs/core/oc/testng')
@@ -232,20 +397,20 @@ class TestEndpointsUnit(TestUnitBase):
         self.assertEqual(1, len(configurator_service))
         self.assertEqual(configurator_service[0]['from'], '0.67.19')
         self.assertEqual(configurator_service[0]['to'], '0.67.19')
-        self.assertEqual(len(configurator_service[0]['flows']), 0)
+        self.assertNotIn('flows', configurator_service[0])
         body = res.json['groups']
         self.assertIsNotNone(body)
         self.assertEqual(len(body), 2)
         self.assertIn('extended_mat_7b_APIGW_testng.xml', body)
         self.assertEqual(body['extended_mat_7b_APIGW_testng.xml']['curr_flows_count'], 0)
         self.assertEqual(body['extended_mat_7b_APIGW_testng.xml']['total_flows_count'], 45)
-        self.assertListEqual(body['extended_mat_7b_APIGW_testng.xml']['flows'], [])
+        self.assertNotIn('flows', body['extended_mat_7b_APIGW_testng.xml'])
         self.assertEqual(body['extended_mat_7b_APIGW_testng.xml']['test_xml_name'], 'extended_mat_7b_APIGW_testng.xml')
         self.assertEqual(body['extended_mat_7b_APIGW_testng.xml']['test_xml_path'], 'com/amdocs/core/oc/testng')
         self.assertIn('mat_APIGW_testng.xml', body)
         self.assertEqual(body['mat_APIGW_testng.xml']['curr_flows_count'], 0)
         self.assertEqual(body['mat_APIGW_testng.xml']['total_flows_count'], 12)
-        self.assertListEqual(body['mat_APIGW_testng.xml']['flows'], [])
+        self.assertNotIn('flows', body['mat_APIGW_testng.xml'])
         self.assertEqual(body['mat_APIGW_testng.xml']['test_xml_name'], 'mat_APIGW_testng.xml')
         self.assertEqual(body['mat_APIGW_testng.xml']['test_xml_path'], 'com/amdocs/core/oc/testng')
 
@@ -344,14 +509,14 @@ class TestEndpointsUnit(TestUnitBase):
         self.assertEqual(1, len(pioperations_service))
         self.assertEqual(pioperations_service[0]['from'], '0.67.13')
         self.assertEqual(pioperations_service[0]['to'], '0.67.11')
-        self.assertEqual(len(pioperations_service[0]['flows']), 0)
+        self.assertNotIn('flows', pioperations_service[0])
         body = res.json['groups']
         self.assertIsNotNone(body)
         self.assertEqual(len(body), 3)
         self.assertIn('extended_mat_7b_APIGW_testng.xml', body)
         self.assertEqual(body['extended_mat_7b_APIGW_testng.xml']['curr_flows_count'], 0)
         self.assertEqual(body['extended_mat_7b_APIGW_testng.xml']['total_flows_count'], 45)
-        self.assertListEqual(body['extended_mat_7b_APIGW_testng.xml']['flows'], [])
+        self.assertNotIn('flows', ['extended_mat_7b_APIGW_testng.xml'])
         self.assertEqual(body['extended_mat_7b_APIGW_testng.xml']['test_xml_name'], 'extended_mat_7b_APIGW_testng.xml')
         self.assertEqual(body['extended_mat_7b_APIGW_testng.xml']['test_xml_path'], 'com/amdocs/core/oc/testng')
         self.assertIn('mat_APIGW_testng.xml', body)
@@ -365,7 +530,6 @@ class TestEndpointsUnit(TestUnitBase):
         self.assertIn('unknown-group', body)
         self.assertEqual(body['unknown-group']['curr_flows_count'], 0)
         self.assertEqual(body['unknown-group']['total_flows_count'], 655)
-        self.assertListEqual(body['unknown-group']['flows'], [])
         self.assertEqual(body['unknown-group']['test_xml_name'], 'unknown-group')
         self.assertEqual(body['unknown-group']['test_xml_path'], '')
 
@@ -460,7 +624,6 @@ class TestEndpointsUnit(TestUnitBase):
         self.assertIn('extended_mat_7b_APIGW_testng.xml', body)
         self.assertEqual(body['extended_mat_7b_APIGW_testng.xml']['curr_flows_count'], 0)
         self.assertEqual(body['extended_mat_7b_APIGW_testng.xml']['total_flows_count'], 45)
-        self.assertListEqual(body['extended_mat_7b_APIGW_testng.xml']['flows'], [])
         self.assertEqual(body['extended_mat_7b_APIGW_testng.xml']['test_xml_name'], 'extended_mat_7b_APIGW_testng.xml')
         self.assertEqual(body['extended_mat_7b_APIGW_testng.xml']['test_xml_path'], 'com/amdocs/core/oc/testng')
         self.assertIn('mat_APIGW_testng.xml', body)
@@ -474,7 +637,6 @@ class TestEndpointsUnit(TestUnitBase):
         self.assertIn('unknown-group', body)
         self.assertEqual(body['unknown-group']['curr_flows_count'], 0)
         self.assertEqual(body['unknown-group']['total_flows_count'], 655)
-        self.assertListEqual(body['unknown-group']['flows'], [])
         self.assertEqual(body['unknown-group']['test_xml_name'], 'unknown-group')
         self.assertEqual(body['unknown-group']['test_xml_path'], '')
 
@@ -533,7 +695,6 @@ class TestEndpointsUnit(TestUnitBase):
         self.assertIn('extended_mat_7b_APIGW_testng.xml', body)
         self.assertEqual(body['extended_mat_7b_APIGW_testng.xml']['curr_flows_count'], 0)
         self.assertEqual(body['extended_mat_7b_APIGW_testng.xml']['total_flows_count'], 45)
-        self.assertListEqual(body['extended_mat_7b_APIGW_testng.xml']['flows'], [])
         self.assertEqual(body['extended_mat_7b_APIGW_testng.xml']['test_xml_name'], 'extended_mat_7b_APIGW_testng.xml')
         self.assertEqual(body['extended_mat_7b_APIGW_testng.xml']['test_xml_path'], 'com/amdocs/core/oc/testng')
         self.assertIn('mat_APIGW_testng.xml', body)
@@ -547,7 +708,7 @@ class TestEndpointsUnit(TestUnitBase):
         self.assertIn('unknown-group', body)
         self.assertEqual(body['unknown-group']['curr_flows_count'], 0)
         self.assertEqual(body['unknown-group']['total_flows_count'], 655)
-        self.assertListEqual(body['unknown-group']['flows'], [])
+        self.assertNotIn('flows', body['unknown-group'])
         self.assertEqual(body['unknown-group']['test_xml_name'], 'unknown-group')
         self.assertEqual(body['unknown-group']['test_xml_path'], '')
 

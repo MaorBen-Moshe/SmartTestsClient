@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from app.models.builder import Builder
+from app.models.services_data import ServicesData
 
 
 class SupportedGroup:
@@ -9,7 +10,7 @@ class SupportedGroup:
         self.cluster: str | None = None
         self.test_files: list[str] = []
         self.url: str | None = None
-        self.ms_list: list[str] = []
+        self.services_data: ServicesData = ServicesData()
         self.project: str | None = None
 
     @property
@@ -45,12 +46,12 @@ class SupportedGroup:
         self._test_files = test_files
 
     @property
-    def ms_list(self) -> list[str]:
-        return self._ms_list
+    def services_data(self) -> ServicesData:
+        return self._services_data
 
-    @ms_list.setter
-    def ms_list(self, ms_list: list[str]):
-        self._ms_list = ms_list
+    @services_data.setter
+    def services_data(self, services_data: ServicesData):
+        self._services_data = services_data
 
     @property
     def project(self) -> str | None:
@@ -86,8 +87,8 @@ class SupportedGroupBuilder(Builder[SupportedGroup]):
         self._item.test_files = test_files
         return self
 
-    def ms_list(self, ms_list: list[str]) -> SupportedGroupBuilder:
-        self._item.ms_list = ms_list
+    def services_data(self, services_data: ServicesData) -> SupportedGroupBuilder:
+        self._item.services_data = services_data
         return self
 
     def project(self, project: str | None) -> SupportedGroupBuilder:

@@ -3,7 +3,6 @@ from __future__ import annotations
 import requests
 
 from app import config, cache_manager
-from app.constants.constants import MS_POSTFIX
 from app.decorators.decorators import gateway_errors_handler, log_around
 from app.models.service_data import ServiceData
 from app.utils.utils import Utils
@@ -34,7 +33,7 @@ class SmartTestsClient:
                     "repo_exclude_config"
                 ],
                 "project": service_data.project,
-                "repo": f"{service_key}{MS_POSTFIX}",
+                "repo": service_data.repo_name,
                 "from": service_data.from_version,
                 "to": service_data.to_version,
                 "pullRequestId": service_data.pull_request_id,

@@ -17,10 +17,13 @@ class Serializable(ABC):
                 value = getattr(value, "toJSON")()
             elif isinstance(value, list) and all(isinstance(item, Serializable) for item in value):
                 value = [getattr(item, "toJSON")() for item in value]
+                value = value if len(value) > 0 else None
             elif isinstance(value, tuple) and all(isinstance(item, Serializable) for item in value):
                 value = tuple(getattr(item, "toJSON")() for item in value)
+                value = value if len(value) > 0 else None
             elif isinstance(value, dict) and all(isinstance(item, Serializable) for item in value.values()):
                 value = {k: getattr(item, "toJSON")() for k, item in value.items()}
+                value = value if len(value) > 0 else None
 
             if value is not None or not ignore_none:
                 result[key] = value

@@ -17,14 +17,14 @@ class InitServiceMapStep(SmartAnalyzeStepInterface):
     def execute(self, parameters: AnalyzeAppServiceParameters):
         if (parameters is None
                 or parameters.curr_group_data is None or
-                parameters.curr_group_data.ms_list is None):
+                parameters.curr_group_data.services_data is None):
             return
 
-        services_map = self.nexus_search_service.get_services_master_version(
-            self.repository,
-            parameters.curr_group_data.ms_list,
-            parameters.curr_group_data.project)
+        ms_list = (parameters.curr_group_data.services_data.get_item(service) for
+                   service in parameters.curr_group_data.services_data)
 
-        parameters.services_map.merge(services_map)
+        res = self.nexus_search_service.get_services_master_version(self.repository, ms_list)
 
-        app_main_logger.debug(f"InitServiceMapStep.execute() services_map_after_merge={parameters.services_map}")
+        parameters.services_map.merge(res)
+
+        app_main_logger.debug(f"InitServiceMapStep.execute() services_map={parameters.services_map}")

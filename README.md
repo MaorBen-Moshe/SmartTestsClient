@@ -31,6 +31,27 @@ This endpoint is a GET method and returns in the response all the supported grou
 }
 ```
 
+### /supported-services
+
+This endpoint is a GET method and returns in the response all the supported services the server supports.
+
+query params:
+groupName: str [optional] = if provided the response will contain only the services that are part of the group.
+
+**Response example:**
+
+```json
+[
+    {
+        "name": "productconfigurator",
+        "project": "DIGOC",
+        "repo_name": "productconfigurator-ms",
+        "related_group": "oc-cd-group4"
+    }
+]
+```
+
+
 ### /smart-tests-analyze
 
 This endpoint is a POST method. It gets in the request build_url and supported group and returns in the response json that contains flows to run per testGroup.

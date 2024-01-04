@@ -6,6 +6,8 @@ import yaml
 from cryptography.fernet import Fernet
 
 from app.exceptions.excpetions import ConfigurationError
+from app.models.service_data import ServiceData
+from app.models.services_data import ServicesData
 from app.models.singleton_meta import SingletonMeta
 from app.models.supported_group import SupportedGroup
 from app.models.supported_groups import SupportedGroups
@@ -33,6 +35,27 @@ class ConfigManager(metaclass=SingletonMeta):
     def get_supported_groups(self) -> SupportedGroups:
         supported_groups_dict = self._config["app"]["supported_groups"]
         return self.__get_supported_groups_helper(supported_groups_dict)
+
+    def get_supported_services(self, related_group: str | None = None) -> ServicesData:
+        supported_services_dict = self._config["app"]["supported_services"]
+
+        filtered_supported_services_dict = filter(lambda curr_service_name: related_group is None or
+                                                                            len(related_group) == 0 or
+                                                                            supported_services_dict[curr_service_name][
+                                                                                "related_group"] == related_group,
+                                                  supported_services_dict)
+
+        services_data = ServicesData()
+        for service_name in filtered_supported_services_dict:
+            if service_name is not None:
+                service = supported_services_dict[service_name]
+                services_data.add_item(service_name, (ServiceData.create()
+                                                      .service_name(service_name)
+                                                      .repo_name(service["repo_label"])
+                                                      .related_group(service["related_group"])
+                                                      .project(service["project"])
+                                                      .build()))
+        return services_data
 
     def get_nexus_cred(self) -> (str, str):
         nexus_user = None
@@ -94,11 +117,12 @@ class ConfigManager(metaclass=SingletonMeta):
         for group_name, group in supported_groups_str_format.items():
             if group_name is not None:
                 default_supported_groups = self._config["app"]["default_groups_test_files"]
+                services_data = self.get_supported_services(group_name)
                 groups.add_item(group_name, (SupportedGroup.create().group_name(group_name)
                                              .url(group["url"])
                                              .cluster(group["cluster"])
                                              .test_files(default_supported_groups + group["test_files"])
-                                             .ms_list(group["ms_list"])
+                                             .services_data(services_data)
                                              .project(group["project"])
                                              .build()))
 

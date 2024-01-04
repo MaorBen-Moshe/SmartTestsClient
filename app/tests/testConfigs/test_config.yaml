@@ -21,17 +21,6 @@ app:
       cluster: ilocpde456
       project: DIGOC
       url: http://illin5565:18080/job/oc-cd-group4/job/oc-cd-group4/
-      ms_list:
-        - productconfigurator
-        - productconfigurator-action
-        - productconfigurator-commitmentterm
-        - productconfigurator-mergeentities
-        - productconfigurator-pioperations
-        - productconfigurator-price
-        - productconfigurator-promotion
-        - productconfigurator-qualification
-        - productconfigurator-replace
-        - productvalidator
       test_files:
         - group4_integration_tests_testng
         - grp4_integration_to_CT_testng
@@ -46,6 +35,47 @@ app:
         - Fuji_Promotion_Pack_testng
         - Fuji_Replace_Pack_testng
         - mat_oc_product_configurator_hooks_APIGW_testng
+  supported_services:
+    productconfigurator:
+      repo_label: productconfigurator-ms
+      project: DIGOC
+      related_group: oc-cd-group4
+    productconfigurator-action:
+      repo_label: productconfigurator-action-ms
+      project: DIGOC
+      related_group: oc-cd-group4
+    productconfigurator-commitmentterm:
+      repo_label: productconfigurator-commitmentterm-ms
+      project: DIGOC
+      related_group: oc-cd-group4
+    productconfigurator-mergeentities:
+      repo_label: productconfigurator-mergeentities-ms
+      project: DIGOC
+      related_group: oc-cd-group4
+    productconfigurator-pioperations:
+      repo_label: productconfigurator-pioperations-ms
+      project: DIGOC
+      related_group: oc-cd-group4
+    productconfigurator-price:
+      repo_label: productconfigurator-price-ms
+      project: DIGOC
+      related_group: oc-cd-group4
+    productconfigurator-promotion:
+      repo_label: productconfigurator-promotion-ms
+      project: DIGOC
+      related_group: oc-cd-group4
+    productconfigurator-qualification:
+      repo_label: productconfigurator-qualification-ms
+      project: DIGOC
+      related_group: oc-cd-group4
+    productconfigurator-replace:
+      repo_label: productconfigurator-replace-ms
+      project: DIGOC
+      related_group: oc-cd-group4
+    productvalidator:
+      repo_label: productvalidator-ms
+      project: DIGOC
+      related_group: oc-cd-group4
 
 nexus:
   index_data_repository: ms-helm-release

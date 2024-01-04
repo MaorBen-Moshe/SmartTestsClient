@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from typing import Iterable
+
 from bs4 import BeautifulSoup
 
 from app.clients.html_parser_client import HtmlParserClient
@@ -21,14 +23,14 @@ class HtmlParserService:
     def load_html(self,
                   html_zip_url: str | None,
                   services_map: ServicesData,
-                  filtered_ms_list: list[str],
-                  group_project: str | None):
+                  group_supported_services: ServicesData):
         self.html = HtmlParserClient.get_html(html_zip_url)
         self.soup = BeautifulSoup(self.html, "html.parser")
         self.table = self.__find_table()
         if self.table is not None:
             name_index, version_index = self.__find_indexes()
-            self.__update_map(services_map, name_index, version_index, filtered_ms_list, group_project)
+            filtered_ms_list = [service for service in group_supported_services]
+            self.__update_map(services_map, name_index, version_index, filtered_ms_list, group_supported_services)
         else:
             raise NotFoundError(f"error with build report structure. not found '{TABLE_NAME}' table")
 
@@ -56,8 +58,8 @@ class HtmlParserService:
                      services_map: ServicesData,
                      name_index: int,
                      version_index: int,
-                     filtered_ms_list: list[str],
-                     group_project: str | None):
+                     filtered_ms_list: Iterable[str],
+                     group_supported_services: ServicesData):
         rows = self.table.find_all(TR)[2:]  # Skip the first and second rows
         for row in rows:
             cells = row.find_all(TD)
@@ -68,9 +70,15 @@ class HtmlParserService:
                     if name in services_map:
                         services_map.get_item(name).to_version = version
                     else:
+                        supported_service_template = group_supported_services.get_item(name)
+                        project = supported_service_template.project\
+                            if supported_service_template is not None else None
+                        repo_name = supported_service_template.repo_name\
+                            if supported_service_template is not None else None
                         services_map.add_item(name,
                                               ServiceData.create()
                                               .service_name(name)
-                                              .project(group_project)
+                                              .repo_name(repo_name)
+                                              .project(project)
                                               .to_version(version)
                                               .from_version(version).build())

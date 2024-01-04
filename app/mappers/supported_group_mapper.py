@@ -15,6 +15,7 @@ class SupportedGroupMapper:
         supported_group_dto.cluster = supported_group.cluster
         supported_group_dto.test_files = supported_group.test_files
         supported_group_dto.url = supported_group.url
-        supported_group_dto.ms_list = supported_group.ms_list
+        supported_group_dto.ms_list = [supported_group.services_data.get_item(service)
+                                       for service in supported_group.services_data]
         supported_group_dto.project = supported_group.project
         return supported_group_dto

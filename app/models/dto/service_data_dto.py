@@ -8,11 +8,13 @@ from app.utils.utils import Utils
 class ServiceDataDTO(Serializable):
     def __init__(self):
         self.service_name: str | None = None
+        self.repo_name: str | None = None
         self.from_version: str | None = None
         self.to_version: str | None = None
         self.flows = []
         self.project: str | None = None
         self.pull_request_id: str | None = None
+        self.related_group: str | None = None
 
     @property
     def service_name(self) -> str | None:
@@ -21,6 +23,14 @@ class ServiceDataDTO(Serializable):
     @service_name.setter
     def service_name(self, service_name: str | None) -> None:
         self._service_name = service_name
+
+    @property
+    def repo_name(self) -> str | None:
+        return self._repo_name
+
+    @repo_name.setter
+    def repo_name(self, repo_name: str | None) -> None:
+        self._repo_name = repo_name
 
     @property
     def from_version(self) -> str | None:
@@ -62,6 +72,14 @@ class ServiceDataDTO(Serializable):
     def pull_request_id(self, pull_request_id: str | None) -> None:
         self._pullRequestId = pull_request_id
 
+    @property
+    def related_group(self) -> str | None:
+        return self._related_group
+
+    @related_group.setter
+    def related_group(self, related_group: str | None) -> None:
+        self._related_group = related_group
+
     @staticmethod
     def create():
         return ServiceDataDTOBuilder()
@@ -74,6 +92,10 @@ class ServiceDataDTOBuilder(Builder[ServiceDataDTO]):
 
     def service_name(self, service_name: str | None) -> ServiceDataDTOBuilder:
         self._item.service_name = service_name
+        return self
+
+    def repo_name(self, repo_name: str | None) -> ServiceDataDTOBuilder:
+        self._item.repo_name = repo_name
         return self
 
     def from_version(self, from_version: str | None) -> ServiceDataDTOBuilder:
@@ -94,4 +116,8 @@ class ServiceDataDTOBuilder(Builder[ServiceDataDTO]):
 
     def pull_request_id(self, pull_request_id: str | None) -> ServiceDataDTOBuilder:
         self._item.pull_request_id = pull_request_id
+        return self
+
+    def related_group(self, related_group: str | None) -> ServiceDataDTOBuilder:
+        self._item.related_group = related_group
         return self

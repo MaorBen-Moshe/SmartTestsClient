@@ -52,6 +52,25 @@ def supported_groups():
     return resp
 
 
+@app.route("/supported-services", methods=["GET"])
+@login_required
+def supported_services():
+    app_main_logger.debug("Supported services request.")
+
+    services = config.get_supported_services(request.args.get(GROUP_NAME_KEY))
+
+    serialized_services = [
+        ServiceDataMapper.map_from_service_data_to_dto(services.get_item(service_name)).toJSON()
+        for service_name in services
+    ]
+
+    app_main_logger.debug(f"Supported services response. response={serialized_services}")
+
+    resp = make_response(jsonify(serialized_services), 200)
+    resp.headers[TRACE_ID_HEADER] = Utils.get_request_id()
+    return resp
+
+
 @app.route("/smart-tests-analyze", methods=["POST"])
 @login_required
 def analyze():
