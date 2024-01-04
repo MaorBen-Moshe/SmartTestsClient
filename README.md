@@ -150,9 +150,11 @@ Payload fields:
   },
   "services": {
     "productconfigurator": {
-      "flows": [],
       "from": "0.67.110",
-      "to": "0.67.109"
+      "to": "0.67.109",
+      "project": "DIGOC",
+      "repo_name": "productconfigurator-ms",
+        "related_group": "oc-cd-group4"
     },
     "productconfigurator-commitmentterm": {
       "flows": [
@@ -160,11 +162,16 @@ Payload fields:
         "com.amdocs.core.oc.group4.test.flows.contractedOffer.CROSS70993_ManageManualPromotion_AddPromotionToContractedInstance"
       ],
       "from": "0.67.100",
-      "to": "0.67.94"
+      "to": "0.67.94",
+      "project": "DIGOC",
+      "repo_name": "productconfigurator-commitmentterm-ms",
+      "related_group": "oc-cd-group4"
     },
     "productconfigurator-pioperations": {
-      "flows": [],
-      "pullRequestId": "12345"
+      "pullRequestId": "12345",
+      "project": "DIGOC",
+      "repo_name": "productconfigurator-pioperations-ms",
+      "related_group": "oc-cd-group4"
     }
   },
   "total_flows_count": 24
