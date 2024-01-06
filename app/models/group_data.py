@@ -6,6 +6,15 @@ from app.utils.utils import Utils
 
 
 class GroupData(Serializable):
+
+    __slots__ = [
+        "_test_xml_name",
+        "_test_xml_path",
+        "_total_flows_count",
+        "_curr_flows_count",
+        "_flows"
+    ]
+
     def __init__(self):
         self.test_xml_name = None
         self.test_xml_path = None

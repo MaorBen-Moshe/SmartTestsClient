@@ -1,7 +1,5 @@
 from __future__ import annotations
 
-from typing import Any
-
 from app.models.builder import Builder
 from app.models.dto.group_data_dto import GroupDataDTO
 from app.models.dto.service_data_dto import ServiceDataDTO
@@ -9,6 +7,14 @@ from app.models.serializable_model import Serializable
 
 
 class SmartAnalyzeResponse(Serializable):
+
+    __slots__ = [
+        "_total_flows_count",
+        "_curr_flows_count",
+        "_groups",
+        "_services",
+    ]
+
     def __init__(self):
         self.total_flows_count = 0
         self.curr_flows_count = 0

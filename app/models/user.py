@@ -6,6 +6,9 @@ from app.models.builder import Builder
 
 
 class User(UserMixin):
+
+    __slots__ = ["_is_admin"]
+
     def __init__(self):
         self.is_admin = False
 

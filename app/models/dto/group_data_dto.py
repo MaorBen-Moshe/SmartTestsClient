@@ -4,6 +4,15 @@ from app.models.serializable_model import Serializable
 
 
 class GroupDataDTO(Serializable):
+
+    __slots__ = [
+        "_test_xml_name",
+        "_test_xml_path",
+        "_total_flows_count",
+        "_curr_flows_count",
+        "_flows",
+    ]
+
     def __init__(self):
         self.test_xml_name = None
         self.test_xml_path = None

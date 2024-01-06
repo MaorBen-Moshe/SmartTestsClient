@@ -11,8 +11,9 @@ class Serializable(ABC):
             return None
 
         result = {}
-        for i, value in self.__dict__.items():
-            key = i.replace(self.__class__.__name__, '').lstrip("_")
+        for i in self.__slots__:
+            value = getattr(self, i)
+            key = i.lstrip("_")
             if isinstance(value, Serializable):
                 value = getattr(value, "toJSON")()
             elif isinstance(value, list) and all(isinstance(item, Serializable) for item in value):
@@ -29,3 +30,4 @@ class Serializable(ABC):
                 result[key] = value
 
         return result
+

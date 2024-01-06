@@ -6,6 +6,18 @@ from app.utils.utils import Utils
 
 
 class ServiceData(Serializable):
+
+    __slots__ = [
+        "_service_name",
+        "_repo_name",
+        "_from",
+        "_to",
+        "_flows",
+        "_project",
+        "_pullRequestId",
+        "_related_group",
+    ]
+
     def __init__(self):
         self.service_name: str | None = None
         self.repo_name: str | None = None

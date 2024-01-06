@@ -5,6 +5,16 @@ from app.models.services_data import ServicesData
 
 
 class SupportedGroup:
+
+    __slots__ = [
+        "_group_name",
+        "_cluster",
+        "_test_files",
+        "_url",
+        "_services_data",
+        "_project",
+    ]
+
     def __init__(self):
         self.group_name: str | None = None
         self.cluster: str | None = None

@@ -5,6 +5,16 @@ from app.models.service_data import ServiceData
 
 
 class SupportedGroupDTO(Serializable):
+
+    __slots__ = [
+        "_group_name",
+        "_cluster",
+        "_test_files",
+        "_url",
+        "_ms_list",
+        "_project",
+    ]
+
     def __init__(self):
         self.group_name: str | None = None
         self.cluster: str | None = None

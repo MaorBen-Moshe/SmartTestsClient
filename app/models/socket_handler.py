@@ -7,6 +7,14 @@ from app.models.singleton_meta import SingletonMeta
 
 
 class SocketHandler(metaclass=SingletonMeta):
+
+    __slots__ = [
+        "_socketio",
+        "_event_name",
+        "_namespace",
+        "_app",
+    ]
+
     def __init__(self, app):
         self._socketio = SocketIO(app, cors_allowed_origins="*", logger=True, engineio_logger=True)
         self._event_name = "event-smart-analyze-progress"

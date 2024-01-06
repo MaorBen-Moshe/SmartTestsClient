@@ -2,10 +2,21 @@ from __future__ import annotations
 
 from app.models.builder import Builder
 from app.models.serializable_model import Serializable
-from app.utils.utils import Utils
 
 
 class ServiceDataDTO(Serializable):
+
+    __slots__ = [
+        "_service_name",
+        "_repo_name",
+        "_from",
+        "_to",
+        "_flows",
+        "_project",
+        "_pullRequestId",
+        "_related_group",
+    ]
+
     def __init__(self):
         self.service_name: str | None = None
         self.repo_name: str | None = None

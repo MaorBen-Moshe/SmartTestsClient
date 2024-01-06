@@ -9,6 +9,16 @@ from app.models.supported_groups import SupportedGroups
 
 
 class AnalyzeDevAppServiceParameters:
+
+    __slots__ = [
+        "_session_id",
+        "_smart_app_service_response",
+        "_res_info_level",
+        "_services_map",
+        "_groups_data",
+        "_supported_groups",
+    ]
+
     def __init__(self):
         self.smart_analyze_dev_app_service_response = None
         self.session_id: str | None = None

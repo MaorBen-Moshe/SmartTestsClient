@@ -10,6 +10,17 @@ from app.models.supported_groups import SupportedGroups
 
 
 class AnalyzeAppServiceParameters:
+
+    __slots__ = [
+        "_build_url",
+        "_group_name",
+        "_supported_groups",
+        "_session_id",
+        "_smart_app_service_response",
+        "_res_info_level",
+        "_groups_data",
+    ]
+
     def __init__(self):
         self._supported_groups: SupportedGroups = SupportedGroups()
         self.build_url: str | None = None

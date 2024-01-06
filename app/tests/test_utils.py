@@ -10,6 +10,14 @@ from test_base import TestBase
 
 class TestUtils(TestBase):
     class WithoutProperties(Serializable):
+
+        # slots
+        __slots__ = [
+            "_name",
+            "_age",
+            "gender"
+        ]
+
         def __init__(self, name, age, gender):
             self._name = name
             self._age = age

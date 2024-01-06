@@ -5,6 +5,9 @@ from app.models.serializable_model import Serializable
 
 
 class Error(Serializable):
+
+    __slots__ = ["_error_code", "_error_message", "_timestamp", "_trace_id"]
+
     def __init__(self):
         self.error_code: int | None = None
         self.error_message: str | None = None

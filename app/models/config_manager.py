@@ -18,6 +18,9 @@ from app.models.supported_groups import SupportedGroups
 
 
 class ConfigManager(metaclass=SingletonMeta):
+
+    __slots__ = ["_fernet", "_config"]
+
     def __init__(self):
         self._fernet: Fernet | None = None
         self._config = None

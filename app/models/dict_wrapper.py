@@ -5,6 +5,9 @@ T = TypeVar("T")
 
 
 class DictWrapperObject(Generic[T]):
+
+    __slots__ = ["_map"]
+
     def __init__(self):
         self._map: dict[str, T] = {}
 
