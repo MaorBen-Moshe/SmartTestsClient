@@ -81,6 +81,7 @@ class ServiceData(Serializable):
         self._related_group = related_group
 
     def add_flows(self, curr_flows: list[str] | None):
+        self.flows = self.flows if self.flows is not None else []
         Utils.add_flows_without_duplications(self.flows, curr_flows)
 
     @staticmethod
@@ -110,7 +111,7 @@ class ServiceDataBuilder(Builder[ServiceData]):
         return self
 
     def flows(self, flows: list[str]) -> ServiceDataBuilder:
-        self._item.flows = flows
+        self._item.flows = flows if flows is not None else []
         return self
 
     def project(self, project: str | None) -> ServiceDataBuilder:

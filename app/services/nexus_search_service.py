@@ -10,7 +10,6 @@ from app.constants.constants import CONTINUATION_TOKEN, VERSION_KEY, ITEMS_KEY, 
 from app.decorators.decorators import log_around
 from app.exceptions.excpetions import EmptyInputError
 from app.models.service_data import ServiceData
-from app.models.services_data import ServicesData
 from app.utils.utils import Utils
 
 
@@ -22,27 +21,23 @@ class NexusSearchService:
     @log_around(print_output=True)
     def get_services_master_version(self,
                                     repository: str | None,
-                                    ms_list: Iterable[ServiceData]) -> ServicesData:
+                                    ms_list: Iterable[ServiceData]):
         if repository is None:
             raise EmptyInputError("Provided to 'get_services_master_version' repository=None")
 
-        services_data = ServicesData()
         if ms_list:
             threads = []
             for entry in ms_list:
                 t = threading.Thread(target=self._get_service_data_for_each_entry,
-                                     args=(repository, entry, services_data))
+                                     args=(repository, entry))
                 threads.append(t)
                 t.start()
 
             for t in threads:
                 t.join()
 
-        return services_data
-
     def _get_service_data_for_each_entry(self, repository: str | None,
-                                         entry: ServiceData | None,
-                                         services_data_to_update: ServicesData):
+                                         entry: ServiceData | None):
         if entry is None:
             return
 
@@ -60,7 +55,6 @@ class NexusSearchService:
             with (self._lock):
                 entry.to_version = sorted_list[0]
                 entry.from_version = sorted_list[0] if entry.from_version is None else entry.from_version
-                services_data_to_update.add_item(entry.service_name, entry)
         else:
             app_main_logger.warning(f"NexusSearchService._get_service_data_for_each_entry():"
                                     f" Failed to get version for {entry.service_name}")

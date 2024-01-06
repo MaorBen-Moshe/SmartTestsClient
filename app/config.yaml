@@ -34,6 +34,14 @@ app:
         - Fuji_Replace_Pack_testng
         - mat_oc_product_configurator_hooks_APIGW_testng
   supported_services:
+    productconfigurator-subdomain:
+      repo_label: productconfigurator-subdomain
+      project: DIGOC
+      related_group: oc-cd-group4
+    productconfigurator-subdomain-api:
+      repo_label: productconfigurator-subdomain-api
+      project: DIGOC
+      related_group: oc-cd-group4
     productconfigurator:
       repo_label: productconfigurator-ms
       project: DIGOC

@@ -101,4 +101,4 @@ class TestSmartAnalyzeDevValidateInputUnit(TestUnitBase):
         self.assertIsNotNone(parameters.services_map)
         self.assertEqual(1, len(parameters.services_map))
         self.assertIsNotNone(parameters.services_map.get_item("productconfigurator"))
-        self.assertEqual("DIGOC", parameters.services_map.get_item("productconfigurator").project)
+        self.assertEqual("wrong_project", parameters.services_map.get_item("productconfigurator").project)

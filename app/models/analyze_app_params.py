@@ -17,12 +17,11 @@ class AnalyzeAppServiceParameters:
         self.session_id: str | None = None
         self.smart_app_service_response: SmartAnalyzeResponse | None = None
         self.res_info_level: ResInfoLevelEnum | None = None
-        self._services_map: ServicesData = ServicesData()
         self._groups_data: TestGroupsData = TestGroupsData()
 
     @property
     def services_map(self) -> ServicesData | None:
-        return self._services_map
+        return self.curr_group_data.services_data
 
     @property
     def groups_data(self) -> TestGroupsData:

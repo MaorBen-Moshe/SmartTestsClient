@@ -8,6 +8,7 @@ import dotenv
 import yaml
 from cryptography.fernet import Fernet
 
+from app.constants.constants import SERVICE_PROJECT_KEY, SERVICE_RELATED_GROUP_KEY, SERVICE_REPO_LABEL_KEY
 from app.exceptions.excpetions import ConfigurationError
 from app.models.service_data import ServiceData
 from app.models.services_data import ServicesData
@@ -48,7 +49,7 @@ class ConfigManager(metaclass=SingletonMeta):
 
         filtered_supported_services_dict = filter(lambda curr_service_name: related_group is None or
                                                   len(related_group) == 0 or
-                                                  supported_services_dict[curr_service_name]["related_group"]
+                                                  supported_services_dict[curr_service_name][SERVICE_RELATED_GROUP_KEY]
                                                   == related_group, supported_services_dict)
 
         services_data = ServicesData()
@@ -57,9 +58,9 @@ class ConfigManager(metaclass=SingletonMeta):
                 service = supported_services_dict[service_name]
                 services_data.add_item(service_name, (ServiceData.create()
                                                       .service_name(service_name)
-                                                      .repo_name(service["repo_label"])
-                                                      .related_group(service["related_group"])
-                                                      .project(service["project"])
+                                                      .repo_name(service[SERVICE_REPO_LABEL_KEY])
+                                                      .related_group(service[SERVICE_RELATED_GROUP_KEY])
+                                                      .project(service[SERVICE_PROJECT_KEY])
                                                       .build()))
         return services_data
 

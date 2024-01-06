@@ -58,3 +58,73 @@ class TestUpdateServiceDataService(TestUnitBase):
     def test_update_services_data_empty_input(self, services_data):
         res = self.update_service_data_service.update_services_data(self._repo, services_data)
         self.assertIsNone(res)
+
+    def test_update_from_template_with_valid_services(self):
+        services = ServicesData()
+        services.add_item("productconfigurator", ServiceData.create().service_name("productconfigurator")
+                          .from_version("0.67.21")
+                          .build())
+
+        self.update_service_data_service.update_from_template(services)
+
+        self.assertIsNotNone(services)
+        self.assertIn("productconfigurator", services)
+        service_data = services.get_item("productconfigurator")
+        self.assertIsNotNone(service_data)
+        self.assertEqual(service_data.repo_name, "productconfigurator-ms")
+        self.assertEqual(service_data.project, "DIGOC")
+        self.assertEqual(service_data.related_group, "oc-cd-group4")
+
+    def test_update_from_template_with_project_already(self):
+        services = ServicesData()
+        services.add_item("productconfigurator", ServiceData.create().service_name("productconfigurator")
+                          .from_version("0.67.21")
+                          .project("NOT_DIGOC")
+                          .build())
+
+        self.update_service_data_service.update_from_template(services)
+
+        # assert that the services are updated correctly
+        self.assertIsNotNone(services)
+        self.assertIn("productconfigurator", services)
+        service_data = services.get_item("productconfigurator")
+        self.assertIsNotNone(service_data)
+        self.assertEqual(service_data.repo_name, "productconfigurator-ms")
+        self.assertEqual(service_data.project, "NOT_DIGOC")
+        self.assertEqual(service_data.related_group, "oc-cd-group4")
+
+    def test_update_from_template_with_repo_name_already(self):
+        services = ServicesData()
+        services.add_item("productconfigurator", ServiceData.create().service_name("productconfigurator")
+                          .from_version("0.67.21")
+                          .repo_name("repo_name")
+                          .build())
+
+        self.update_service_data_service.update_from_template(services)
+
+        # assert that the services are updated correctly
+        self.assertIsNotNone(services)
+        self.assertIn("productconfigurator", services)
+        service_data = services.get_item("productconfigurator")
+        self.assertIsNotNone(service_data)
+        self.assertEqual(service_data.repo_name, "repo_name")
+        self.assertEqual(service_data.project, "DIGOC")
+        self.assertEqual(service_data.related_group, "oc-cd-group4")
+
+    def test_update_from_template_with_related_group_already(self):
+        services = ServicesData()
+        services.add_item("productconfigurator", ServiceData.create().service_name("productconfigurator")
+                          .from_version("0.67.21")
+                          .related_group("related_group")
+                          .build())
+
+        self.update_service_data_service.update_from_template(services)
+
+        # assert that the services are updated correctly
+        self.assertIsNotNone(services)
+        self.assertIn("productconfigurator", services)
+        service_data = services.get_item("productconfigurator")
+        self.assertIsNotNone(service_data)
+        self.assertEqual(service_data.repo_name, "productconfigurator-ms")
+        self.assertEqual(service_data.project, "DIGOC")
+        self.assertEqual(service_data.related_group, "related_group")

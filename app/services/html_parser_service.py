@@ -67,7 +67,7 @@ class HtmlParserService:
                 name = cells[name_index].text.split(" ")[0].replace(TABLE_INDEX_MICROSERVICE_PREFIX, "").strip()
                 version = cells[version_index].text.strip()
                 if len(name) > 0 and len(version) > 0 and name in filtered_ms_list:
-                    if name in services_map:
+                    if name in services_map and services_map.get_item(name).from_version is not None:
                         services_map.get_item(name).to_version = version
                     else:
                         supported_service_template = group_supported_services.get_item(name)

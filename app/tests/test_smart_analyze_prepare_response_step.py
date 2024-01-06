@@ -14,6 +14,8 @@ class TestSmartAnalyzePrepareResponseStep(TestBase):
 
     def test_execute_with_empty_groups_data(self):
         parameters = AnalyzeAppServiceParameters()
+        parameters.supported_groups = self.config.get_supported_groups()
+        parameters.group_name = "oc-cd-group4"
 
         self.step.execute(parameters)
         self.assertIsNotNone(parameters.smart_app_service_response)
@@ -25,6 +27,8 @@ class TestSmartAnalyzePrepareResponseStep(TestBase):
     def test_execute_with_valid_parameters_info_level(self):
         parameters = AnalyzeAppServiceParameters()
         parameters.res_info_level = ResInfoLevelEnum.INFO
+        parameters.supported_groups = self.config.get_supported_groups()
+        parameters.group_name = "oc-cd-group4"
 
         parameters.groups_data.add_item("group1",
                                         GroupData.create().total_flows_count(10).flows(['flow1', 'flow2']).build())
@@ -35,10 +39,6 @@ class TestSmartAnalyzePrepareResponseStep(TestBase):
 
         parameters.groups_data.add_item("group3",
                                         GroupData.create().total_flows_count(30).build())
-
-        parameters.services_map.add_item("service1",
-                                         ServiceData.create().flows(['flow1']).from_version("0.67.110").to_version(
-                                             "0.67.109").build())
 
         self.step.execute(parameters)
 
@@ -59,6 +59,9 @@ class TestSmartAnalyzePrepareResponseStep(TestBase):
     def test_execute_with_valid_parameters_debug_level(self):
         parameters = AnalyzeAppServiceParameters()
         parameters.res_info_level = ResInfoLevelEnum.DEBUG
+        parameters.supported_groups = self.config.get_supported_groups()
+        parameters.group_name = "oc-cd-group4"
+
         parameters.groups_data.add_item("group1",
                                         GroupData.create().total_flows_count(10).flows(['flow1', 'flow2']).build())
 
@@ -68,11 +71,6 @@ class TestSmartAnalyzePrepareResponseStep(TestBase):
 
         parameters.groups_data.add_item("group3",
                                         GroupData.create().total_flows_count(30).build())
-
-        parameters.services_map.add_item("service1",
-                                         ServiceData.create()
-                                         .service_name("service1").flows(['flow1']).from_version("0.67.110").to_version(
-                                             "0.67.109").build())
 
         self.step.execute(parameters)
 
@@ -90,6 +88,4 @@ class TestSmartAnalyzePrepareResponseStep(TestBase):
         self.assertEqual(parameters.smart_app_service_response.groups['group3'].toJSON(),
                          parameters.groups_data.get_item('group3').toJSON())
 
-        self.assertEqual(1, len(parameters.smart_app_service_response.services))
-        self.assertEqual(parameters.smart_app_service_response.services[0].toJSON(),
-                         parameters.services_map.get_item('service1').toJSON())
+        self.assertEqual(12, len(parameters.smart_app_service_response.services))

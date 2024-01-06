@@ -19,7 +19,7 @@ class UpdateServiceDataStep(SmartAnalyzeDevStepInterface):
             app_main_logger.warning("UpdateServiceDataStep.execute(): No services data to update.")
             return
 
-        updated_services_data = self.update_services_data_service.update_services_data(self.repository,
-                                                                                       parameters.services_map)
+        self.update_services_data_service.update_from_template(parameters.services_map)
 
-        parameters.services_map.merge(updated_services_data)
+        self.update_services_data_service.update_services_data(self.repository,
+                                                               parameters.services_map)

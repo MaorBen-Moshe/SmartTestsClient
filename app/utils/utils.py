@@ -14,7 +14,7 @@ class Utils:
     @staticmethod
     def create_filter_by_list(values: list[str] | None) -> str:
         values = values if values is not None else []
-        return "|".join([f".*{value}.*" for value in values])
+        return "|".join(f".*{value}.*" for value in values)
 
     @staticmethod
     def is_valid_url(url):
@@ -25,7 +25,7 @@ class Utils:
     @staticmethod
     def add_flows_without_duplications(flows: list[str], curr_flows: list[str] | None) -> None:
         curr_flows = curr_flows if curr_flows is not None else []
-        flows.extend([curr_flow for curr_flow in curr_flows if curr_flow not in flows])
+        flows.extend(curr_flow for curr_flow in curr_flows if curr_flow not in flows)
 
     @staticmethod
     def get_request_id():

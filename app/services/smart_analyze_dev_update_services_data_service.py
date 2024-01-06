@@ -1,8 +1,7 @@
 from __future__ import annotations
 
-from app import app_main_logger
+from app import app_main_logger, config
 from app.decorators.decorators import log_around
-from app.models.service_data import ServiceData
 from app.models.services_data import ServicesData
 from app.services.nexus_search_service import NexusSearchService
 
@@ -11,8 +10,9 @@ class UpdateServiceDataService:
 
     def __init__(self):
         self.nexus_search_service = NexusSearchService()
+        self._supported_services = config.get_supported_services()
 
-    @log_around(print_output=True)
+    @log_around(print_output=False)
     def update_services_data(self,
                              repository: str | None,
                              services_data: ServicesData | None):
@@ -26,32 +26,22 @@ class UpdateServiceDataService:
                                                                               or service.to_version is None),
                          ms_list)
 
-        services_from_nexus = self.nexus_search_service.get_services_master_version(repository, ms_list)
+        self.nexus_search_service.get_services_master_version(repository, ms_list)
 
-        updated_services_data_map = ServicesData()
-        for service in services_data:
-            service_data = services_data.get_item(service)
-            if services_data is None:
-                app_main_logger.warning(f"UpdateServiceDataService.update_services_data(): "
-                                        f"Service {service} does not exist in services data.")
+    @log_around(print_output=False)
+    def update_from_template(self, services: ServicesData):
+        if services is None:
+            return
+
+        for service_name in services:
+            service = services.get_item(service_name)
+            if service is None:
                 continue
 
-            to_version = None
-            if (service in services_from_nexus and
-                    (services_from_nexus.get_item(service).to_version is None or
-                     services_from_nexus.get_item(service).to_version ==
-                     services_from_nexus.get_item(service).from_version)):
-                to_version = services_from_nexus.get_item(service).to_version
+            supported_service_template = self._supported_services.get_item(service.service_name)
 
-            updated_services_data_map.add_item(service, (ServiceData.create()
-                                                         .service_name(service_data.service_name)
-                                                         .repo_name(service_data.repo_name)
-                                                         .from_version(service_data.from_version)
-                                                         .to_version(to_version if to_version
-                                                                     else service_data.to_version)
-                                                         .project(service_data.project)
-                                                         .pull_request_id(service_data.pull_request_id)
-                                                         .related_group(service_data.related_group)
-                                                         .build()))
-
-        return updated_services_data_map
+            if supported_service_template is not None:
+                service.repo_name = service.repo_name if service.repo_name else supported_service_template.repo_name
+                service.project = service.project if service.project else supported_service_template.project
+                service.related_group = service.related_group if service.related_group \
+                    else supported_service_template.related_group

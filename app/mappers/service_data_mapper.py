@@ -3,7 +3,7 @@ from __future__ import annotations
 from typing import Any
 
 from app.constants.constants import SERVICE_NAME_KEY, SERVICE_FROM_KEY, SERVICE_TO_KEY, PULL_REQUEST_ID_KEY, \
-    SERVICE_FLOWS_KEY, SERVICE_PROJECT_KEY
+    SERVICE_FLOWS_KEY, SERVICE_PROJECT_KEY, SERVICE_REPO_NAME_KEY
 from app.models.dto.service_data_dto import ServiceDataDTO
 from app.models.service_data import ServiceData
 from app.models.services_data import ServicesData
@@ -27,6 +27,7 @@ class ServiceDataMapper:
 
         service_data_dto = ServiceDataDTO()
         service_data_dto.service_name = service_data_dict.get(SERVICE_NAME_KEY)
+        service_data_dto.repo_name = service_data_dict.get(SERVICE_REPO_NAME_KEY)
         service_data_dto.from_version = service_data_dict.get(SERVICE_FROM_KEY)
         service_data_dto.to_version = service_data_dict.get(SERVICE_TO_KEY)
         service_data_dto.flows = service_data_dict.get(SERVICE_FLOWS_KEY)

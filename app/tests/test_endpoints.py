@@ -26,7 +26,7 @@ class TestEndpointsUnit(TestUnitBase):
             self.assertEqual(res.json['oc-cd-group4']['url'],
                              'http://illin5565:18080/job/oc-cd-group4/job/oc-cd-group4/')
             self.assertEqual(res.json['oc-cd-group4']['project'], 'DIGOC')
-            self.assertEqual(len(res.json['oc-cd-group4']['ms_list']), 10)
+            self.assertEqual(len(res.json['oc-cd-group4']['ms_list']), 12)
             self.assertEqual(len(res.json['oc-cd-group4']['test_files']), 22)
 
             self.assertEqual(cm.output,
@@ -58,6 +58,15 @@ class TestEndpointsUnit(TestUnitBase):
                                                                      "'url': "
                                                                      "'http://illin5565:18080/job/oc-cd-group4/job/oc"
                                                                      "-cd-group4/', 'ms_list': [{'service_name': "
+                                                                     "'productconfigurator-subdomain', 'repo_name': "
+                                                                     "'productconfigurator-subdomain', 'project': "
+                                                                     "'DIGOC', 'related_group': 'oc-cd-group4'}, "
+                                                                     "{'service_name': "
+                                                                     "'productconfigurator-subdomain-api', "
+                                                                     "'repo_name': "
+                                                                     "'productconfigurator-subdomain-api', "
+                                                                     "'project': 'DIGOC', 'related_group': "
+                                                                     "'oc-cd-group4'}, {'service_name': "
                                                                      "'productconfigurator', 'repo_name': "
                                                                      "'productconfigurator-ms', 'project': 'DIGOC', "
                                                                      "'related_group': 'oc-cd-group4'}, "
@@ -112,7 +121,7 @@ class TestEndpointsUnit(TestUnitBase):
                                           headers={API_KEY_QUERY_PARAM: self.config.get_user_api_token()})
             self.assertEqual(res.status_code, 200)
             self.assertIsNotNone(res.json)
-            self.assertEqual(len(res.json), 10)
+            self.assertEqual(len(res.json), 12)
             configurator_service = [service for service in res.json if service['service_name'] == 'productconfigurator']
             self.assertEqual(1, len(configurator_service))
             self.assertEqual(configurator_service[0]['service_name'], 'productconfigurator')
@@ -122,6 +131,15 @@ class TestEndpointsUnit(TestUnitBase):
             self.assertEqual(cm.output,
                              ['DEBUG:app:Supported services request.', "DEBUG:app:Supported services response. "
                                                                        "response=[{'service_name': "
+                                                                       "'productconfigurator-subdomain', 'repo_name': "
+                                                                       "'productconfigurator-subdomain', 'project': "
+                                                                       "'DIGOC', 'related_group': 'oc-cd-group4'}, "
+                                                                       "{'service_name': "
+                                                                       "'productconfigurator-subdomain-api', "
+                                                                       "'repo_name': "
+                                                                       "'productconfigurator-subdomain-api', "
+                                                                       "'project': 'DIGOC', 'related_group': "
+                                                                       "'oc-cd-group4'}, {'service_name': "
                                                                        "'productconfigurator', 'repo_name': "
                                                                        "'productconfigurator-ms', 'project': 'DIGOC', "
                                                                        "'related_group': 'oc-cd-group4'}, "
@@ -172,7 +190,7 @@ class TestEndpointsUnit(TestUnitBase):
                                           headers={API_KEY_QUERY_PARAM: self.config.get_user_api_token()})
             self.assertEqual(res.status_code, 200)
             self.assertIsNotNone(res.json)
-            self.assertEqual(len(res.json), 10)
+            self.assertEqual(len(res.json), 12)
             configurator_service = [service for service in res.json if service['service_name'] == 'productconfigurator']
             self.assertEqual(1, len(configurator_service))
             self.assertEqual(configurator_service[0]['service_name'], 'productconfigurator')
@@ -182,6 +200,15 @@ class TestEndpointsUnit(TestUnitBase):
             self.assertEqual(cm.output,
                              ['DEBUG:app:Supported services request.', "DEBUG:app:Supported services response. "
                                                                        "response=[{'service_name': "
+                                                                       "'productconfigurator-subdomain', 'repo_name': "
+                                                                       "'productconfigurator-subdomain', 'project': "
+                                                                       "'DIGOC', 'related_group': 'oc-cd-group4'}, "
+                                                                       "{'service_name': "
+                                                                       "'productconfigurator-subdomain-api', "
+                                                                       "'repo_name': "
+                                                                       "'productconfigurator-subdomain-api', "
+                                                                       "'project': 'DIGOC', 'related_group': "
+                                                                       "'oc-cd-group4'}, {'service_name': "
                                                                        "'productconfigurator', 'repo_name': "
                                                                        "'productconfigurator-ms', 'project': 'DIGOC', "
                                                                        "'related_group': 'oc-cd-group4'}, "
@@ -263,7 +290,7 @@ class TestEndpointsUnit(TestUnitBase):
             self.assertEqual(2, res.json['curr_flows_count'])
             services = res.json['services']
             self.assertIsNotNone(services)
-            self.assertEqual(len(services), 10)
+            self.assertEqual(len(services), 12)
             configurator_service = [service for service in services
                                     if service['service_name'] == 'productconfigurator']
             self.assertEqual(1, len(configurator_service))
@@ -290,7 +317,7 @@ class TestEndpointsUnit(TestUnitBase):
             self.assertEqual(body['mat_APIGW_testng.xml']['test_xml_name'], 'mat_APIGW_testng.xml')
             self.assertEqual(body['mat_APIGW_testng.xml']['test_xml_path'], 'com/amdocs/core/oc/testng')
 
-            self.assertEqual(10, self.mock_nexus_search.call_count)
+            self.assertEqual(12, self.mock_nexus_search.call_count)
             self.mock_get_html.assert_called_once_with("http://illin5565:18080/job/oc-cd-group4/job/oc-cd-group4"
                                                        "/lastSuccessfulBuild/BuildReport/*zip*/BuildReport.zip")
             self.mock_get_all_flows.assert_called_once_with(".*shared_regression_testng.*|.*mat_APIGW_testng.*|"
@@ -324,50 +351,55 @@ class TestEndpointsUnit(TestUnitBase):
             self.assertEqual(args[3], "0.67.18")
             self.assertEqual(args[4], None)
             self.assertEqual(args[5], ".*shared_regression_testng.*|.*mat_APIGW_testng.*|"
-                                                            ".*extended_mat_7a_APIGW_testng.*|"
-                                                            ".*extended_mat_7b_APIGW_testng.*|"
-                                                            ".*extended_mat_APIGW_testng.*|"
-                                                            ".*extended_mat_2_APIGW_testng.*|"
-                                                            ".*extended_mat_3_APIGW_testng.*|"
-                                                            ".*extended_mat_4_APIGW_testng.*|"
-                                                            ".*extended_mat_5_APIGW_testng.*|"
-                                                            ".*group4_integration_tests_testng.*|"
-                                                            ".*grp4_integration_to_CT_testng.*|"
-                                                            ".*ContratedOffer_tests_testng.*|"
-                                                            ".*ContratedOffer_Pack_testng.*|"
-                                                            ".*Everest_Configurator_Pack_testng.*|"
-                                                            ".*Everest_Qualification_Pack_testng.*|"
-                                                            ".*Everest_validator_pack.*|"
-                                                            ".*Olympus_pack_testng.*|"
-                                                            ".*Everest_Validator_Dependency_Rules_Pack_testng.*|"
-                                                            ".*Fuji_Price_Pack_testng.*|"
-                                                            ".*Fuji_Promotion_Pack_testng.*|"
-                                                            ".*Fuji_Replace_Pack_testng.*|"
-                                                            ".*mat_oc_product_configurator_hooks_APIGW_testng.*")
+                                      ".*extended_mat_7a_APIGW_testng.*|"
+                                      ".*extended_mat_7b_APIGW_testng.*|"
+                                      ".*extended_mat_APIGW_testng.*|"
+                                      ".*extended_mat_2_APIGW_testng.*|"
+                                      ".*extended_mat_3_APIGW_testng.*|"
+                                      ".*extended_mat_4_APIGW_testng.*|"
+                                      ".*extended_mat_5_APIGW_testng.*|"
+                                      ".*group4_integration_tests_testng.*|"
+                                      ".*grp4_integration_to_CT_testng.*|"
+                                      ".*ContratedOffer_tests_testng.*|"
+                                      ".*ContratedOffer_Pack_testng.*|"
+                                      ".*Everest_Configurator_Pack_testng.*|"
+                                      ".*Everest_Qualification_Pack_testng.*|"
+                                      ".*Everest_validator_pack.*|"
+                                      ".*Olympus_pack_testng.*|"
+                                      ".*Everest_Validator_Dependency_Rules_Pack_testng.*|"
+                                      ".*Fuji_Price_Pack_testng.*|"
+                                      ".*Fuji_Promotion_Pack_testng.*|"
+                                      ".*Fuji_Replace_Pack_testng.*|"
+                                      ".*mat_oc_product_configurator_hooks_APIGW_testng.*")
 
-            self.assertEqual(cm.output, ['INFO:app:AnalyzeAppService.analyze(): Processing payload data.',
-                                         'INFO:app:AnalyzeAppService.analyze(): Loading services version from '
-                                         'nexus.',
-                                         'WARNING:app:NexusSearchService._get_service_data_for_each_entry(): '
-                                         'Failed to get version for productconfigurator-action',
-                                         'WARNING:app:NexusSearchService._get_service_data_for_each_entry(): '
-                                         'Failed to get version for productconfigurator-commitmentterm',
-                                         'WARNING:app:NexusSearchService._get_service_data_for_each_entry(): '
-                                         'Failed to get version for productconfigurator-mergeentities',
-                                         'WARNING:app:NexusSearchService._get_service_data_for_each_entry(): '
-                                         'Failed to get version for productconfigurator-price',
-                                         'WARNING:app:NexusSearchService._get_service_data_for_each_entry(): '
-                                         'Failed to get version for productconfigurator-promotion',
-                                         'WARNING:app:NexusSearchService._get_service_data_for_each_entry(): '
-                                         'Failed to get version for productconfigurator-qualification',
-                                         'WARNING:app:NexusSearchService._get_service_data_for_each_entry(): '
-                                         'Failed to get version for productconfigurator-replace',
-                                         'WARNING:app:NexusSearchService._get_service_data_for_each_entry(): '
-                                         'Failed to get version for productvalidator',
-                                         'INFO:app:AnalyzeAppService.analyze(): Loading build report data.',
-                                         'INFO:app:AnalyzeAppService.analyze(): Updating data per group.',
-                                         'INFO:app:AnalyzeAppService.analyze(): Analyzing flows to run.',
-                                         'INFO:app:AnalyzeAppService.analyze(): Preparing response.'])
+            self.assertListEqual(cm.output, [
+                "INFO:app:AnalyzeAppService.analyze(): Processing payload data.",
+                "INFO:app:AnalyzeAppService.analyze(): Loading services version from nexus.",
+                "WARNING:app:NexusSearchService._get_service_data_for_each_entry(): Failed to get version for "
+                "productconfigurator-subdomain",
+                "WARNING:app:NexusSearchService._get_service_data_for_each_entry(): Failed to get version for "
+                "productconfigurator-subdomain-api",
+                "WARNING:app:NexusSearchService._get_service_data_for_each_entry(): Failed to get version for "
+                "productconfigurator-action",
+                "WARNING:app:NexusSearchService._get_service_data_for_each_entry(): Failed to get version for "
+                "productconfigurator-commitmentterm",
+                "WARNING:app:NexusSearchService._get_service_data_for_each_entry(): Failed to get version for "
+                "productconfigurator-mergeentities",
+                "WARNING:app:NexusSearchService._get_service_data_for_each_entry(): Failed to get version for "
+                "productconfigurator-price",
+                "WARNING:app:NexusSearchService._get_service_data_for_each_entry(): Failed to get version for "
+                "productconfigurator-promotion",
+                "WARNING:app:NexusSearchService._get_service_data_for_each_entry(): Failed to get version for "
+                "productconfigurator-qualification",
+                "WARNING:app:NexusSearchService._get_service_data_for_each_entry(): Failed to get version for "
+                "productconfigurator-replace",
+                "WARNING:app:NexusSearchService._get_service_data_for_each_entry(): Failed to get version for "
+                "productvalidator",
+                "INFO:app:AnalyzeAppService.analyze(): Loading build report data.",
+                "INFO:app:AnalyzeAppService.analyze(): Updating data per group.",
+                "INFO:app:AnalyzeAppService.analyze(): Analyzing flows to run.",
+                "INFO:app:AnalyzeAppService.analyze(): Preparing response."
+            ])
 
     def test_smart_tests_analyze_endpoint_success_same_versions(self):
         # parameters
@@ -391,7 +423,7 @@ class TestEndpointsUnit(TestUnitBase):
         self.assertEqual(0, res.json['curr_flows_count'])
         services = res.json['services']
         self.assertIsNotNone(services)
-        self.assertEqual(len(services), 10)
+        self.assertEqual(len(services), 12)
         configurator_service = [service for service in services
                                 if service['service_name'] == 'productconfigurator']
         self.assertEqual(1, len(configurator_service))
@@ -414,29 +446,29 @@ class TestEndpointsUnit(TestUnitBase):
         self.assertEqual(body['mat_APIGW_testng.xml']['test_xml_name'], 'mat_APIGW_testng.xml')
         self.assertEqual(body['mat_APIGW_testng.xml']['test_xml_path'], 'com/amdocs/core/oc/testng')
 
-        self.assertEqual(10, self.mock_nexus_search.call_count)
+        self.assertEqual(12, self.mock_nexus_search.call_count)
         self.mock_get_html.assert_called_once_with("http://test_html_same_version/zipfile.zip")
         self.mock_get_all_flows.assert_called_once_with(".*shared_regression_testng.*|.*mat_APIGW_testng.*|"
-                                                            ".*extended_mat_7a_APIGW_testng.*|"
-                                                            ".*extended_mat_7b_APIGW_testng.*|"
-                                                            ".*extended_mat_APIGW_testng.*|"
-                                                            ".*extended_mat_2_APIGW_testng.*|"
-                                                            ".*extended_mat_3_APIGW_testng.*|"
-                                                            ".*extended_mat_4_APIGW_testng.*|"
-                                                            ".*extended_mat_5_APIGW_testng.*|"
-                                                            ".*group4_integration_tests_testng.*|"
-                                                            ".*grp4_integration_to_CT_testng.*|"
-                                                            ".*ContratedOffer_tests_testng.*|"
-                                                            ".*ContratedOffer_Pack_testng.*|"
-                                                            ".*Everest_Configurator_Pack_testng.*|"
-                                                            ".*Everest_Qualification_Pack_testng.*|"
-                                                            ".*Everest_validator_pack.*|"
-                                                            ".*Olympus_pack_testng.*|"
-                                                            ".*Everest_Validator_Dependency_Rules_Pack_testng.*|"
-                                                            ".*Fuji_Price_Pack_testng.*|"
-                                                            ".*Fuji_Promotion_Pack_testng.*|"
-                                                            ".*Fuji_Replace_Pack_testng.*|"
-                                                            ".*mat_oc_product_configurator_hooks_APIGW_testng.*")
+                                                        ".*extended_mat_7a_APIGW_testng.*|"
+                                                        ".*extended_mat_7b_APIGW_testng.*|"
+                                                        ".*extended_mat_APIGW_testng.*|"
+                                                        ".*extended_mat_2_APIGW_testng.*|"
+                                                        ".*extended_mat_3_APIGW_testng.*|"
+                                                        ".*extended_mat_4_APIGW_testng.*|"
+                                                        ".*extended_mat_5_APIGW_testng.*|"
+                                                        ".*group4_integration_tests_testng.*|"
+                                                        ".*grp4_integration_to_CT_testng.*|"
+                                                        ".*ContratedOffer_tests_testng.*|"
+                                                        ".*ContratedOffer_Pack_testng.*|"
+                                                        ".*Everest_Configurator_Pack_testng.*|"
+                                                        ".*Everest_Qualification_Pack_testng.*|"
+                                                        ".*Everest_validator_pack.*|"
+                                                        ".*Olympus_pack_testng.*|"
+                                                        ".*Everest_Validator_Dependency_Rules_Pack_testng.*|"
+                                                        ".*Fuji_Price_Pack_testng.*|"
+                                                        ".*Fuji_Promotion_Pack_testng.*|"
+                                                        ".*Fuji_Replace_Pack_testng.*|"
+                                                        ".*mat_oc_product_configurator_hooks_APIGW_testng.*")
 
         self.mock_analyze_flows.assert_not_called()
 
@@ -716,8 +748,7 @@ class TestEndpointsUnit(TestUnitBase):
         call_args = self.mock_analyze_flows.mock_calls[0].args
         self.assertEqual(len(call_args), 6)
         self.assertEqual(call_args[0], 'productconfigurator-ms')
-        self.assertNotEquals(call_args[1], 'NOT_DIGOC')
-        self.assertEqual(call_args[1], 'DIGOC')
+        self.assertEquals(call_args[1], 'NOT_DIGOC')
         self.assertIsNone(call_args[2])
         self.assertIsNone(call_args[3])
         self.assertEqual(call_args[4], '12345')

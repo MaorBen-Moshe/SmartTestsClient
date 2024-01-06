@@ -19,7 +19,7 @@ class TestHtmlParserServiceUnit(TestUnitBase):
                           self.config.get_supported_groups().get_item('oc-cd-group4').services_data)
 
         self.mock_get_html.assert_called()
-        self.assertEqual(len(services_map), 10)
+        self.assertEqual(len(services_map), 11)
         self.__assert_entry(services_map, "productconfigurator-action", '0.67.8', '0.67.8')
         self.__assert_entry(services_map, "productconfigurator-price", '0.67.15', '0.67.15')
         self.__assert_entry(services_map, "productconfigurator-qualification", '0.67.9', '0.67.9')
@@ -30,6 +30,7 @@ class TestHtmlParserServiceUnit(TestUnitBase):
         self.__assert_entry(services_map, "productconfigurator-promotion", '0.67.17', '0.67.17')
         self.__assert_entry(services_map, "productconfigurator-replace", '0.67.19', '0.67.19')
         self.__assert_entry(services_map, "productconfigurator-mergeentities", '1.67.13', '1.67.13')
+        self.__assert_entry(services_map, "productconfigurator-subdomain", '0.67.6', '0.67.6')
 
     def test_load_html_missing_table(self):
         self.mock_get_html.return_value = "<HTML></HTML>"
@@ -61,7 +62,7 @@ class TestHtmlParserServiceUnit(TestUnitBase):
                           self.config.get_supported_groups().get_item('oc-cd-group4').services_data)
 
         self.mock_get_html.assert_called()
-        self.assertEqual(len(services_map), 10)
+        self.assertEqual(len(services_map), 11)
         self.__assert_entry(services_map, "productconfigurator-action", '0.67.8', '0.67.9')
         self.__assert_entry(services_map, "productconfigurator-price", '0.67.15', '0.67.15')
         self.__assert_entry(services_map, "productconfigurator-qualification", '0.67.9', '0.67.9')
@@ -72,6 +73,7 @@ class TestHtmlParserServiceUnit(TestUnitBase):
         self.__assert_entry(services_map, "productconfigurator-promotion", '0.67.17', '0.67.17')
         self.__assert_entry(services_map, "productconfigurator-replace", '0.67.19', '0.67.19')
         self.__assert_entry(services_map, "productconfigurator-mergeentities", '1.67.13', '1.67.13')
+        self.__assert_entry(services_map, "productconfigurator-subdomain", '0.67.6', '0.67.6')
 
     def __assert_entry(self, services_map: ServicesData, key_name: str, old_version: str, new_version: str):
         self.assertIn(key_name, services_map)
