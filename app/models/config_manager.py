@@ -2,6 +2,9 @@ from __future__ import annotations
 
 from typing import Any
 
+import os
+
+import dotenv
 import yaml
 from cryptography.fernet import Fernet
 
@@ -18,13 +21,17 @@ class ConfigManager(metaclass=SingletonMeta):
         self._fernet: Fernet | None = None
         self._config = None
 
-    def init_configs(self, config_path: str | None):
+    def init_configs(self, config_path: str | None, config_name: str | None):
         if config_path is None:
             raise ConfigurationError("Failed to create configs file. path is None.")
 
-        with open(config_path, "r") as config_file:
+        dotenv.load_dotenv(dotenv_path=os.path.join(config_path, ".env"))
+
+        config_full_path = os.path.join(config_path, config_name)
+        with open(config_full_path, "r") as config_file:
             self._config = yaml.safe_load(config_file)
-            self._fernet = Fernet(self._config["app"]["encrypt_key"]) if "encrypt_key" in self._config["app"] else None
+            encrypt_key = os.getenv("encrypt_key")
+            self._fernet = Fernet(encrypt_key) if encrypt_key else None
 
     def get_server_port(self) -> int:
         return self._config["server"]["port"]
@@ -40,10 +47,9 @@ class ConfigManager(metaclass=SingletonMeta):
         supported_services_dict = self._config["app"]["supported_services"]
 
         filtered_supported_services_dict = filter(lambda curr_service_name: related_group is None or
-                                                                            len(related_group) == 0 or
-                                                                            supported_services_dict[curr_service_name][
-                                                                                "related_group"] == related_group,
-                                                  supported_services_dict)
+                                                  len(related_group) == 0 or
+                                                  supported_services_dict[curr_service_name]["related_group"]
+                                                  == related_group, supported_services_dict)
 
         services_data = ServicesData()
         for service_name in filtered_supported_services_dict:
@@ -58,26 +64,10 @@ class ConfigManager(metaclass=SingletonMeta):
         return services_data
 
     def get_nexus_cred(self) -> (str, str):
-        nexus_user = None
-        nexus_password = None
-        if "nexus" in self._config:
-            if "nexus_user" in self._config["nexus"]:
-                nexus_user = self._config["nexus"]["nexus_user"]
-            if "nexus_password" in self._config["nexus"]:
-                nexus_password = self._fernet.decrypt(self._config["nexus"]["nexus_password"]).decode("utf-8")
-
-        return nexus_user, nexus_password
+        return self.__get_external_cred_by_key("nexus_user", "nexus_password")
 
     def get_jenkins_cred(self) -> (str, str):
-        jenkins_user = None
-        jenkins_password = None
-        if "jenkins" in self._config:
-            if "jenkins_user" in self._config["jenkins"]:
-                jenkins_user = self._config["jenkins"]["jenkins_user"]
-            if "jenkins_password" in self._config["jenkins"]:
-                jenkins_password = self._fernet.decrypt(self._config["jenkins"]["jenkins_password"]).decode("utf-8")
-
-        return jenkins_user, jenkins_password
+        return self.__get_external_cred_by_key("jenkins_user", "jenkins_password")
 
     def get_index_data_repository(self) -> str | None:
         data = self._config["nexus"]["index_data_repository"]
@@ -93,11 +83,13 @@ class ConfigManager(metaclass=SingletonMeta):
         return (f'{self._config["smart_client"]["base_url"]}'
                 f'{self._config["smart_client"]["smart_tests_statistics_endpoint"]}')
 
-    def get_admin_api_token(self) -> str:
-        return self._config["app"]["admin_token"]
+    @classmethod
+    def get_admin_api_token(cls) -> str:
+        return os.getenv("admin_token")
 
-    def get_user_api_token(self) -> str:
-        return self._config["app"]["user_token"]
+    @classmethod
+    def get_user_api_token(cls) -> str:
+        return os.getenv("user_token")
 
     def get_log_level(self) -> str:
         return self._config["logging"]["log_level"] if "log_level" in self._config["logging"] else "INFO"
@@ -127,3 +119,12 @@ class ConfigManager(metaclass=SingletonMeta):
                                              .build()))
 
         return groups
+
+    def __get_external_cred_by_key(self, user_key: str, password_key: str) -> (str, str):
+        user = os.getenv(user_key)
+        password = os.getenv(password_key)
+        if password:
+            if self._fernet:
+                password = self._fernet.decrypt(password).decode("utf-8")
+
+        return user, password

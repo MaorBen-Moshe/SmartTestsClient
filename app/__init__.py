@@ -32,7 +32,7 @@ from app.appLogging import app_logger_manager as alm
 from app.appLogging.trace_id_filter import TraceIdFilter
 
 config = config_manager.ConfigManager()
-config.init_configs(os.path.join(os.path.dirname(__file__), "config.yaml"))
+config.init_configs(os.path.dirname(__file__), "config.yaml")
 
 trace_id_filter = TraceIdFilter(utils.Utils.get_request_id)
 
