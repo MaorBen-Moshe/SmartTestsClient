@@ -37,11 +37,10 @@ class TestSmartTestsClient(TestBase):
         ServiceData.create().project("DIGOC").from_version("0.67.19").to_version("0.67.18").build()
 
         res_json = self.client.analyze_flows("productcofigurator",
-                                             ServiceData.create()
-                                             .project("DIGOC")
-                                             .from_version("0.67.19")
-                                             .to_version("0.67.18")
-                                             .build(),
+                                             "DIGOC",
+                                             "0.67.19",
+                                             "0.67.18",
+                                             None,
                                              "")
 
         self.assertIn("flowsCount", res_json)

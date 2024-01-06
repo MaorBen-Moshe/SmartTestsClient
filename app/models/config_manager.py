@@ -104,6 +104,10 @@ class ConfigManager(metaclass=SingletonMeta):
         value = self._config["cache"]["get_all_endpoint"]['enabled']
         return bool(value) if value is not None else False
 
+    def is_smart_analyze_endpoint_cache_enabled(self) -> bool:
+        value = self._config["cache"]["smart_analyze_endpoint"]['enabled']
+        return bool(value) if value is not None else False
+
     def __get_supported_groups_helper(self, supported_groups_str_format: dict[str, Any]) -> SupportedGroups:
         groups = SupportedGroups()
         for group_name, group in supported_groups_str_format.items():

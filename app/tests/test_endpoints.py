@@ -317,13 +317,13 @@ class TestEndpointsUnit(TestUnitBase):
 
             self.mock_analyze_flows.assert_called_once()
             args, kwargs = self.mock_analyze_flows.call_args
-            self.assertEqual(len(args), 3)
-            self.assertEqual(args[0], "productconfigurator")
-            self.assertTrue(isinstance(args[1], ServiceData))
-            self.assertEqual(args[1].from_version, "0.67.19")
-            self.assertEqual(args[1].to_version, "0.67.18")
-            self.assertEqual(args[1].project, "DIGOC")
-            self.assertEqual(args[2], ".*shared_regression_testng.*|.*mat_APIGW_testng.*|"
+            self.assertEqual(len(args), 6)
+            self.assertEqual(args[0], "productconfigurator-ms")
+            self.assertEqual(args[1], "DIGOC")
+            self.assertEqual(args[2], "0.67.19")
+            self.assertEqual(args[3], "0.67.18")
+            self.assertEqual(args[4], None)
+            self.assertEqual(args[5], ".*shared_regression_testng.*|.*mat_APIGW_testng.*|"
                                                             ".*extended_mat_7a_APIGW_testng.*|"
                                                             ".*extended_mat_7b_APIGW_testng.*|"
                                                             ".*extended_mat_APIGW_testng.*|"
@@ -541,12 +541,14 @@ class TestEndpointsUnit(TestUnitBase):
         calls = [self.mock_analyze_flows.mock_calls[0], self.mock_analyze_flows.mock_calls[1]]
 
         services_expected = {
-            'productconfigurator': ServiceData.create()
+            'productconfigurator-ms': ServiceData.create()
+            .repo_name('productconfigurator-ms')
             .from_version('0.67.20')
             .to_version('0.67.19')
             .project('DIGOC')
             .build(),
-            'productconfigurator-pioperations': ServiceData.create()
+            'productconfigurator-pioperations-ms': ServiceData.create()
+            .repo_name('productconfigurator-pioperations-ms')
             .from_version('0.67.13')
             .to_version('0.67.11')
             .project('DIGOC')
@@ -554,16 +556,14 @@ class TestEndpointsUnit(TestUnitBase):
         }
 
         for curr_call in calls:
-            self.assertEqual(len(curr_call.args), 3)
+            self.assertEqual(len(curr_call.args), 6)
             expected_service = services_expected.get(curr_call.args[0])
             self.assertIsNotNone(expected_service)
-            self.assertTrue(isinstance(curr_call.args[1], ServiceData))
-            service = curr_call.args[1]
-            self.assertEqual(service.from_version, expected_service.from_version)
-            self.assertEqual(service.to_version, expected_service.to_version)
-            self.assertEqual(service.project, expected_service.project)
-            self.assertEqual(service.pull_request_id, expected_service.pull_request_id)
-            self.assertEqual(curr_call.args[2], '')
+            self.assertEqual(curr_call.args[1], expected_service.project)
+            self.assertEqual(curr_call.args[2], expected_service.from_version)
+            self.assertEqual(curr_call.args[3], expected_service.to_version)
+            self.assertEqual(curr_call.args[4], expected_service.pull_request_id)
+            self.assertEqual(curr_call.args[5], '')
 
     @parameterized.expand([
         ({
@@ -644,15 +644,13 @@ class TestEndpointsUnit(TestUnitBase):
         self.mock_get_all_flows.assert_called_once_with('')
         self.assertEqual(1, self.mock_analyze_flows.call_count)
         call_args = self.mock_analyze_flows.mock_calls[0].args
-        self.assertEqual(len(call_args), 3)
-        self.assertEqual(call_args[0], 'productconfigurator')
-        self.assertTrue(isinstance(call_args[1], ServiceData))
-        service = call_args[1]
-        self.assertIsNone(service.from_version)
-        self.assertIsNone(service.to_version)
-        self.assertEqual(service.project, 'DIGOC')
-        self.assertEqual(service.pull_request_id, '12345')
-        self.assertEqual(call_args[2], '')
+        self.assertEqual(len(call_args), 6)
+        self.assertEqual(call_args[0], 'productconfigurator-ms')
+        self.assertEqual(call_args[1], 'DIGOC')
+        self.assertIsNone(call_args[2])
+        self.assertIsNone(call_args[3])
+        self.assertEqual(call_args[4], '12345')
+        self.assertEqual(call_args[5], '')
 
     @parameterized.expand([
         ({
@@ -716,16 +714,14 @@ class TestEndpointsUnit(TestUnitBase):
         self.mock_get_all_flows.assert_called_once_with('')
         self.assertEqual(1, self.mock_analyze_flows.call_count)
         call_args = self.mock_analyze_flows.mock_calls[0].args
-        self.assertEqual(len(call_args), 3)
-        self.assertEqual(call_args[0], 'productconfigurator')
-        self.assertTrue(isinstance(call_args[1], ServiceData))
-        service = call_args[1]
-        self.assertIsNone(service.from_version)
-        self.assertIsNone(service.to_version)
-        self.assertNotEquals(service.project, 'NOT_DIGOC')
-        self.assertEqual(service.project, 'DIGOC')
-        self.assertEqual(service.pull_request_id, '12345')
-        self.assertEqual(call_args[2], '')
+        self.assertEqual(len(call_args), 6)
+        self.assertEqual(call_args[0], 'productconfigurator-ms')
+        self.assertNotEquals(call_args[1], 'NOT_DIGOC')
+        self.assertEqual(call_args[1], 'DIGOC')
+        self.assertIsNone(call_args[2])
+        self.assertIsNone(call_args[3])
+        self.assertEqual(call_args[4], '12345')
+        self.assertEqual(call_args[5], '')
 
     @parameterized.expand([
         (None, True, 400, '[ERROR] 400 Bad Request: The browser (or proxy) sent a request that this server could not '

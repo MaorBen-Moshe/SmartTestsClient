@@ -122,7 +122,7 @@ class TestUnitBase(TestBase):
             file_name = "resources/analyze_flows/analyze_services1.json"
         elif args[0] == "service2":
             file_name = "resources/analyze_flows/analyze_services2.json"
-        elif args[0] == "productconfigurator":
+        elif args[0] == "productconfigurator-ms":
             file_name = "resources/endpoints/smart_stats.json"
 
         if file_name:

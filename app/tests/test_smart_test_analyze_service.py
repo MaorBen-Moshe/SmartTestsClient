@@ -65,18 +65,18 @@ class TestHandleGroupsDataStepUnit(TestUnitBase):
     def test_analyze_flows_success(self):
         services_map = ServicesData()
         services_map.add_item("service1",
-                                 ServiceData.create().to_version("1.0").from_version("2.0").build())
+                              ServiceData.create().repo_name("service1").to_version("1.0").from_version("2.0").build())
         services_map.add_item("service2",
-                                 ServiceData.create().to_version("3.0").from_version("4.0").build())
+                              ServiceData.create().repo_name("service2").to_version("3.0").from_version("4.0").build())
 
         filter_group = ["group1", "group2"]
         groups_data = TestGroupsData()
         groups_data.add_item("group1",
                              GroupData.create().test_xml_name("group1").test_xml_path("").total_flows_count(
-                                  10).build())
+                                 10).build())
         groups_data.add_item("group2",
                              GroupData.create().test_xml_name("group2").test_xml_path("").total_flows_count(
-                                  20).build())
+                                 20).build())
 
         self.smart_test_analyze_service.analyze_flows(services_map, filter_group, groups_data)
 

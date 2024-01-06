@@ -4,7 +4,6 @@ import requests
 
 from app import config, cache_manager
 from app.decorators.decorators import gateway_errors_handler, log_around
-from app.models.service_data import ServiceData
 from app.utils.utils import Utils
 
 
@@ -15,12 +14,18 @@ class SmartTestsClient:
 
     @gateway_errors_handler
     @log_around(print_output=True)
+    @cache_manager.cached(timeout=600,
+                          make_cache_key=Utils.make_cache_key_smart_analyze_flows,
+                          unless=lambda: not config.is_smart_analyze_endpoint_cache_enabled())
     def analyze_flows(self,
-                      service_key: str | None,
-                      service_data: ServiceData | None,
+                      repo_name: str | None,
+                      project: str | None,
+                      from_version: str | None,
+                      to_version: str | None,
+                      pull_request_id: str | None,
                       include_groups_filter: str | None):
 
-        if service_key is None or service_data is None:
+        if repo_name is None or project is None:
             return None
 
         if include_groups_filter is None:
@@ -32,11 +37,11 @@ class SmartTestsClient:
                 "restrictions": [
                     "repo_exclude_config"
                 ],
-                "project": service_data.project,
-                "repo": service_data.repo_name,
-                "from": service_data.from_version,
-                "to": service_data.to_version,
-                "pullRequestId": service_data.pull_request_id,
+                "project": project,
+                "repo": repo_name,
+                "from": from_version,
+                "to": to_version,
+                "pullRequestId": pull_request_id,
                 "includeFileGroupNamePattern": include_groups_filter
             }
         ]

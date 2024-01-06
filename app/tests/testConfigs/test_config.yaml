@@ -93,3 +93,5 @@ logging:
 cache:
   get_all_endpoint:
     enabled: false
+  smart_analyze_endpoint:
+    enabled: false

@@ -10,6 +10,7 @@ from app.decorators.decorators import log_around
 from app.exceptions.excpetions import EmptyInputError
 from app.models.group_data import GroupData
 from app.models.groups_data import TestGroupsData
+from app.models.service_data import ServiceData
 from app.models.services_data import ServicesData
 from app.utils.utils import Utils
 
@@ -36,7 +37,7 @@ class SmartTestsAnalyzeService:
                     continue
 
                 t = threading.Thread(target=self._analyze_flow_per_service,
-                                     args=(service_key, services_map, groups_data, include_groups_filter))
+                                     args=(service, groups_data, include_groups_filter))
 
                 threads.append(t)
                 t.start()
@@ -46,12 +47,17 @@ class SmartTestsAnalyzeService:
         else:
             raise EmptyInputError("failed to fetch flows to analyze. no services or groups data found.")
 
-    def _analyze_flow_per_service(self, service_key: str,
-                                  services_map: ServicesData,
+    def _analyze_flow_per_service(self, service_data: ServiceData,
                                   groups_data: TestGroupsData,
                                   include_groups_filter: str):
-        res_json = self.client.analyze_flows(service_key,
-                                             services_map.get_item(service_key),
+        if service_data is None:
+            return
+
+        res_json = self.client.analyze_flows(service_data.repo_name,
+                                             service_data.project,
+                                             service_data.from_version,
+                                             service_data.to_version,
+                                             service_data.pull_request_id,
                                              include_groups_filter)
 
         if res_json is not None and int(res_json.get(SMART_SERVICE_GROUP_FLOWS_COUNT_KEY)) > 0:
@@ -61,7 +67,7 @@ class SmartTestsAnalyzeService:
                 if group_name in groups_data:
                     with self._lock:
                         groups_data.get_item(group_name).add_flows(group.get(SMART_SERVICE_GROUP_FLOWS_KEY))
-                        services_map.get_item(service_key).add_flows(group.get(SMART_SERVICE_GROUP_FLOWS_KEY))
+                        service_data.add_flows(group.get(SMART_SERVICE_GROUP_FLOWS_KEY))
                 else:
                     app_main_logger.warning(f"SmartTestsAnalyzeService._analyze_flow_per_service(): "
                                             f"Group {group_name} not found in groups data.")

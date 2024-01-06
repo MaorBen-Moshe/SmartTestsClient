@@ -51,3 +51,10 @@ class Utils:
     def make_cache_key_smart_get_all(*args, **kwargs):
         suffix = args[1] if len(args) > 1 and args[1] is not None and len(args[1]) > 0 else "empty_args"
         return f"smart_tests_all_{suffix}"
+
+    @staticmethod
+    def make_cache_key_smart_analyze_flows(*args, **kwargs):
+        args_as_string = (val if val is not None and len(val) > 0 else "none" for val in args[1:])
+        suffix = '_'.join(args_as_string)
+        suffix = suffix if suffix is not None and len(suffix) > 0 else "empty_args"
+        return f"smart_analyze_flows_{suffix}"

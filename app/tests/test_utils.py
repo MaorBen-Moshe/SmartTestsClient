@@ -101,3 +101,26 @@ class TestUtils(TestBase):
 
         result = sorted(result)
         self.assertEqual(result, expected)
+
+    @parameterized.expand([
+        (["smart", "foo"], "smart_tests_all_foo"),
+        (["smart", None], "smart_tests_all_empty_args"),
+        (["smart"], "smart_tests_all_empty_args"),
+        (["smart", ""], "smart_tests_all_empty_args"),
+    ])
+    def test_make_cache_key_smart_get_all(self, args, expected):
+        output = Utils.make_cache_key_smart_get_all(*args)
+
+        self.assertEqual(output, expected)
+
+    @parameterized.expand([
+        # args, expected output
+        (["smart", "foo", "bar"], "smart_analyze_flows_foo_bar"),
+        (["smart", None, "bar"], "smart_analyze_flows_none_bar"),
+        (["smart", "", "bar"], "smart_analyze_flows_none_bar"),
+        (["smart"], "smart_analyze_flows_empty_args"),
+    ])
+    def test_make_cache_key_smart_analyze_flows(self, args, expected):
+        output = Utils.make_cache_key_smart_analyze_flows(*args)
+
+        self.assertEqual(output, expected)
