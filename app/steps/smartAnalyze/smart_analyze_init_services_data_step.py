@@ -23,6 +23,6 @@ class InitServiceMapStep(SmartAnalyzeStepInterface):
         ms_list = (parameters.services_map.get_item(service) for
                    service in parameters.services_map)
 
-        self.nexus_search_service.get_services_master_version(self.repository, ms_list)
+        self.nexus_search_service.update_services_master_version(self.repository, ms_list)
 
         app_main_logger.debug(f"InitServiceMapStep.execute() services_map={parameters.services_map}")

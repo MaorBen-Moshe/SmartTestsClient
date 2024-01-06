@@ -5,6 +5,7 @@ from app.models.service_data import ServiceData
 from app.models.services_data import ServicesData
 from app.services.smart_test_analyze_service import SmartTestsAnalyzeService
 from test_base import TestUnitBase
+from parameterized import parameterized
 
 
 class TestHandleGroupsDataStepUnit(TestUnitBase):
@@ -35,8 +36,12 @@ class TestHandleGroupsDataStepUnit(TestUnitBase):
 
         self.assertNotIn('unknown-group', groups_data)
 
-    def test_get_all_flows_by_filter_emtpy_group_filter(self):
-        groups_data = self.smart_test_analyze_service.get_all_flows_by_filter([])
+    @parameterized.expand([
+        (None,),
+        ([],),
+    ])
+    def test_get_all_flows_by_filter_emtpy_group_filter(self, group_filter):
+        groups_data = self.smart_test_analyze_service.get_all_flows_by_filter(group_filter)
 
         self.mock_get_all_flows.assert_called()
         self.assertEqual(len(groups_data), 3)

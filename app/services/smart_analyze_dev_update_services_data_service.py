@@ -26,7 +26,7 @@ class UpdateServiceDataService:
                                                                               or service.to_version is None),
                          ms_list)
 
-        self.nexus_search_service.get_services_master_version(repository, ms_list)
+        self.nexus_search_service.update_services_master_version(repository, ms_list)
 
     @log_around(print_output=False)
     def update_from_template(self, services: ServicesData):

@@ -21,6 +21,9 @@ class AnalyzeAppServiceParameters:
 
     @property
     def services_map(self) -> ServicesData | None:
+        if self.curr_group_data is None:
+            return None
+
         return self.curr_group_data.services_data
 
     @property

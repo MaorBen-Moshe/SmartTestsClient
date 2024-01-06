@@ -19,11 +19,11 @@ class NexusSearchService:
         self._lock = threading.Lock()
 
     @log_around(print_output=True)
-    def get_services_master_version(self,
-                                    repository: str | None,
-                                    ms_list: Iterable[ServiceData]):
+    def update_services_master_version(self,
+                                       repository: str | None,
+                                       ms_list: Iterable[ServiceData]):
         if repository is None:
-            raise EmptyInputError("Provided to 'get_services_master_version' repository=None")
+            raise EmptyInputError("Provided to 'update_services_master_version' repository=None")
 
         if ms_list:
             threads = []

@@ -32,6 +32,28 @@ paths:
           description: Invalid api key header.
           schema:
             $ref: '#/definitions/Error'
+  /supported-services:
+    get:
+      summary: Get all the supported services the server supports
+      operationId: getSupportedServices
+      produces:
+        - application/json;charset=utf-8
+      parameters:
+        - name: x-api-key
+          in: header
+          required: true
+          type: string
+      responses:
+        200:
+          description: A JSON object containing the supported services
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/ServiceData'
+        401:
+          description: Invalid api key header.
+          schema:
+            $ref: '#/definitions/Error'
   /smart-tests-analyze:
     post:
       summary: Analyze the test flows to run based on the build url and supported group

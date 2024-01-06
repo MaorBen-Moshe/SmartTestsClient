@@ -769,7 +769,7 @@ class TestEndpointsUnit(TestUnitBase):
                      "name": "service_name",
                  }
              ]
-         }, True, 400, "[ERROR] 400: Service 'service_name' is missing mandatory field: 'from'."),
+         }, True, 400, "[ERROR] 400: Service 'service_name' is missing mandatory field: 'from' or 'pullRequestId'."),
     ])
     def test_smart_analyze_dev_endpoint_missing_data(self, payload, with_query_param, error_code, error_msg):
         headers = {API_KEY_QUERY_PARAM: self.config.get_user_api_token()} if with_query_param else {}

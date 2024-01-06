@@ -1,7 +1,5 @@
 from __future__ import annotations
 
-from typing import Iterable
-
 from bs4 import BeautifulSoup
 
 from app.clients.html_parser_client import HtmlParserClient
@@ -9,7 +7,6 @@ from app.constants.constants import TR, TD, B, TABLE, TABLE_NAME, TABLE_INDEX_NA
     TABLE_INDEX_MICROSERVICE_PREFIX
 from app.decorators.decorators import log_around
 from app.exceptions.excpetions import NotFoundError
-from app.models.service_data import ServiceData
 from app.models.services_data import ServicesData
 
 
@@ -22,15 +19,16 @@ class HtmlParserService:
     @log_around(print_output=False)
     def load_html(self,
                   html_zip_url: str | None,
-                  services_map: ServicesData,
-                  group_supported_services: ServicesData):
+                  services_map: ServicesData | None):
+        if services_map is None or len(services_map) == 0:
+            return
+
         self.html = HtmlParserClient.get_html(html_zip_url)
         self.soup = BeautifulSoup(self.html, "html.parser")
         self.table = self.__find_table()
         if self.table is not None:
             name_index, version_index = self.__find_indexes()
-            filtered_ms_list = [service for service in group_supported_services]
-            self.__update_map(services_map, name_index, version_index, filtered_ms_list, group_supported_services)
+            self.__update_map(services_map, name_index, version_index)
         else:
             raise NotFoundError(f"error with build report structure. not found '{TABLE_NAME}' table")
 
@@ -57,28 +55,15 @@ class HtmlParserService:
     def __update_map(self,
                      services_map: ServicesData,
                      name_index: int,
-                     version_index: int,
-                     filtered_ms_list: Iterable[str],
-                     group_supported_services: ServicesData):
+                     version_index: int):
         rows = self.table.find_all(TR)[2:]  # Skip the first and second rows
         for row in rows:
             cells = row.find_all(TD)
             if cells[name_index] is not None:
                 name = cells[name_index].text.split(" ")[0].replace(TABLE_INDEX_MICROSERVICE_PREFIX, "").strip()
                 version = cells[version_index].text.strip()
-                if len(name) > 0 and len(version) > 0 and name in filtered_ms_list:
-                    if name in services_map and services_map.get_item(name).from_version is not None:
-                        services_map.get_item(name).to_version = version
-                    else:
-                        supported_service_template = group_supported_services.get_item(name)
-                        project = supported_service_template.project\
-                            if supported_service_template is not None else None
-                        repo_name = supported_service_template.repo_name\
-                            if supported_service_template is not None else None
-                        services_map.add_item(name,
-                                              ServiceData.create()
-                                              .service_name(name)
-                                              .repo_name(repo_name)
-                                              .project(project)
-                                              .to_version(version)
-                                              .from_version(version).build())
+                if len(name) > 0 and len(version) > 0 and name in services_map:
+                    if services_map.get_item(name).from_version is None:
+                        services_map.get_item(name).from_version = version
+
+                    services_map.get_item(name).to_version = version

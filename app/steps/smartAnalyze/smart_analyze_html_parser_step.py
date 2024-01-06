@@ -18,7 +18,6 @@ class HtmlParserStep(SmartAnalyzeStepInterface):
             return
 
         self.html_parser_service.load_html(parameters.build_url,
-                                           parameters.services_map,
-                                           parameters.curr_group_data.services_data)
+                                           parameters.services_map)
 
         app_main_logger.debug(f"HtmlParserStep.execute(): services={parameters.services_map}")

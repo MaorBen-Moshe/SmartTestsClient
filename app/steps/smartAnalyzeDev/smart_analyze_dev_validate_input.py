@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from app import app_main_logger
-from app.constants.constants import SERVICE_FROM_KEY
+from app.constants.constants import SERVICE_FROM_KEY, PULL_REQUEST_ID_KEY
 from app.decorators.decorators import log_around
 from app.exceptions.excpetions import BadRequest
 from app.models.analyze_dev_app_params import AnalyzeDevAppServiceParameters
@@ -21,13 +21,16 @@ class SmartAnalyzeDevValidateInputStep(SmartAnalyzeDevStepInterface):
                 if service.from_version is None:
                     if service.pull_request_id is None:
                         raise BadRequest(f"Service '{service_name}' is missing mandatory field: "
-                                         f"'{SERVICE_FROM_KEY}'.")
+                                         f"'{SERVICE_FROM_KEY}' or '{PULL_REQUEST_ID_KEY}'.")
                     else:
+                        service.to_version = None
+                else:
+                    if service.pull_request_id is not None:
                         app_main_logger.warning("Provided from version and pull request id. "
                                                 "Ignoring 'from' version data.")
+                        service.from_version = None
+                        service.to_version = None
 
-                service.from_version = None if service.pull_request_id else service.from_version
-                service.to_version = None if service.pull_request_id else service.to_version
         else:
             app_main_logger.warning("SmartAnalyzeDevValidateInputStep.execute(): No services provided.")
 

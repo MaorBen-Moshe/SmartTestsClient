@@ -16,7 +16,7 @@ class InitGroupsDataStep(SmartAnalyzeDevStepInterface):
         if parameters is None:
             return
 
-        groups_data = self.service.get_all_flows_by_filter([])
+        groups_data = self.service.get_all_flows_by_filter()
 
         parameters.groups_data.merge(groups_data)
 

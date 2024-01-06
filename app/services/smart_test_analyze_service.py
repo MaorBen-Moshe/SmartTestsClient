@@ -72,11 +72,12 @@ class SmartTestsAnalyzeService:
                     app_main_logger.warning(f"SmartTestsAnalyzeService._analyze_flow_per_service(): "
                                             f"Group {group_name} not found in groups data.")
 
-    def get_all_flows_by_filter(self, include_filter_list: list[str] | None) -> TestGroupsData:
+    def get_all_flows_by_filter(self, include_filter_list: list[str] | None = None) -> TestGroupsData:
         app_main_logger.debug(f"SmartTestsAnalyzeService.get_all_flows_by_filter(): "
                               f"Get all flows by filter. include_filter_list={include_filter_list}")
 
         groups_data = TestGroupsData()
+        include_filter_list = [] if include_filter_list is None else include_filter_list
         include_groups_filter = Utils.create_filter_by_list(include_filter_list)
 
         data = self.client.get_all_flows_stats(include_groups_filter)
