@@ -1,7 +1,9 @@
 from functools import wraps
 
+from flask_login import login_required, current_user
+
 from app import app_main_logger
-from app.exceptions.excpetions import BadGatewayError, SmartClientBaseException
+from app.exceptions.excpetions import BadGatewayError, SmartClientBaseException, UnauthorizedError
 
 
 def gateway_errors_handler(func):
@@ -13,6 +15,7 @@ def gateway_errors_handler(func):
     Returns:
         A wrapper function that catches and logs SmartClientBaseException and other exceptions, and raises BadGatewayError instead.
     """
+
     @wraps(func)
     def wrapper(*args, **kwargs):
         try:
@@ -36,6 +39,7 @@ def log_around(print_output=False):
     Returns:
         A decorator that wraps a function with logging statements.
     """
+
     def inner(func):
         """The actual decorator that logs the arguments and output of a function.
 
@@ -45,6 +49,7 @@ def log_around(print_output=False):
         Returns:
             A wrapper function that logs the class name, function name, arguments, and output of the function.
         """
+
         @wraps(func)
         def wrapper(*args, **kwargs):
             class_name = ""
@@ -72,3 +77,27 @@ def log_around(print_output=False):
         return wrapper
 
     return inner
+
+
+def admin_required(func):
+    """A decorator that checks if a user is an admin.
+
+    Args:
+        func: The function to decorate.
+
+    Returns:
+        A wrapper function that checks if a user is an admin.
+
+    Raises:
+        UnauthorizedError: If the user is not an admin.
+    """
+
+    @wraps(func)
+    @login_required
+    def wrapper(*args, **kwargs):
+        if current_user is None or not current_user.is_admin:
+            raise UnauthorizedError("User is not an admin.")
+
+        return func(*args, **kwargs)
+
+    return wrapper

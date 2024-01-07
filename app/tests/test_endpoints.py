@@ -13,6 +13,25 @@ class TestEndpointsUnit(TestUnitBase):
     def tearDown(self):
         super().tearDown()
 
+    def test_health_endpoint_success(self):
+        res = self.client_fixture.get("/health",
+                                      headers={API_KEY_QUERY_PARAM: self.config.get_admin_api_token()})
+
+        self.assertEqual(res.status_code, 200)
+        self.assertIsNotNone(res.json)
+        self.assertEqual(res.json['status'], "I'm fine.")
+
+    def test_health_endpoint_not_admin(self):
+        res = self.client_fixture.get("/health",
+                                      headers={API_KEY_QUERY_PARAM: self.config.get_user_api_token()})
+        self.assertEqual(res.status_code, 401)
+        self.assertEqual(res.json['error_code'], 401)
+        self.assertEqual(res.json['error_message'], '[ERROR] 401: User is not an admin.')
+
+    def test_health_endpoint_missing_api_key(self):
+        res = self.client_fixture.get("/health")
+        self.assertEqual(res.status_code, 401)
+
     def test_supported_groups_endpoint_success(self):
         with self.assertLogs(self.logger.get_logger_name(), level='DEBUG') as cm:
             res = self.client_fixture.get("/supported-groups",

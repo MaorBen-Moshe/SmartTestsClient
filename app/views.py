@@ -11,6 +11,7 @@ from app.appServices.analyze_app_service import AnalyzeAppService
 from app.appServices.analyze_dev_app_service import AnalyzeDevAppService
 from app.constants.constants import TRACE_ID_HEADER, GROUP_NAME_KEY, BUILD_URL_KEY, INFO_LEVEL_KEY, SERVICES_KEY, \
     API_KEY_QUERY_PARAM
+from app.decorators.decorators import admin_required
 from app.enums.res_info_level import ResInfoLevelEnum
 from app.exceptions.excpetions import SmartClientBaseException
 from app.mappers.service_data_mapper import ServiceDataMapper
@@ -23,14 +24,13 @@ from app.utils.utils import Utils
 
 
 @app.route("/health")
-@login_required
+@admin_required
 def health():
-    if current_user.is_admin:
-        resp = make_response(jsonify({"status": "I'm fine."}), 200)
-        resp.headers[TRACE_ID_HEADER] = Utils.get_request_id()
-        return resp
-    else:
-        flask.abort(HTTPStatus.UNAUTHORIZED)
+    app_main_logger.debug("Health check request.")
+
+    resp = make_response(jsonify({"status": "I'm fine."}), 200)
+    resp.headers[TRACE_ID_HEADER] = Utils.get_request_id()
+    return resp
 
 
 @app.route("/supported-groups", methods=["GET"])

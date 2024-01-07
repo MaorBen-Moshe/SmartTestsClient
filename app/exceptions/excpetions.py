@@ -87,3 +87,15 @@ class BadGatewayError(SmartClientBaseException):
             message (str | None): The message to display, or None.
         """
         super().__init__(message, HTTPStatus.BAD_GATEWAY.value)
+
+
+class UnauthorizedError(SmartClientBaseException):
+    """An exception that user is not authorized to access the resource."""
+
+    def __init__(self, message: str | None):
+        """Initializes the exception with a message and a 401 status code.
+
+        Args:
+            message (str | None): The message to display, or None.
+        """
+        super().__init__(message, HTTPStatus.UNAUTHORIZED.value)
