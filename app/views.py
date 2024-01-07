@@ -1,9 +1,7 @@
 from datetime import datetime
-from http import HTTPStatus
 
-import flask
 from flask import request, jsonify, make_response
-from flask_login import login_required, current_user
+from flask_login import login_required
 from werkzeug.exceptions import HTTPException
 
 from app import app, login_manager, config, socket_handler, app_main_logger
@@ -29,7 +27,7 @@ def health():
     app_main_logger.debug("Health check request.")
 
     resp = make_response(jsonify({"status": "I'm fine."}), 200)
-    resp.headers[TRACE_ID_HEADER] = Utils.get_request_id()
+    
     return resp
 
 
@@ -48,7 +46,7 @@ def supported_groups():
     app_main_logger.debug(f"Supported groups response. response={serialized_groups}")
 
     resp = make_response(jsonify(serialized_groups), 200)
-    resp.headers[TRACE_ID_HEADER] = Utils.get_request_id()
+    
     return resp
 
 
@@ -67,7 +65,7 @@ def supported_services():
     app_main_logger.debug(f"Supported services response. response={serialized_services}")
 
     resp = make_response(jsonify(serialized_services), 200)
-    resp.headers[TRACE_ID_HEADER] = Utils.get_request_id()
+    
     return resp
 
 
@@ -95,7 +93,7 @@ def analyze():
     app_main_logger.debug(f"Smart tests analyze response. response={res}")
 
     resp = make_response(jsonify(res.toJSON()), 200)
-    resp.headers[TRACE_ID_HEADER] = Utils.get_request_id()
+    
     return resp
 
 
@@ -122,7 +120,7 @@ def analyze_dev():
     app_main_logger.debug(f"Smart tests analyze dev response. response={res}")
 
     resp = make_response(jsonify(res.toJSON()), 200)
-    resp.headers[TRACE_ID_HEADER] = Utils.get_request_id()
+    
     return resp
 
 
@@ -173,3 +171,9 @@ def handle_socket_disconnection():
 @socket_handler.socketio.on_error_default
 def error_handler(e):
     app_main_logger.error(f'SocketErrorHandler: An error has occurred: {e}')
+
+
+@app.after_request
+def after_request(response):
+    response.headers.add(TRACE_ID_HEADER, Utils.get_request_id())
+    return response
