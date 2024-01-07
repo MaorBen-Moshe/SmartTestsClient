@@ -69,6 +69,12 @@ class SocketHandler(metaclass=SingletonMeta):
 class SocketResponse(Serializable):
     """A class that represents a socket response with a message, a session ID, and a timestamp."""
 
+    __slots__ = [
+        "_message",
+        "_session_id",
+        "_timestamp",
+    ]
+
     def __init__(self, message: str, session_id: str):
         """Initializes the socket response with the given message and session ID.
 
