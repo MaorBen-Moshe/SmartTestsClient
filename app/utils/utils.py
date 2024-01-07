@@ -5,7 +5,7 @@ import urllib
 import uuid
 from typing import Any
 
-import flask
+from flask import request
 
 from app.constants.constants import SESSION_ID_KEY, FLASK_REQUEST_ID_KEY
 
@@ -61,11 +61,11 @@ class Utils:
         Returns:
             str: The request ID, a 10-digit hexadecimal string.
         """
-        if getattr(flask.g, FLASK_REQUEST_ID_KEY, None):
-            return flask.g.request_id
+        if getattr(request, FLASK_REQUEST_ID_KEY, None):
+            return request.request_id
 
         new_uuid = uuid.uuid4().hex[:10]
-        flask.g.request_id = new_uuid
+        request.request_id = new_uuid
 
         return new_uuid
 
