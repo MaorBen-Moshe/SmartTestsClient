@@ -1,8 +1,9 @@
 from __future__ import annotations
 
+import concurrent.futures
 import threading
 
-from app import app_main_logger
+from app import app_main_logger, executor_manager
 from app.clients.smart_tests_client import SmartTestsClient
 from app.constants.constants import SMART_SERVICE_GROUP_FLOWS_COUNT_KEY, SMART_SERVICE_GROUP_FLOWS_BY_GROUP_KEY, \
     SMART_SERVICE_GROUP_NAME_KEY, SMART_SERVICE_GROUP_TESTS_ALL_KEY, SMART_SERVICE_GROUP_FLOWS_KEY
@@ -40,7 +41,7 @@ class SmartTestsAnalyzeService:
         """
         if services_map is not None and groups_data is not None:
             include_groups_filter = Utils.create_filter_by_list(filter_group)
-            threads = []
+            futures = []
             for service_key in services_map:
                 service = services_map.get_item(service_key)
                 if (service is None or
@@ -48,14 +49,14 @@ class SmartTestsAnalyzeService:
                                                               services_map.get_item(service_key).from_version))):
                     continue
 
-                t = threading.Thread(target=self._analyze_flow_per_service,
-                                     args=(service, groups_data, include_groups_filter))
+                f = executor_manager.submit(self._analyze_flow_per_service,
+                                            service,
+                                            groups_data,
+                                            include_groups_filter)
 
-                threads.append(t)
-                t.start()
+                futures.append(f)
 
-            for t in threads:
-                t.join()
+            concurrent.futures.wait(futures, timeout=None, return_when=concurrent.futures.ALL_COMPLETED)
         else:
             raise EmptyInputError("failed to fetch flows to analyze. no services or groups data found.")
 

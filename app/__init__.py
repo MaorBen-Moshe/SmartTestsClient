@@ -5,6 +5,7 @@ from flask import Flask
 from flask_caching import Cache
 from flask.logging import default_handler
 from flask_cors import CORS
+from flask_executor import Executor
 from flask_login import LoginManager
 
 app_config = {
@@ -13,6 +14,8 @@ app_config = {
     'CACHE_DEFAULT_TIMEOUT': 600,  # 10 minutes
     'CACHE_THRESHOLD': 10,
     'CACHE_DIR': os.path.join(os.path.dirname(__file__), "cache"),
+    'EXECUTOR_TYPE': 'thread',
+    'EXECUTOR_MAX_WORKERS': 10,
 }
 
 app = Flask(__name__)
@@ -26,6 +29,10 @@ login_manager.init_app(app)
 
 cache_manager = Cache()
 cache_manager.init_app(app)
+
+executor_manager = Executor()
+executor_manager.init_app(app)
+
 
 from app.utils import utils
 from app.models import config_manager, socket_handler

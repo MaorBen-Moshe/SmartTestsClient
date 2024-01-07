@@ -1,10 +1,11 @@
 from __future__ import annotations
 
+import concurrent.futures
 import threading
 from distutils.version import LooseVersion
 from typing import Any, Iterable
 
-from app import app_main_logger
+from app import app_main_logger, executor_manager
 from app.clients.nexus_client import NexusClient
 from app.constants.constants import CONTINUATION_TOKEN, VERSION_KEY, ITEMS_KEY, NEXUS_REPOSITORY_KEY, NEXUS_NAME_KEY
 from app.decorators.decorators import log_around
@@ -38,15 +39,12 @@ class NexusSearchService:
             raise EmptyInputError("Provided to 'update_services_master_version' repository=None")
 
         if ms_list:
-            threads = []
+            futures = []
             for entry in ms_list:
-                t = threading.Thread(target=self._get_service_data_for_each_entry,
-                                     args=(repository, entry))
-                threads.append(t)
-                t.start()
+                f = executor_manager.submit(self._get_service_data_for_each_entry, repository, entry)
+                futures.append(f)
 
-            for t in threads:
-                t.join()
+            concurrent.futures.wait(futures, timeout=None, return_when=concurrent.futures.ALL_COMPLETED)
 
     def _get_service_data_for_each_entry(self, repository: str | None,
                                          entry: ServiceData | None):

@@ -1,3 +1,5 @@
+from parameterized import parameterized
+
 from app.exceptions.excpetions import EmptyInputError
 from app.models.group_data import GroupData
 from app.models.groups_data import TestGroupsData
@@ -5,7 +7,6 @@ from app.models.service_data import ServiceData
 from app.models.services_data import ServicesData
 from app.services.smart_test_analyze_service import SmartTestsAnalyzeService
 from test_base import TestUnitBase
-from parameterized import parameterized
 
 
 class TestHandleGroupsDataStepUnit(TestUnitBase):
@@ -83,7 +84,8 @@ class TestHandleGroupsDataStepUnit(TestUnitBase):
                              GroupData.create().test_xml_name("group2").test_xml_path("").total_flows_count(
                                  20).build())
 
-        self.smart_test_analyze_service.analyze_flows(services_map, filter_group, groups_data)
+        with self.app_fixture.test_request_context():
+            self.smart_test_analyze_service.analyze_flows(services_map, filter_group, groups_data)
 
         self.assertEqual(self.mock_analyze_flows.call_count, 2)
         self.assertEqual(groups_data.get_item("group1").curr_flows_count, 3)

@@ -19,7 +19,8 @@ class TestUpdateServiceDataService(TestUnitBase):
                                .service_name("productconfigurator")
                                .from_version("0.67.21").build())
 
-        self.update_service_data_service.update_services_data(self._repo, services_data)
+        with self.app_fixture.test_request_context():
+            self.update_service_data_service.update_services_data(self._repo, services_data)
 
         self.assertIsNotNone(services_data)
         self.assertEqual(len(services_data), 1)
@@ -37,7 +38,8 @@ class TestUpdateServiceDataService(TestUnitBase):
         services_data.add_item("productconfigurator-pioperations",
                                ServiceData.create().from_version("0.67.13").to_version("0.67.9").build())
 
-        self.update_service_data_service.update_services_data(self._repo, services_data)
+        with self.app_fixture.test_request_context():
+            self.update_service_data_service.update_services_data(self._repo, services_data)
 
         self.mock_nexus_search.assert_called_once()
         self.assertIsNotNone(services_data)

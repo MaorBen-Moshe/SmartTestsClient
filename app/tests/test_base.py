@@ -27,6 +27,10 @@ class TestBase(unittest.TestCase):
     def prepare_client_fixture(self, client):
         self.client_fixture = client
 
+    @pytest.fixture(autouse=True)
+    def prepare_test_app(self, application):
+        self.app_fixture = application
+
     def assert_exception(self, function, exception, msg_expected: str):
         with self.assertRaises(exception) as context:
             function()
