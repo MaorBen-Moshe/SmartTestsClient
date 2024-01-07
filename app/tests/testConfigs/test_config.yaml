@@ -100,6 +100,8 @@ logging:
 
 cache:
   get_all_endpoint:
+    ttl: 600
     enabled: false
   smart_analyze_endpoint:
+    ttl: 600
     enabled: false

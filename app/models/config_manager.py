@@ -105,12 +105,16 @@ class ConfigManager(metaclass=SingletonMeta):
         return self._config["logging"][name] if name in self._config["logging"] else self.get_log_level()
 
     def is_get_all_endpoint_cache_enabled(self) -> bool:
-        value = self._config["cache"]["get_all_endpoint"]['enabled']
-        return bool(value) if value is not None else False
+        return self.__get_is_cache_enabled_by_key("get_all_endpoint")
 
     def is_smart_analyze_endpoint_cache_enabled(self) -> bool:
-        value = self._config["cache"]["smart_analyze_endpoint"]['enabled']
-        return bool(value) if value is not None else False
+        return self.__get_is_cache_enabled_by_key("smart_analyze_endpoint")
+
+    def get_get_all_endpoint_cache_ttl(self) -> int:
+        return self.__get_cache_ttl_by_key("get_all_endpoint")
+
+    def get_smart_analyze_endpoint_cache_ttl(self) -> int:
+        return self.__get_cache_ttl_by_key("smart_analyze_endpoint")
 
     def __get_supported_groups_helper(self, supported_groups_str_format: dict[str, Any]) -> SupportedGroups:
         groups = SupportedGroups()
@@ -136,3 +140,11 @@ class ConfigManager(metaclass=SingletonMeta):
                 password = self._fernet.decrypt(password).decode("utf-8")
 
         return user, password
+
+    def __get_is_cache_enabled_by_key(self, key: str) -> bool:
+        value = self._config["cache"][key]['enabled']
+        return bool(value) if value is not None else False
+
+    def __get_cache_ttl_by_key(self, key: str) -> int:
+        value = self._config["cache"][key]['ttl']
+        return int(value) if value is not None else 0

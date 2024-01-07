@@ -9,9 +9,10 @@ from flask_login import LoginManager
 
 app_config = {
     'SECRET_KEY': os.urandom(24),
-    'CACHE_TYPE': 'SimpleCache',  # Flask-Caching related configs
+    'CACHE_TYPE': 'FileSystemCache',  # Flask-Caching related configs
     'CACHE_DEFAULT_TIMEOUT': 600,  # 10 minutes
-    'CACHE_THRESHOLD': 10
+    'CACHE_THRESHOLD': 10,
+    'CACHE_DIR': os.path.join(os.path.dirname(__file__), "cache"),
 }
 
 app = Flask(__name__)

@@ -6,6 +6,8 @@ from typing import Any
 
 class Serializable(ABC):
 
+    __slots__ = ()
+
     def toJSON(self, ignore_none=True) -> dict[str, Any] | None:
         if self is None:
             return None
@@ -30,4 +32,3 @@ class Serializable(ABC):
                 result[key] = value
 
         return result
-

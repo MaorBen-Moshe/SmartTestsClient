@@ -14,7 +14,7 @@ class SmartTestsClient:
 
     @gateway_errors_handler
     @log_around(print_output=True)
-    @cache_manager.cached(timeout=600,
+    @cache_manager.cached(timeout=config.get_smart_analyze_endpoint_cache_ttl(),
                           make_cache_key=Utils.make_cache_key_smart_analyze_flows,
                           unless=lambda: not config.is_smart_analyze_endpoint_cache_enabled())
     def analyze_flows(self,
@@ -58,7 +58,7 @@ class SmartTestsClient:
 
     @gateway_errors_handler
     @log_around(print_output=True)
-    @cache_manager.cached(timeout=600,
+    @cache_manager.cached(timeout=config.get_get_all_endpoint_cache_ttl(),
                           make_cache_key=Utils.make_cache_key_smart_get_all,
                           unless=lambda: not config.is_get_all_endpoint_cache_enabled())
     def get_all_flows_stats(self, include_groups_filter: str | None):
