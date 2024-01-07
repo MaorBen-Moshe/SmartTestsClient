@@ -9,9 +9,18 @@ from app.steps.smartAnalyzeDev.interfaces.smart_analyze_dev_step_interface impor
 
 
 class SmartAnalyzeDevValidateInputStep(SmartAnalyzeDevStepInterface):
+    """A class that implements the smart analyze dev step interface for validating the input parameters."""
 
     @log_around(print_output=False)
     def execute(self, parameters: AnalyzeDevAppServiceParameters):
+        """Executes the validation step for the given parameters.
+
+        Args:
+            parameters (AnalyzeDevAppServiceParameters): The parameters to validate.
+
+        Raises:
+            BadRequest: If the parameters are None or invalid.
+        """
         if parameters is None:
             raise BadRequest("No payload provided.")
 

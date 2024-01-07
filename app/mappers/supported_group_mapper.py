@@ -5,8 +5,18 @@ from app.models.supported_group import SupportedGroup
 
 
 class SupportedGroupMapper:
+    """A class that maps between SupportedGroup and SupportedGroupDTO objects."""
+
     @classmethod
     def map_to_dto(cls, supported_group: SupportedGroup) -> SupportedGroupDTO | None:
+        """Maps a SupportedGroup object to a SupportedGroupDTO object.
+
+        Args:
+            supported_group (SupportedGroup): The SupportedGroup object to map, or None.
+
+        Returns:
+            SupportedGroupDTO | None: The mapped SupportedGroupDTO object, or None if the input is None.
+        """
         if supported_group is None:
             return None
 

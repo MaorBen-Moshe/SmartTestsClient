@@ -7,8 +7,10 @@ from app.services.nexus_search_service import NexusSearchService
 
 
 class UpdateServiceDataService:
+    """A class that updates the services data with the latest versions and the template values from the config."""
 
     def __init__(self):
+        """Initializes the update service data service with a nexus search service and a supported services object."""
         self.nexus_search_service = NexusSearchService()
         self._supported_services = config.get_supported_services()
 
@@ -16,6 +18,12 @@ class UpdateServiceDataService:
     def update_services_data(self,
                              repository: str | None,
                              services_data: ServicesData | None):
+        """Updates the services data with the latest versions of the microservices from the given repository.
+
+        Args:
+            repository (str | None): The name of the repository to search from, or None to skip.
+            services_data (ServicesData | None): The services data to update, or None to skip.
+        """
         if services_data is None or len(services_data) == 0:
             app_main_logger.warning("UpdateServiceDataService.update_services_data(): No services data to update.")
             return None
@@ -30,6 +38,11 @@ class UpdateServiceDataService:
 
     @log_around(print_output=False)
     def update_from_template(self, services: ServicesData):
+        """Updates the services data with the template values from the config.
+
+        Args:
+            services (ServicesData): The services data to update.
+        """
         if services is None:
             return
 

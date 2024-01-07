@@ -5,4 +5,5 @@ from app.models.group_data import GroupData
 
 
 class TestGroupsData(DictWrapperObject[GroupData]):
+    """A class that represents a dictionary of GroupData objects."""
     pass

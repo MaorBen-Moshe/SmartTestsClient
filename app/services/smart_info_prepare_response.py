@@ -11,6 +11,15 @@ class InfoPrepareResponseStrategy(IPrepareResponseStrategy):
 
     @log_around(print_output=True)
     def get(self, groups_data: TestGroupsData, services_data: ServicesData) -> SmartAnalyzeResponse:
+        """Gets the smart analyze response for the info mode.
+
+        Args:
+            groups_data (TestGroupsData): The test groups data to prepare the response from.
+            services_data (ServicesData): The services data to prepare the response from - IGNORED in INFO mode.
+
+        Returns:
+            SmartAnalyzeResponse: The smart analyze response for the info mode.
+        """
         if groups_data is None or len(groups_data) == 0:
             app_main_logger.warning("PrepareResponseStep.execute(): No groups data to prepare response.")
             return SmartAnalyzeResponse.create().build()

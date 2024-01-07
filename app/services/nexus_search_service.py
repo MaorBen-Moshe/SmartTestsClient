@@ -14,7 +14,10 @@ from app.utils.utils import Utils
 
 
 class NexusSearchService:
+    """A class that searches for the latest versions of the microservices from the nexus repository."""
+
     def __init__(self):
+        """Initializes the nexus search service with a nexus client and a lock."""
         self.nexus_client = NexusClient()
         self._lock = threading.Lock()
 
@@ -22,6 +25,15 @@ class NexusSearchService:
     def update_services_master_version(self,
                                        repository: str | None,
                                        ms_list: Iterable[ServiceData]):
+        """Updates the master versions of the microservices from the given repository.
+
+        Args:
+            repository (str | None): The name of the repository to search from, or None to skip.
+            ms_list (Iterable[ServiceData]): The list of microservices to update.
+
+        Raises:
+            EmptyInputError: If the repository is None.
+        """
         if repository is None:
             raise EmptyInputError("Provided to 'update_services_master_version' repository=None")
 
@@ -38,6 +50,12 @@ class NexusSearchService:
 
     def _get_service_data_for_each_entry(self, repository: str | None,
                                          entry: ServiceData | None):
+        """Gets the latest version of a microservice from the repository and updates its entry.
+
+        Args:
+            repository (str | None): The name of the repository to search from, or None to skip.
+            entry (ServiceData | None): The microservice entry to update, or None to skip.
+        """
         if entry is None:
             return
 
@@ -61,6 +79,14 @@ class NexusSearchService:
 
     @classmethod
     def _get_service_versions(cls, data: dict[str, Any]) -> list[str]:
+        """Gets the list of versions of a microservice from the data dictionary.
+
+        Args:
+            data (dict[str, Any]): The data dictionary to extract the versions from.
+
+        Returns:
+            list[str]: The list of versions of the microservice, or an empty list if not found.
+        """
         if data is not None and ITEMS_KEY in data and len(data[ITEMS_KEY]) > 0:
             return [item[VERSION_KEY] for item in data[ITEMS_KEY] if
                     VERSION_KEY in item and item[VERSION_KEY] is not None]

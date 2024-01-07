@@ -10,9 +10,18 @@ from app.models.services_data import ServicesData
 
 
 class ServiceDataMapper:
+    """A class that maps between ServiceData and ServiceDataDTO objects."""
 
     @classmethod
     def map_from_dict_list_to_dto(cls, service_data_dict: list[dict[str, Any]]) -> list[ServiceDataDTO]:
+        """Maps a list of dictionaries to a list of ServiceDataDTO objects.
+
+        Args:
+            service_data_dict (list[dict[str, Any]]): A list of dictionaries containing service data, or None.
+
+        Returns:
+            list[ServiceDataDTO]: A list of ServiceDataDTO objects, or an empty list if the input is None or invalid.
+        """
         service_data_dto_list = []
         if service_data_dict and type(service_data_dict) is list:
             for service_data in service_data_dict:
@@ -22,6 +31,14 @@ class ServiceDataMapper:
 
     @classmethod
     def map_from_dict_to_dto(cls, service_data_dict: dict[str, Any]) -> ServiceDataDTO | None:
+        """Maps a dictionary to a ServiceDataDTO object.
+
+        Args:
+            service_data_dict (dict[str, Any]): A dictionary containing service data, or None.
+
+        Returns:
+            ServiceDataDTO | None: A ServiceDataDTO object, or None if the input is None or invalid.
+        """
         if service_data_dict is None or type(service_data_dict) is not dict:
             return None
 
@@ -37,6 +54,14 @@ class ServiceDataMapper:
 
     @classmethod
     def map_from_dto_to_services_data(cls, services_data_dto: list[ServiceDataDTO]) -> ServicesData:
+        """Maps a list of ServiceDataDTO objects to a ServicesData object.
+
+        Args:
+            services_data_dto (list[ServiceDataDTO]): A list of ServiceDataDTO objects, or None.
+
+        Returns:
+            ServicesData: A ServicesData object, or an empty ServicesData object if the input is None or invalid.
+        """
         services_data = ServicesData()
         if services_data_dto and type(services_data_dto) is list:
             for service_data_dto in services_data_dto:
@@ -46,6 +71,14 @@ class ServiceDataMapper:
 
     @classmethod
     def map_from_services_data_to_dto_list(cls, services_data: ServicesData) -> list[ServiceDataDTO]:
+        """Maps a ServicesData object to a list of ServiceDataDTO objects.
+
+        Args:
+            services_data (ServicesData): A ServicesData object, or None.
+
+        Returns:
+            list[ServiceDataDTO]: A list of ServiceDataDTO objects, or an empty list if the input is None or invalid.
+        """
         services_data_dto_list = []
         if services_data and type(services_data) is ServicesData:
             for service_name in services_data:
@@ -56,6 +89,14 @@ class ServiceDataMapper:
 
     @classmethod
     def map_from_dto(cls, service_data_dto: ServiceDataDTO | None) -> ServiceData | None:
+        """Maps a ServiceDataDTO object to a ServiceData object.
+
+        Args:
+            service_data_dto (ServiceDataDTO | None): A ServiceDataDTO object, or None.
+
+        Returns:
+            ServiceData | None: A ServiceData object, or None if the input is None or invalid.
+        """
         if service_data_dto is None or type(service_data_dto) is not ServiceDataDTO:
             return None
 
@@ -72,6 +113,14 @@ class ServiceDataMapper:
 
     @classmethod
     def map_from_service_data_to_dto(cls, service_data: ServiceData | None) -> ServiceDataDTO | None:
+        """Maps a ServiceData object to a ServiceDataDTO object.
+
+        Args:
+            service_data (ServiceData | None): A ServiceData object, or None.
+
+        Returns:
+            ServiceDataDTO | None: A ServiceDataDTO object, or None if the input is None or invalid.
+        """
         if service_data is None or type(service_data) is not ServiceData:
             return None
 

@@ -5,10 +5,19 @@ from typing import Any
 
 
 class Serializable(ABC):
+    """An abstract base class that defines a method for serializing an object to a JSON dictionary."""
 
     __slots__ = ()
 
     def toJSON(self, ignore_none=True) -> dict[str, Any] | None:
+        """Serializes the object to a JSON dictionary.
+
+        Args:
+            ignore_none (bool): Whether to ignore None values or not. Defaults to True.
+
+        Returns:
+            dict[str, Any] | None: The JSON dictionary, or None if the object is None.
+        """
         if self is None:
             return None
 

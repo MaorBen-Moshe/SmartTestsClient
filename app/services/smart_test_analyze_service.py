@@ -16,8 +16,10 @@ from app.utils.utils import Utils
 
 
 class SmartTestsAnalyzeService:
+    """A class that analyzes the test flows of the microservices using the smart tests client."""
 
     def __init__(self):
+        """Initializes the smart tests analyze service with a smart tests client and a lock."""
         self.client = SmartTestsClient()
         self._lock = threading.Lock()
 
@@ -26,6 +28,16 @@ class SmartTestsAnalyzeService:
                       services_map: ServicesData | None,
                       filter_group: list[str] | None,
                       groups_data: TestGroupsData | None):
+        """Analyzes the test flows of the microservices from the given services map and groups data.
+
+        Args:
+            services_map (ServicesData | None): The services map to analyze, or None to skip.
+            filter_group (list[str] | None): The list of group names to filter the test flows by, or None to skip.
+            groups_data (TestGroupsData | None): The groups data to update with the test flows, or None to skip.
+
+        Raises:
+            EmptyInputError: If the services map or the groups data is None or empty.
+        """
         if services_map is not None and groups_data is not None:
             include_groups_filter = Utils.create_filter_by_list(filter_group)
             threads = []
@@ -50,6 +62,13 @@ class SmartTestsAnalyzeService:
     def _analyze_flow_per_service(self, service_data: ServiceData,
                                   groups_data: TestGroupsData,
                                   include_groups_filter: str):
+        """Analyzes the test flows of a single microservice and updates its service data and group data.
+
+        Args:
+            service_data (ServiceData): The service data of the microservice to analyze.
+            groups_data (TestGroupsData): The groups data to update with the test flows.
+            include_groups_filter (str): The filter string to include only the relevant groups.
+        """
         if service_data is None:
             return
 
@@ -73,6 +92,14 @@ class SmartTestsAnalyzeService:
                                             f"Group {group_name} not found in groups data.")
 
     def get_all_flows_by_filter(self, include_filter_list: list[str] | None = None) -> TestGroupsData:
+        """Gets all the test flows by the given filter list.
+
+        Args:
+            include_filter_list (list[str] | None): The list of group names to include in the test flows, or None to get all groups.
+
+        Returns:
+            TestGroupsData: The test groups data with the test flows that match the filter list.
+        """
         app_main_logger.debug(f"SmartTestsAnalyzeService.get_all_flows_by_filter(): "
                               f"Get all flows by filter. include_filter_list={include_filter_list}")
 

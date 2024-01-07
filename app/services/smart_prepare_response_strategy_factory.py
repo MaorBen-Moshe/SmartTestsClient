@@ -9,9 +9,18 @@ from app.services.smart_info_prepare_response import InfoPrepareResponseStrategy
 
 
 class PrepareResponseStrategyFactory (IPrepareResponseStrategyFactory):
+    """A class that implements the prepare response strategy factory interface."""
 
     @log_around(print_output=True)
     def get(self, info_level=ResInfoLevelEnum.INFO) -> IPrepareResponseStrategy:
+        """Gets the prepare response strategy according to the given info level.
+
+        Args:
+            info_level (ResInfoLevelEnum): The info level to determine the prepare response strategy.
+
+        Returns:
+            IPrepareResponseStrategy: The prepare response strategy instance.
+        """
         res = InfoPrepareResponseStrategy()
         if info_level == ResInfoLevelEnum.DEBUG:
             res = DebugPrepareResponseStrategy()

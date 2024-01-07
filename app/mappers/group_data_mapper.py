@@ -5,8 +5,18 @@ from app.models.group_data import GroupData
 
 
 class GroupDataMapper:
+    """A class that maps a GroupData instance to a GroupDataDTO instance."""
+
     @classmethod
     def map_to_dto(cls, group_data: GroupData) -> GroupDataDTO | None:
+        """Maps a GroupData instance to a GroupDataDTO instance.
+
+        Args:
+            group_data (GroupData): The GroupData instance to map, or None.
+
+        Returns:
+            GroupDataDTO | None: The mapped GroupDataDTO instance, or None if the input is None.
+        """
         if group_data is None:
             return None
 

@@ -11,7 +11,10 @@ from app.models.services_data import ServicesData
 
 
 class HtmlParserService:
+    """A class that parses an HTML file and updates the services map with the versions of the microservices."""
+
     def __init__(self):
+        """Initializes the HTML parser service with None values for the table, the HTML, and the soup."""
         self.table = None
         self.html = None
         self.soup = None
@@ -20,6 +23,15 @@ class HtmlParserService:
     def load_html(self,
                   html_zip_url: str | None,
                   services_map: ServicesData | None):
+        """Loads the HTML file from the given URL and updates the services map with the versions of the microservices.
+
+        Args:
+            html_zip_url (str | None): The URL of the HTML zip file, or None to skip.
+            services_map (ServicesData | None): The services map to update, or None to skip.
+
+        Raises:
+            NotFoundError: If the HTML file does not contain the expected table.
+        """
         if services_map is None or len(services_map) == 0:
             return
 
@@ -33,6 +45,11 @@ class HtmlParserService:
             raise NotFoundError(f"error with build report structure. not found '{TABLE_NAME}' table")
 
     def __find_table(self):
+        """Finds the table that contains the microservices versions in the HTML file.
+
+        Returns:
+            The table element, or None if not found.
+        """
         tables = self.soup.find_all(TABLE)
         for table in tables:
             b_element = table.find(TR).find(TD).find(B)
@@ -41,6 +58,11 @@ class HtmlParserService:
         return None
 
     def __find_indexes(self) -> (int, int):
+        """Finds the indexes of the name and version columns in the table.
+
+        Returns:
+            (int, int): The indexes of the name and version columns, or None if not found.
+        """
         first_row = self.table.findAll(TR)[1]
         cells = first_row.find_all(TD)
         name_index = None
@@ -56,6 +78,13 @@ class HtmlParserService:
                      services_map: ServicesData,
                      name_index: int,
                      version_index: int):
+        """Updates the services map with the versions of the microservices from the table.
+
+        Args:
+            services_map (ServicesData): The services map to update.
+            name_index (int): The index of the name column in the table.
+            version_index (int): The index of the version column in the table.
+        """
         rows = self.table.find_all(TR)[2:]  # Skip the first and second rows
         for row in rows:
             cells = row.find_all(TD)

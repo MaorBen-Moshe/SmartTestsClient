@@ -5,4 +5,5 @@ from app.models.supported_group import SupportedGroup
 
 
 class SupportedGroups(DictWrapperObject[SupportedGroup]):
+    """A class that represents a dictionary of SupportedGroup objects."""
     pass

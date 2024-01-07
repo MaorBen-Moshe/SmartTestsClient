@@ -4,6 +4,8 @@ import flask
 
 
 class TraceIdFilter(logging.Filter):
+    """This filter adds a trace_id to the log record if it is available."""
+
     def __init__(self, get_function):
         super().__init__()
         self.get_request_id = get_function

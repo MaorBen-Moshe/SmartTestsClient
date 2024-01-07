@@ -5,6 +5,14 @@ from app.exceptions.excpetions import BadGatewayError, SmartClientBaseException
 
 
 def gateway_errors_handler(func):
+    """A decorator that handles gateway errors for a function.
+
+    Args:
+        func: The function to decorate.
+
+    Returns:
+        A wrapper function that catches and logs SmartClientBaseException and other exceptions, and raises BadGatewayError instead.
+    """
     @wraps(func)
     def wrapper(*args, **kwargs):
         try:
@@ -20,7 +28,23 @@ def gateway_errors_handler(func):
 
 
 def log_around(print_output=False):
+    """A decorator factory that creates a decorator that logs the arguments and output of a function.
+
+    Args:
+        print_output (bool): Whether to print the output of the function or not. Defaults to False.
+
+    Returns:
+        A decorator that wraps a function with logging statements.
+    """
     def inner(func):
+        """The actual decorator that logs the arguments and output of a function.
+
+        Args:
+            func: The function to decorate.
+
+        Returns:
+            A wrapper function that logs the class name, function name, arguments, and output of the function.
+        """
         @wraps(func)
         def wrapper(*args, **kwargs):
             class_name = ""
