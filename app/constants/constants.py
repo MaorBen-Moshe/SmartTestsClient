@@ -37,3 +37,5 @@ SMART_SERVICE_GROUP_TESTS_ALL_KEY = "smartTestsAllItem"
 
 NEXUS_REPOSITORY_KEY = "repository"
 NEXUS_NAME_KEY = "name"
+
+SMART_SERVER_FILTER_PARAM = "includeFileGroupNamePattern"

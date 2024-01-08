@@ -3,6 +3,7 @@ from __future__ import annotations
 import requests
 
 from app import config, cache_manager
+from app.constants.constants import SMART_SERVER_FILTER_PARAM
 from app.decorators.decorators import gateway_errors_handler, log_around
 from app.utils.utils import Utils
 
@@ -60,7 +61,7 @@ class SmartTestsClient:
                 "from": from_version,
                 "to": to_version,
                 "pullRequestId": pull_request_id,
-                "includeFileGroupNamePattern": include_groups_filter
+                SMART_SERVER_FILTER_PARAM: include_groups_filter
             }
         ]
 
@@ -94,7 +95,7 @@ class SmartTestsClient:
         body = []
         if include_groups_filter:
             body.append({
-                "includeFileGroupNamePattern": include_groups_filter
+                SMART_SERVER_FILTER_PARAM: include_groups_filter
             })
 
         with requests.post(url=self.smart_tests_all_url,
