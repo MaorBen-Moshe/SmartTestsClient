@@ -33,6 +33,25 @@ app:
         - Fuji_Promotion_Pack_testng
         - Fuji_Replace_Pack_testng
         - mat_oc_product_configurator_hooks_APIGW_testng
+    oc-cd-group3:
+      cluster: ilocpde456
+      project: DIGOC
+      url: http://illin5565:18080/job/oc-cd-group3/job/oc-cd-group3/
+      test_files:
+        - banshee_testng
+        - search_regression_testing
+        - pii_regression_testng
+        - conflictresolution_regression_testng
+        - group2_regression_testng
+        - payment_regression_testng
+        - inflight_promotion_regression_testng
+        - deliver_regression_testng
+        - contributing_regression_testng
+        - terminate_suspend_regression_testng
+        - site_managment_regression_testng
+        - future_regression_testng
+        - amend_regression_testng
+        - b2b_ct_regression_testng
   supported_services:
     productconfigurator-subdomain:
       repo_label: productconfigurator-subdomain
@@ -82,6 +101,82 @@ app:
       repo_label: productvalidator-ms
       project: DIGOC
       related_group: oc-cd-group4
+    productorder-subdomain:
+      repo_label: productorder-subdomain
+      project: DIGOC
+      related_group: oc-cd-group3
+    productorder-subdomain-api:
+      repo_label: productorder-subdomain-api
+      project: DIGOC
+      related_group: oc-cd-group3
+    productorder-futurelauncher:
+      repo_label: productorder-futurelauncher-ms
+      project: DIGOC
+      related_group: oc-cd-group3
+    productorder-limiteddurationproduct:
+      repo_label: productorder-limiteddurationproduct-ms
+      project: DIGOC
+      related_group: oc-cd-group3
+    productorder-modifyorder:
+      repo_label: productorder-modifyorder-ms
+      project: DIGOC
+      related_group: oc-cd-group3
+    productorder-paymentorder:
+      repo_label: productorder-paymentorder-ms
+      project: DIGOC
+      related_group: oc-cd-group3
+    productorder-price:
+      repo_label: productorder-price-ms
+      project: DIGOC
+      related_group: oc-cd-group3
+    productorder-productorder:
+      repo_label: productorder-productorder-ms
+      project: DIGOC
+      related_group: oc-cd-group3
+    productorder-submitorder:
+      repo_label: productorder-submitorder-ms
+      project: DIGOC
+      related_group: oc-cd-group3
+    productorder-validateorder:
+      repo_label: productorder-validateorder-ms
+      project: DIGOC
+      related_group: oc-cd-group3
+    productorder-prepaidorder:
+      repo_label: productorder-prepaidorder-ms
+      project: DIGOC
+      related_group: oc-cd-group3
+    productorder-manage:
+      repo_label: productorder-manage-ms
+      project: DIGOC
+      related_group: oc-cd-group3
+    productorder-search:
+      repo_label: productorder-search-ms
+      project: DIGOC
+      related_group: oc-cd-group3
+    productorder-archive:
+      repo_label: productorder-archive-ms
+      project: DIGOC
+      related_group: oc-cd-group3
+    productorder-notification:
+      repo_label: productorder-notification-ms
+      project: DIGOC
+      related_group: oc-cd-group3
+    productorder-inflight:
+      repo_label: productorder-inflight-ms
+      project: DIGOC
+      related_group: oc-cd-group3
+    productorder-conflictresolution:
+      repo_label: productorder-conflictresolution-ms
+      project: DIGOC
+      related_group: oc-cd-group3
+    productorder-deliverproductorder:
+      repo_label: productorder-deliverproductorder-ms
+      project: DIGOC
+      related_group: oc-cd-group3
+    productorder-amendorder:
+      repo_label: productorder-amendorder-ms
+      project: DIGOC
+      related_group: oc-cd-group3
 
 nexus:
   index_data_repository: ms-helm-release
