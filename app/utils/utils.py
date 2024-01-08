@@ -126,3 +126,27 @@ class Utils:
         suffix = '_'.join(args_as_string)
         suffix = suffix if suffix is not None and len(suffix) > 0 else "empty_args"
         return f"smart_analyze_flows_{suffix}"
+
+    @staticmethod
+    def is_mask_contains_no_cache(mask: str | None) -> bool:
+        """Checks if a mask has noCache.
+
+        Args:
+            mask (str | None): The mask to check.
+
+        Returns:
+            bool: True if the mask contains noCache, False otherwise.
+        """
+
+        mask_args = [val.strip() for val in mask.split(",")] if mask is not None else []
+
+        return "noCache" in mask_args
+
+    @staticmethod
+    def get_mask_from_request_args() -> str | None:
+        """Gets the mask from the request arguments.
+
+        Returns:
+            str | None: The mask, or None if not found.
+        """
+        return request.args.get("mask") if request is not None else ""

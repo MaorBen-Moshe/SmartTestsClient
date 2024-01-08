@@ -122,7 +122,6 @@ class TestUtils(TestBase):
         self.assertEqual(output, expected)
 
     @parameterized.expand([
-        # args, expected output
         (["smart", "foo", "bar"], "smart_analyze_flows_foo_bar"),
         (["smart", None, "bar"], "smart_analyze_flows_none_bar"),
         (["smart", "", "bar"], "smart_analyze_flows_none_bar"),
@@ -130,5 +129,17 @@ class TestUtils(TestBase):
     ])
     def test_make_cache_key_smart_analyze_flows(self, args, expected):
         output = Utils.make_cache_key_smart_analyze_flows(*args)
+
+        self.assertEqual(output, expected)
+
+    @parameterized.expand([
+        ("noCache", True),
+        ("noCache1", False),
+        ("param1, NoCache", False),
+        ("", False),
+        (None, False),
+    ])
+    def test_is_mask_contains_no_cache(self, mask, expected):
+        output = Utils.is_mask_contains_no_cache(mask)
 
         self.assertEqual(output, expected)

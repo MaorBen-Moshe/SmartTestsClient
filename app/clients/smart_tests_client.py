@@ -20,7 +20,8 @@ class SmartTestsClient:
     @log_around(print_output=True)
     @cache_manager.cached(timeout=config.get_smart_analyze_endpoint_cache_ttl(),
                           make_cache_key=Utils.make_cache_key_smart_analyze_flows,
-                          unless=lambda: not config.is_smart_analyze_endpoint_cache_enabled())
+                          unless=lambda: (not config.is_smart_analyze_endpoint_cache_enabled() or
+                                          Utils.is_mask_contains_no_cache(Utils.get_mask_from_request_args())))
     def analyze_flows(self,
                       repo_name: str | None,
                       project: str | None,
@@ -79,7 +80,8 @@ class SmartTestsClient:
     @log_around(print_output=True)
     @cache_manager.cached(timeout=config.get_get_all_endpoint_cache_ttl(),
                           make_cache_key=Utils.make_cache_key_smart_get_all,
-                          unless=lambda: not config.is_get_all_endpoint_cache_enabled())
+                          unless=lambda: (not config.is_smart_analyze_endpoint_cache_enabled() or
+                                          Utils.is_mask_contains_no_cache(Utils.get_mask_from_request_args())))
     def get_all_flows_stats(self, include_groups_filter: str | None):
         """Gets the statistics for all the flows in the Smart Tests database.
 
