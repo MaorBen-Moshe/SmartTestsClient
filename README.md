@@ -57,6 +57,9 @@ groupName: str [optional] = if provided the response will contain only the servi
 
 This endpoint is a POST method. It gets in the request build_url and supported group and returns in the response json that contains flows to run per testGroup.
 
+Query params:
+- **mask**: str [optional] = coma separated list of mask items, currently supports only 'noCache' mask. if provided calls to external services will be made without cache.
+
 Payload fields:
 
 - **groupName**: str [mandatory] = one of the supported groups
@@ -97,6 +100,9 @@ Payload fields:
 
 ### /smart-tests-analyze-dev
 This endpoint is a POST method. It gets in the request services list and for each service makes the analysis of flows to run because of the changes in the version.
+
+Query params:
+- **mask**: str [optional] = coma separated list of mask items, currently supports only 'noCache' mask. if provided calls to external services will be made without cache.
 
 Payload fields:
 
