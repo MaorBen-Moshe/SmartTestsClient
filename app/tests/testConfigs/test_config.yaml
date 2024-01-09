@@ -87,7 +87,7 @@ app:
 
 nexus:
   index_data_repository: ms-helm-release
-  nexus_search_endpoint: "http://illin5589:28080/service/rest/v1/search"
+  nexus_search_endpoint: "https://illin5589.corp.amdocs.com:28081/service/rest/v1/search"
 
 smart_client:
   base_url: https://amd-apigw-stack-service-oc-cd-ml-devops-lighttracer.apps.ilocpde548.ocpd.corp.amdocs.com/lightTracer/v1

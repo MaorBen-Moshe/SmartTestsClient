@@ -16,7 +16,8 @@ class TestNexusClient(TestBase):
 
     @responses.activate
     def test_search_data_success(self):
-        path = 'http://illin5589:28080/service/rest/v1/search?repository=ms-helm-release&name=productconfigurator'
+        path = ('https://illin5589.corp.amdocs.com:28081/service/rest/v1/search?repository=ms-helm-release&name'
+                '=productconfigurator')
         with open("resources/nexus_search/configurator_nexus_search_res.json", mode="r") as f:
             responses.add(responses.GET, path, json=json.load(f), status=200)
 
