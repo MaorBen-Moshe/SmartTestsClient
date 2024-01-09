@@ -231,7 +231,7 @@ class ConfigManager(metaclass=SingletonMeta):
             if group_name is not None:
                 default_supported_groups = self._config["app"]["default_groups_test_files"]
                 services_data = self.get_supported_services(group_name)
-                groups.add_item(group_name, (SupportedGroup.create().group_name(group_name)
+                groups.add_item(group_name, (SupportedGroup.create().namespace(group_name)
                                              .url(group["url"])
                                              .cluster(group["cluster"])
                                              .test_files(default_supported_groups + group["test_files"])

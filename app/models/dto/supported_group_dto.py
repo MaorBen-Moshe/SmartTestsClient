@@ -8,7 +8,7 @@ class SupportedGroupDTO(Serializable):
     """A data transfer object that represents a supported group of microservices."""
 
     __slots__ = [
-        "_group_name",
+        "_namespace",
         "_cluster",
         "_test_files",
         "_url",
@@ -18,7 +18,7 @@ class SupportedGroupDTO(Serializable):
 
     def __init__(self):
         """Initialize the attributes of the supported group."""
-        self.group_name: str | None = None
+        self.namespace: str | None = None
         self.cluster: str | None = None
         self.test_files: list[str] = []
         self.url: str | None = None
@@ -26,14 +26,14 @@ class SupportedGroupDTO(Serializable):
         self.project: str | None = None
 
     @property
-    def group_name(self) -> str | None:
-        """Get the name of the supported group."""
-        return self._group_name
+    def namespace(self) -> str | None:
+        """Get the namespace of the supported group."""
+        return self._namespace
 
-    @group_name.setter
-    def group_name(self, group_name: str | None):
-        """Set the name of the supported group."""
-        self._group_name = group_name
+    @namespace.setter
+    def namespace(self, namespace: str | None):
+        """Set the namespace of the supported group."""
+        self._namespace = namespace
 
     @property
     def cluster(self) -> str | None:

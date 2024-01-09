@@ -21,7 +21,7 @@ class SupportedGroupMapper:
             return None
 
         supported_group_dto = SupportedGroupDTO()
-        supported_group_dto.group_name = supported_group.group_name
+        supported_group_dto.namespace = supported_group.namespace
         supported_group_dto.cluster = supported_group.cluster
         supported_group_dto.test_files = supported_group.test_files
         supported_group_dto.url = supported_group.url

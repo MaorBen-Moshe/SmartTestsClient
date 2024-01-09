@@ -8,7 +8,7 @@ class SupportedGroup:
     """A class that represents a supported group of services."""
 
     __slots__ = [
-        "_group_name",
+        "_namespace",
         "_cluster",
         "_test_files",
         "_url",
@@ -17,7 +17,7 @@ class SupportedGroup:
     ]
 
     def __init__(self):
-        self.group_name: str | None = None
+        self.namespace: str | None = None
         self.cluster: str | None = None
         self.test_files: list[str] = []
         self.url: str | None = None
@@ -25,22 +25,22 @@ class SupportedGroup:
         self.project: str | None = None
 
     @property
-    def group_name(self) -> str | None:
-        """Gets or sets the name of the group.
+    def namespace(self) -> str | None:
+        """Gets or sets the group namespace.
 
         Returns:
             str | None: The name of the group, or None if not set.
         """
-        return self._group_name
+        return self._namespace
 
-    @group_name.setter
-    def group_name(self, group_name: str | None):
-        """Sets the name of the group.
+    @namespace.setter
+    def namespace(self, namespace: str | None):
+        """Sets the group namespace.
 
         Args:
-            group_name (str | None): The name of the group, or None to unset it.
+            namespace (str | None): The group namespace, or None to unset it.
         """
-        self._group_name = group_name
+        self._namespace = namespace
 
     @property
     def cluster(self) -> str | None:
@@ -149,16 +149,16 @@ class SupportedGroupBuilder(Builder[SupportedGroup]):
         supported_group = supported_group if supported_group is not None else SupportedGroup()
         super().__init__(supported_group)
 
-    def group_name(self, group_name: str | None) -> SupportedGroupBuilder:
-        """Sets the name of the group to build.
+    def namespace(self, namespace: str | None) -> SupportedGroupBuilder:
+        """Sets the group namespace to build.
 
         Args:
-            group_name (str | None): The name of the group, or None to unset it.
+            namespace (str | None): The group namespace, or None to unset it.
 
         Returns:
             SupportedGroupBuilder: The same supported group builder instance, for method chaining.
         """
-        self._item.group_name = group_name
+        self._item.namespace = namespace
         return self
 
     def cluster(self, cluster: str | None) -> SupportedGroupBuilder:

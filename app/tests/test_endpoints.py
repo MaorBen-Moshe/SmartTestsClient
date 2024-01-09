@@ -40,7 +40,7 @@ class TestEndpointsUnit(TestUnitBase):
             self.assertIsNotNone(res.json)
             self.assertEqual(len(res.json), 1)
             self.assertIn('oc-cd-group4', res.json)
-            self.assertEqual(res.json['oc-cd-group4']['group_name'], 'oc-cd-group4')
+            self.assertEqual(res.json['oc-cd-group4']['namespace'], 'oc-cd-group4')
             self.assertEqual(res.json['oc-cd-group4']['cluster'], 'ilocpde456')
             self.assertEqual(res.json['oc-cd-group4']['url'],
                              'http://illin5565:18080/job/oc-cd-group4/job/oc-cd-group4/')
@@ -50,7 +50,7 @@ class TestEndpointsUnit(TestUnitBase):
 
             self.assertEqual(cm.output,
                              ['DEBUG:app:Supported groups request.', "DEBUG:app:Supported groups response. response={"
-                                                                     "'oc-cd-group4': {'group_name': 'oc-cd-group4', "
+                                                                     "'oc-cd-group4': {'namespace': 'oc-cd-group4', "
                                                                      "'cluster': 'ilocpde456', 'test_files': ["
                                                                      "'shared_regression_testng', 'mat_APIGW_testng', "
                                                                      "'extended_mat_7a_APIGW_testng', "
@@ -273,12 +273,11 @@ class TestEndpointsUnit(TestUnitBase):
                                                                        "'oc-cd-group4'}]"])
 
     def test_supported_services_endpoint_not_exist_group(self):
-        with self.assertLogs(self.logger.get_logger_name(), level='DEBUG') as cm:
-            res = self.client_fixture.get("/supported-services?groupName=notExist",
-                                          headers={API_KEY_QUERY_PARAM: self.config.get_user_api_token()})
-            self.assertEqual(res.status_code, 200)
-            self.assertIsNotNone(res.json)
-            self.assertEqual(len(res.json), 0)
+        res = self.client_fixture.get("/supported-services?groupName=notExist",
+                                      headers={API_KEY_QUERY_PARAM: self.config.get_user_api_token()})
+        self.assertEqual(res.status_code, 200)
+        self.assertIsNotNone(res.json)
+        self.assertEqual(len(res.json), 0)
 
     def test_supported_services_endpoint_missing_api_key(self):
         res = self.client_fixture.get("/supported-services")
