@@ -7,7 +7,7 @@ from flask.logging import default_handler
 from flask_cors import CORS
 from flask_executor import Executor
 from flask_login import LoginManager
-import flask_monitoringdashboard as dashboard
+# import flask_monitoringdashboard as dashboard
 
 app_config = {
     'SECRET_KEY': os.urandom(24),
@@ -34,7 +34,7 @@ cache_manager.init_app(app)
 executor_manager = Executor()
 executor_manager.init_app(app)
 
-dashboard.bind(app)
+# dashboard.bind(app)
 
 from app.utils import utils
 from app.models import config_manager, socket_handler
